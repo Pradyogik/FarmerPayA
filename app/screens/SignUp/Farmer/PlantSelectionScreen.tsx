@@ -12,6 +12,8 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import MicIcon from '../../../assets/images/mic.svg';
 import BackArrow from '../../../assets/images/back-arrow.svg';
+import axios from 'axios';
+import { BASE_URL } from '../../../utils/api';
 
 const plants = [
   { id: '1', title: 'Wheat', image: require('../../../assets/images/selection/wheat.jpg') },
@@ -54,10 +56,11 @@ const plants = [
   { id: '38', title: 'Black Peppercorns', image: require('../../../assets/images/selection/blackpepper.png') },
 ];
 
-export default function PlantSelectionScreen({ navigation }: any) {
+export default function PlantSelectionScreen({ navigation ,route}: any) {
+  const {user_id} = route.params;
   const [selected, setSelected] = useState<string[]>([]);
   const [warning, setWarning] = useState('');
-
+  const [errorSelect,setError] = useState('');
   const toggleSelect = (id: string) => {
     if (selected.includes(id)) {
       setSelected(selected.filter(item => item !== id));
@@ -83,6 +86,47 @@ export default function PlantSelectionScreen({ navigation }: any) {
       </TouchableOpacity>
     );
   };
+
+  const handleSelectedPlants = async () => {
+  if (selected.length < 1) {
+    setError('Please select at least 1 plant.');
+    return;
+  }
+
+  setWarning('');
+  setError('');
+
+  const selectedPlantTitles = selected.map(id => {
+    const plant = plants.find(p => p.id === id);
+    return plant?.title || '';
+  });
+
+  console.log('Selected Plants:', selectedPlantTitles);
+
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/farmer/${user_id}/plant-selection`,
+      {
+        user_id,
+        plants: selectedPlantTitles // backend expects an array of titles
+      }
+    );
+    console.log('Plant Selection saved successfully:', response.data);
+    navigation.navigate('Main', { user_id });
+
+  } catch (error: any) {
+    console.error('Error saving Plant Selection (frontend catch):', {
+      message: error?.response?.data?.message,
+      full: error?.response,
+    });
+
+    setError(
+      error?.response?.data?.message || 'Failed to save Plant Selection. Try again.'
+    );
+  }
+};
+
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -126,11 +170,7 @@ export default function PlantSelectionScreen({ navigation }: any) {
 
         <TouchableOpacity
           style={styles.nextButton}
-          onPress={() => {
-            // handle logic or go to next screen
-            console.log('Selected Plants:', selected);
-            navigation.navigate('Main'); // Replace with actual next screen
-          }}
+          onPress={handleSelectedPlants}
         >
           <Text style={styles.nextText} >Next</Text>
         </TouchableOpacity>
@@ -229,16 +269,19 @@ micInnerCircle: {
 },
 
   nextButton: {
-    flex: 1,
-    marginLeft: 16,
-    backgroundColor: '#54219D',
-    paddingVertical: 14,
-    borderRadius: 25,
+    flex: 1, 
+    marginLeft: 16, 
+    backgroundColor: '#6929C4',
+    paddingVertical: 14, 
+    borderRadius: 25, 
     alignItems: 'center',
+    height:48,
   },
-  nextText: {
-    color: '#fff',
-    fontWeight: 'bold',
+  nextText: { 
+    color: '#fff', 
+    fontWeight: 'medium',
+    fontSize:16, 
+
   },
   warningText: {
   color: 'red',

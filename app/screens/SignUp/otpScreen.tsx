@@ -9,29 +9,39 @@ import {
   Image,
 } from 'react-native';
 
-export default function LoginOtpVerification({ navigation }: any) {
+import axios from 'axios';
+import { BASE_URL } from '../../utils/api';
+import BackArrow from '../../assets/images/back-arrow.svg';
+import LargeButton from '../../utils/customs/LargeButton';
+export default function LoginOtpVerification({ navigation, route }: any) {
+  const { mobile } = route.params;
+
   const onBackPress = () => {
     navigation.goBack();
   };
 
-  return <OtpVerification onBackPress={onBackPress} navigation={navigation} />;
+  return <OtpVerification onBackPress={onBackPress} navigation={navigation} mobile={mobile} />;
 }
 
 const OtpVerification = ({
   onBackPress,
   navigation,
+  mobile,
 }: {
   onBackPress: () => void;
   navigation: any;
+  mobile: string;
 }) => {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [timer, setTimer] = useState(30);
   const [error, setError] = useState('');
+  const [noerror, setnoError] = useState('');
+  const [infoMessage, setInfoMessage] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
 
   const inputsRef = useRef<Array<TextInput | null>>([]);
 
-  // Countdown Timer
+  // Countdown timer
   useEffect(() => {
     if (timer > 0) {
       const interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
@@ -39,7 +49,6 @@ const OtpVerification = ({
     }
   }, [timer]);
 
-  // Handle OTP Input Change
   const handleOtpChange = (text: string, index: number) => {
     if (/^\d$/.test(text)) {
       const newOtp = [...otp];
@@ -73,32 +82,95 @@ const OtpVerification = ({
     }
   };
 
-  const handleVerify = () => {
-    const enteredOtp = otp.join('');
-    if (enteredOtp !== '123456') {
-      setError('Incorrect OTP. Please try again.');
-    } else {
-      setError('');
-      navigation.replace('WhoAreU');
-    }
-  };
+const handleVerify = async () => {
+  const enteredOtp = otp.join('');
 
-  const handleResend = () => {
+  if (enteredOtp.length < 6) {
+    setError('Please enter all 6 digits.');
+    setInfoMessage('');
+    return;
+  }
+
+  try {
+    const response = await axios.post(`${BASE_URL}/auth/verify-otp`, {
+      mobile,
+      otp: enteredOtp,
+    });
+
+    const {user_id } = response.data;
+
+    console.log(' OTP Verified. user_id:', user_id);
+
+    setError(''); 
+    setInfoMessage('');
+    console.log('mobile:', mobile);
+    console.log('enteredOtp:', enteredOtp);
+
+    try {
+      const userRes = await axios.get(`${BASE_URL}/user/${user_id}`);
+
+      console.log('📦 Full userRes.data from GET /user/:id →', userRes.data);
+
+      console.log('✅ JSON stringified:', JSON.stringify(userRes.data));
+
+      const user = Array.isArray(userRes.data) ? userRes.data[0] : null;
+      const isRegistered = user?.is_registered === 1;
+
+      console.log('🧾 is_registered:', user?.is_registered);
+
+      if (isRegistered) {
+
+        console.log('🚀 Navigating to Main screen...');
+        setnoError('');
+        navigation.navigate('Main', { mobile, user_id });
+      } else {
+        console.log('📝 User not registered yet. Navigating to WhoAreU...');
+        setnoError('OTP verified. Let’s continue...');
+        setTimeout(() => {
+          setnoError('');
+          navigation.navigate('WhoAreU', { mobile, user_id });
+        }, 1000);
+      }
+    } catch (statusErr) {
+      console.error('Error checking user status:', statusErr);
+      setError('Failed to fetch user status. Try again.');
+    }
+  }catch (err) {
+    if (axios.isAxiosError(err)) {
+      console.error('OTP error:', err.response?.data);
+      setError(err.response?.data?.message || 'OTP verification failed.');
+    } else {
+      console.error('❌ Unknown error:', err);
+      setError('Something went wrong.');
+    }
+  }
+};
+
+
+  const handleResend = async () => {
     setOtp(['', '', '', '', '', '']);
     setTimer(30);
     setError('');
     setActiveIndex(0);
-    inputsRef.current[0]?.focus();
-    Alert.alert('OTP Resent', 'Check your messages');
+    inputsRef.current[0]?.focus();    
+
+    try {
+      const res = await axios.post(`${BASE_URL}/auth/send-otp`, { mobile });
+      Alert.alert('OTP Resent', res.data.message || 'Check your messages');
+    } catch (err) {
+      Alert.alert('Error', 'Failed to resend OTP');
+    }
   };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={onBackPress} style={styles.backButton}>
-        <Image source={require('../../assets/images/arrowButton.png')}/>
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+        <BackArrow/>
       </TouchableOpacity>
 
-      <Text style={styles.label}>Enter the 6 digit code sent to your number</Text>
+      <Text style={styles.label}>
+        Enter the 6 digit code sent to your number
+      </Text>
 
       <View style={styles.otpContainer}>
         {otp.map((digit, index) => {
@@ -108,10 +180,16 @@ const OtpVerification = ({
           return (
             <TextInput
               key={index}
-              ref={(ref) => {inputsRef.current[index] = ref;}}
+              ref={(ref) => {
+                inputsRef.current[index] = ref;
+              }}
               style={[
                 styles.otpBox,
-                isError ? styles.otpBoxError : isActive ? styles.otpBoxActive : styles.otpBoxInactive,
+                isError
+                  ? styles.otpBoxError
+                  : isActive
+                  ? styles.otpBoxActive
+                  : styles.otpBoxInactive,
               ]}
               maxLength={1}
               keyboardType="numeric"
@@ -126,9 +204,16 @@ const OtpVerification = ({
 
       {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
+      {noerror === 'OTP verified. Let’s continue...' ? (
+        <Text style={styles.successText}>{noerror}</Text>
+      ) : noerror ? (
+        <Text style={styles.errorText}>{noerror}</Text>
+      ) : null}
+
       {timer > 0 ? (
         <Text style={styles.resendText}>
-          If you did not receive the OTP, <Text style={{color:'#D00416'}}>Resend in {timer}s</Text> 
+          If you did not receive the OTP,{' '}
+          <Text style={{ color: '#D00416' }}>Resend in {timer}s</Text>
         </Text>
       ) : (
         <TouchableOpacity onPress={handleResend}>
@@ -136,9 +221,8 @@ const OtpVerification = ({
         </TouchableOpacity>
       )}
 
-      <TouchableOpacity style={styles.verifyButton} onPress={handleVerify}>
-        <Text style={styles.verifyText}>Verify</Text>
-      </TouchableOpacity>
+
+      <LargeButton title="Verify"  onPress={ handleVerify}/>
     </View>
   );
 };
@@ -157,7 +241,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
     color: '#121212',
-    marginTop:40,
+    marginTop: 40,
     marginBottom: 40,
     textAlign: 'left',
   },
@@ -175,44 +259,47 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '500',
     color: '#797979',
-    borderWidth:2,
+    borderWidth: 2,
   },
   otpBoxActive: {
-    borderWidth: 2,
-    borderColor: '#4CAF50', // Green
+    borderColor: '#4CAF50',
   },
   otpBoxInactive: {
-    borderWidth: 1,
     borderColor: '#A2A2A2',
   },
   otpBoxError: {
-    borderWidth: 2,
-    borderColor: '#D00416', // Red
+    borderColor: '#D00416',
   },
   resendText: {
     fontSize: 12,
     color: '#0F1B38',
     textAlign: 'right',
     marginBottom: 16,
-    fontWeight:'500'
+    fontWeight: '500',
   },
   errorText: {
     fontSize: 14,
     color: '#D00416',
     marginBottom: 8,
   },
+  successText: {
+    fontSize: 14,
+    color: '#4CAF50',
+    marginBottom: 8,
+  },
   verifyButton: {
-    backgroundColor: '#54219D',
+    backgroundColor: '#6929C4',
     height: 60,
     borderRadius: 48,
     width: '90%',
     justifyContent: 'center',
-    alignSelf:'center',
+    alignSelf: 'center',
     alignItems: 'center',
     marginTop:40,
   },
   verifyText: {
     color: '#FFFFFF',
     fontSize: 18,
+    fontWeight: '500',
   },
 });

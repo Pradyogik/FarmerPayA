@@ -15,10 +15,20 @@ import DeleteIcon from '../../../assets/images/agentSignUp/DeleteIcon.svg';
 import RefreshIcon from '../../../assets/images/agentSignUp/refreshIcon.svg';
 import Upload from '../../../assets/images/Button.svg';
 import * as Progress from 'react-native-progress';
+import { useRoute } from '@react-navigation/native';
+import axios from 'axios';
+import { BASE_URL } from '../../../utils/api';
+import LargeButton from '../../../utils/customs/LargeButton';
 
 const { width,height } = Dimensions.get('window');
 
 const UploadDocumentsScreen = ({ navigation }: any) => {
+  const route = useRoute<any>();
+  const {
+      user_id,
+      mobile,
+    } = route.params;
+
   const [file1, setFile1] = useState<any>(null);
   const [file2, setFile2] = useState<any>(null);
 
@@ -29,6 +39,8 @@ const UploadDocumentsScreen = ({ navigation }: any) => {
   const [progress2, setProgress2] = useState(0);
   const [uploadSpeed2, setUploadSpeed2] = useState('');
   const [isUploading2, setIsUploading2] = useState(false);
+
+  const [errorMessage, setErrorMessage] = useState('');
 
   const simulateUpload = (
     fileSize: number,
@@ -60,10 +72,27 @@ const UploadDocumentsScreen = ({ navigation }: any) => {
       setSpeedFn(`${speed} KB/s`);
     }, 500);
   };
+  const isValidFile = (file: any) => {
+  const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg'];
+  const allowedExtensions = ['.pdf', '.jpg', '.jpeg'];
+
+  const fileType = file.type?.toLowerCase() || '';
+  const fileName = file.name?.toLowerCase() || '';
+
+  return (
+    allowedTypes.includes(fileType) ||
+    allowedExtensions.some(ext => fileName.endsWith(ext))
+  );
+};
 
   const pickAndSimulateUpload1 = async () => {
     try {
       const [res] = await pick({ type: [types.allFiles] });
+      if (!isValidFile(res)) {
+        setErrorMessage('Only JPG, JPEG, or PDF files are allowed.');
+        return;
+      }
+      setErrorMessage('');
       setFile1(res);
       simulateUpload(res.size ?? 100 * 1024, setProgress1, setUploadSpeed1, setIsUploading1);
     } catch (err: any) {
@@ -76,6 +105,11 @@ const UploadDocumentsScreen = ({ navigation }: any) => {
   const pickAndSimulateUpload2 = async () => {
     try {
       const [res] = await pick({ type: [types.allFiles] });
+      if (!isValidFile(res)) {
+        setErrorMessage('Only JPG, JPEG, or PDF files are allowed.');
+        return;
+      }
+      setErrorMessage('');
       setFile2(res);
       simulateUpload(res.size ?? 100 * 1024, setProgress2, setUploadSpeed2, setIsUploading2);
     } catch (err: any) {
@@ -84,10 +118,11 @@ const UploadDocumentsScreen = ({ navigation }: any) => {
       }
     }
   };
+  
 
   const screenWidth = Dimensions.get('window').width;
   const translateX1 = useRef(new Animated.Value(-screenWidth)).current;
- const translateX2 = useRef(new Animated.Value(-screenWidth)).current;
+  const translateX2 = useRef(new Animated.Value(-screenWidth)).current;
 
   useEffect(() => {
     if (file1 && !isUploading1) {
@@ -111,6 +146,40 @@ const UploadDocumentsScreen = ({ navigation }: any) => {
     }
   }, [file2, isUploading2]);
 
+  const handleSubmit = async () => {
+  if (!file1 || !file2) {
+    setErrorMessage('Please upload both documents.');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('user_id', user_id);
+  formData.append('govt_id_proof', {
+    uri: file1.uri,
+    type: file1.type,
+    name: file1.name || 'govt_id.pdf',
+  });
+  formData.append('employee_id_card', {
+    uri: file2.uri,
+    type: file2.type,
+    name: file2.name || 'employee_id.pdf',
+  });
+
+  try {
+    const response = await axios.post(`${BASE_URL}/agent/upload`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    console.log('Upload success:', response.data);
+    navigation.navigate('AgentSignUp4',{user_id});
+  } catch (error) {
+    console.error('Upload error:', error);
+    setErrorMessage('Upload failed. Please try again.');
+  }
+};
+
+
   return (
 
     <View style={styles.container}>
@@ -124,10 +193,9 @@ const UploadDocumentsScreen = ({ navigation }: any) => {
         </Text>
         <Text style={styles.info}>Accept JPG/PDF ≤ 5 MB</Text>
       </View>
+      {errorMessage ? <Text style={{ color: 'red', textAlign: 'left' }}>{errorMessage}</Text> : null}
 
       <ScrollView showsVerticalScrollIndicator={false} style={{marginBottom:100}}>
-
-
 
         <View style={{height:height*0.35 ,backgroundColor:'#fff', elevation:2 }}>
         {/* Upload 1 */}
@@ -245,7 +313,7 @@ const UploadDocumentsScreen = ({ navigation }: any) => {
       {/* Save button */}
       <TouchableOpacity
         style={styles.saveButton}
-        onPress={() => navigation.navigate('AgentSignUp4')}
+        onPress={handleSubmit}
         disabled={isUploading1 || isUploading2}
       >
         <Text style={styles.saveText}>
@@ -385,6 +453,6 @@ const styles = StyleSheet.create({
   saveText: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '500',
   },
 });

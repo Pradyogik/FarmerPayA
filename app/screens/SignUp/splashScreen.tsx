@@ -9,6 +9,7 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
+import LargeButton from '../../utils/customs/LargeButton';
 
 const { width, height } = Dimensions.get('window');
 
@@ -26,8 +27,6 @@ const handleGetStarted = () => {
   navigation.replace('Splash2');
 };
 
-
-
   return (
     <ImageBackground
       source={require('../../assets/images/farmer_splash_bg.jpg')}
@@ -43,9 +42,7 @@ const handleGetStarted = () => {
       </View>
 
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.button} activeOpacity={0.9} onPress={handleGetStarted}>
-          <Text style={styles.buttonText}>Get Started</Text>
-        </TouchableOpacity>
+        <LargeButton title="Get Started" onPress={handleGetStarted} />
       </View>
     </ImageBackground>
   );

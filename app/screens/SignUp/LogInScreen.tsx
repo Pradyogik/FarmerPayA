@@ -13,19 +13,42 @@ import {
   Dimensions,
 } from 'react-native';
 import Call from "../../assets/images/Call.svg";
+import axios from 'axios';
+import { BASE_URL } from '../../utils/api';
+import LargeButton from '../../utils/customs/LargeButton';
+
 const{width,height}=Dimensions.get('window');
+
 const LoginScreen = ({navigation}:any) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [errorMob, setError]= useState('');
 
-  const handleGetOtp = () => {
+  const handleGetOtp = async () => {
     const isValid = /^[6-9]\d{9}$/.test(phoneNumber);
     if (!isValid) {
       setError('Please enter a valid 10-digit Indian mobile number.')
       return;
     }
-    else{
-        navigation.navigate('OtpScreen');
+    setError('');
+    try {
+      const payload = {
+        mobile: `${phoneNumber}`, // Ensure it matches the server-side expectation
+      };
+      console.log("Payload being sent:", payload);
+
+      const response = await axios.post(`${BASE_URL}/auth/send-otp`, payload);
+      console.log("OTP Sent:", response.data);
+      navigation.navigate('OtpScreen', { mobile: phoneNumber });
+
+      // proceed with navigation or OTP screen
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        console.log("Server error response:", err.response?.data);
+        Alert.alert("Error", err.response?.data?.message || "Something went wrong.");
+      } else {
+        console.log("Unknown error:", (err as Error).message);
+        Alert.alert("Network Error", "Please check your internet.");
+      }
     }
   };
 
@@ -49,8 +72,6 @@ const LoginScreen = ({navigation}:any) => {
           <View style={styles.horizontalLine} />
         </View>
         
-
-
         {/* Phone Input */}
         <View style={styles.inputBlock}>
           <Text style={styles.label}>Enter Contact Number</Text>
@@ -76,9 +97,7 @@ const LoginScreen = ({navigation}:any) => {
         </View>
 
         {/* Get OTP Button */}
-        <TouchableOpacity style={styles.button} onPress={handleGetOtp}>
-          <Text style={styles.buttonText}>Get OTP</Text>
-        </TouchableOpacity>
+        <LargeButton title="Get OTP" onPress={handleGetOtp} />
 
         {/* Terms */}
         <TouchableOpacity>
@@ -163,7 +182,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   button: {
-    backgroundColor: '#54219D',
+    backgroundColor: '#6929C4',
     borderRadius: 48,
     height: 60,
     minWidth: '100%',
@@ -174,7 +193,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#FFFFFF',
     fontSize: 16,
-    fontWeight: '400',
+    fontWeight: '500',
   },
   termsText: {
     fontSize: 12,

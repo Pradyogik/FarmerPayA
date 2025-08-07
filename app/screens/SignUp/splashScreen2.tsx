@@ -4,39 +4,39 @@ import {
   Text,
   StyleSheet,
   ImageBackground,
+  StatusBar,
   Image,
   TouchableOpacity,
   Dimensions,
   ScrollView,
 } from 'react-native';
-
 import DualAnimatedRows3 from '../../components/animation3';
 import AutoScrollingText from '../../components/autoScrollingText';
+import LargeButton from '../../utils/customs/LargeButton';
 
 const { width, height } = Dimensions.get('window');
 
 const SplashScreen2 = ({navigation}:any) => {
   return (
     <View style={styles.background}> 
-    <ImageBackground
-      source={require('../../assets/images/aiBgSmall.png')}
-      style={{height:200,marginTop:55,width:width}}
-      resizeMode="contain"
-    ><DualAnimatedRows3 inView={true} navigation={navigation}/>
-    </ImageBackground>
+      <StatusBar backgroundColor="#fff" barStyle="dark-content" />
+      <ImageBackground
+        source={require('../../assets/images/aiBgSmall.png')}
+        style={{height:200,marginTop:55,width:width}}
+        resizeMode="contain"
+      >
+        <DualAnimatedRows3 inView={true} navigation={navigation}/>
+      </ImageBackground>
       {/* Text */}
-<View style={styles.centerTextContainer}>
-  <AutoScrollingText/>
-</View>
+      <View style={styles.centerTextContainer}>
+        <AutoScrollingText/>
+      </View>
 
       {/* Continue Button */}
       <View style={styles.buttonWrapper}>
-        <TouchableOpacity style={styles.button}  onPress={()=>{navigation.navigate('selectLanguage')}}>
-          <Text style={styles.buttonText}>Continue</Text>
-        </TouchableOpacity>
+        <LargeButton title="Continue" onPress={()=>{navigation.navigate('selectLanguage')}} />
       </View>
-      </View>
-   
+    </View>
   );
 };
 

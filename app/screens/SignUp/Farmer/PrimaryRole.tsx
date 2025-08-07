@@ -11,6 +11,8 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import MicIcon from '../../../assets/images/mic.svg';
 import BackArrow from '../../../assets/images/back-arrow.svg';
+import axios from 'axios';
+import { BASE_URL } from '../../../utils/api';
 
 type Role = {
   id: string;
@@ -27,9 +29,11 @@ const roles: Role[] = [
   { id: '6', title: 'Floriculturist', image: require('../../../assets/images/selection/floriculturist.jpg') },
 ];
 
-export default function PrimaryRoleScreen({ navigation }: any) {
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+export default function PrimaryRoleScreen({ navigation,route }: any) {
+  const { user_id } = route.params;
 
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [error, setError]= useState('');
   const renderItem = ({ item }: { item: Role }) => {
     const isSelected = selectedId === item.id;
     return (
@@ -50,6 +54,39 @@ export default function PrimaryRoleScreen({ navigation }: any) {
     );
   };
 
+  const handlePrimaryRole = async() =>{
+    const selectedRole = roles.find((role) => role.id === selectedId);
+    if (!selectedRole){
+      console.error('Please select an activity');
+      setError('Please select an activity');
+      return;
+    }
+    setError('');
+    const formattedRole = selectedRole.title;
+
+    try{
+      const response = await axios.post(
+      `${BASE_URL}/farmer/${user_id}/primary-role`,
+      {
+        user_id,
+        primary_role: formattedRole,
+      }
+    );
+    console.log('Primary role saved successfully:', response.data);
+    navigation.navigate('secondaryRole', {user_id});
+
+    }catch (error: any) {
+      console.error('Error saving primary role (frontend catch):', {
+        message: error?.response?.data?.message,
+        full: error?.response,
+      });
+
+      setError(
+        error?.response?.data?.message || 'Failed to save primary role. Try again.'
+      );
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity  onPress={() => navigation.goBack()} style={{ marginBottom: 32 }}>
@@ -64,7 +101,8 @@ export default function PrimaryRoleScreen({ navigation }: any) {
 
       <Text style={styles.title}>Who are you?</Text>
       <Text style={styles.subtitle}>Let us know about your primary role</Text>
-
+      {error ? <Text style={styles.errorText}>{error}</Text> : null}
+      
       <FlatList
         data={roles}
         renderItem={renderItem}
@@ -85,7 +123,7 @@ export default function PrimaryRoleScreen({ navigation }: any) {
 
         <TouchableOpacity
           style={styles.nextButton}
-          onPress={() => navigation.navigate('secondaryRole')}
+          onPress={handlePrimaryRole}
         >
           <Text style={styles.nextText}>Next</Text>
         </TouchableOpacity>
@@ -201,13 +239,22 @@ const styles = StyleSheet.create({
   nextButton: {
     flex: 1, 
     marginLeft: 16, 
-    backgroundColor: '#54219D',
+    backgroundColor: '#6929C4',
     paddingVertical: 14, 
     borderRadius: 25, 
     alignItems: 'center',
+    height:48,
   },
   nextText: { 
     color: '#fff', 
-    fontWeight: 'bold' 
+    fontWeight: 'medium',
+    fontSize:16, 
+
+  },
+  errorText: {
+    fontSize: 14,
+    color: '#D00416',
+    marginBottom: 8,
+    textAlign: 'left',
   },
 });

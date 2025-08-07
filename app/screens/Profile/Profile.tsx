@@ -82,9 +82,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 12,
-    backgroundColor: '#FFFFFF', // <-- match background
-       // optional: subtle border like Figma
-    elevation:2
+    //backgroundColor: '#FFFFFF', // <-- match background
+    // optional: subtle border like Figma
+    //elevation:2
   },
   headerTitle: {
     fontSize: 20,

@@ -19,49 +19,108 @@ import GpsIcon from '../../../assets/images/GpsIcon.svg';
 import StateIcon from '../../../assets/images/StateIcon.svg';
 import ArrowBack from '../../../assets/images/ArrowBack.svg';
 import HomeIcon from '../../../assets/images/HomeIcon.svg';
+import LargeButton from '../../../utils/customs/LargeButton';
+import axios from 'axios';
+import { BASE_URL } from '../../../utils/api';
 
-const AgentSignUp2 = ({ navigation }: any) => {
-    const [ formData , setFormData ] = useState({
-      houseNo: '',
-      villageName: '',
-      city: '',
-      state: '',
-      pincode: '',
-    })
-    const [checked, setChecked] = useState(false);
+const AgentSignUp2 = ({ navigation, route }: any) => {
+  const { user_id, mobile } = route.params;
+
+  const [ formData , setFormData ] = useState({
+    houseNo: '',
+    villageName: '',
+    city: '',
+    state: '',
+    pincode: '',
+  })
+
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleChange = (name: string, value: string) => {
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleRegisterAgent = async()=>{
+    const { houseNo, villageName, city, pincode, state } = formData;
+
+    if (!houseNo || !villageName || !city || !pincode|| !state) {
+      setErrorMessage('Please fill all fields');
+      return;
+    }
+    try{
+      console.log('📦 Sending data to backend:', {
+        user_id: user_id,
+        house_no: houseNo,
+        village_or_town: villageName,
+        city_or_district: city,
+        pincode,
+        state,
+      });
+
+      const response = await axios.post(`${BASE_URL}/agent/address`,{
+        user_id:user_id,
+         house_no: houseNo,
+        village_or_town: villageName,
+        city_or_district: city,
+        pincode,
+        state,
+      });
+
+      console.log('Agent Address Registered: ', response.data,checked);
+      navigation.navigate('AgentSignUp3', { 
+        user_id,
+        mobile,
+        house_no: houseNo,
+        village_or_town: villageName,
+        city_or_district: city,
+        pincode,
+        state,
+        same_as_permanent: checked,
+      });
+
+    }catch(error:any){
+      console.log('Data was:',{
+        user_id: user_id,
+        house_no: houseNo,
+        village_or_town: villageName,
+        city_or_district: city,
+        pincode,
+        state,
+      });
+
+      console.error('Error in Address Registeration :', error);
+      setErrorMessage(error?.response?.data?.message || 'Failed to register. Please try again.');
+    }
+  };
+  const [checked, setChecked] = useState(false);
+
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 ,paddingTop:40,backgroundColor:'#fff'}}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      keyboardVerticalOffset={60}
-    >
-        <Pressable onPress={()=>{navigation.goBack()}} style={{marginHorizontal:24}}>
-         <ArrowBack/>
-        </Pressable>
+    <ScrollView>
+      <View style={styles.container}>
+      <Pressable onPress={()=>{navigation.goBack()}} style={{marginBottom:40}}>
+        <ArrowBack/>
+      </Pressable>
 
-        <Text style={styles.label0}>Permanent Address</Text>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView
-          contentContainerStyle={styles.scrollContainer}
-          keyboardShouldPersistTaps="handled"
-        >
-          <View style={styles.container}>
+      <Text style={styles.label0}>Permanent Address<Text style={{color:'#FF0000'}}>*</Text></Text>
+
+      <View style={styles.formContainer}>
           
-            <View style={styles.formGroup}>
-              <Text style={styles.label}>Enter House Number</Text>
-              <View style={styles.inputBox}>
+        <View style={styles.formGroup}>
+          <Text style={styles.label}>Enter House Number</Text>
+          <View style={styles.inputBox}>
           
-              <HomeIcon height={20} width={20} color={'#A0A0A0'}/> 
-              <TextInput
-                placeholder="Enter your house, flat, apartment no."
-                style={styles.input}
-                placeholderTextColor="#C0C0C0"
-                value={formData.houseNo}
-                onChangeText={text => setFormData({ ...formData, houseNo: text })}
+            <HomeIcon height={20} width={20} color={'#A0A0A0'}/> 
+            <TextInput
+              placeholder="Enter your house, flat, apartment no."
+              style={styles.input}
+              placeholderTextColor="#C0C0C0"
+              value={formData.houseNo}
+              onChangeText={text => setFormData({ ...formData, houseNo: text })}
               />
-            </View></View>
+          </View>
+        </View>
 
-            <View style={styles.formGroup}>
+        <View style={styles.formGroup}>
               <Text style={styles.label}>Enter Village</Text>
               <View style={styles.inputBox}>  
                <VillageIcon height={25} width={25} color={'#A0A0A0'}/> 
@@ -73,10 +132,10 @@ const AgentSignUp2 = ({ navigation }: any) => {
                 onChangeText={text => setFormData({ ...formData, villageName: text })}
               /></View>
 
-            </View>
+        </View>
 
 
-            <View style={styles.formGroup}>
+        <View style={styles.formGroup}>
               <Text style={styles.label}>Enter City/District Name</Text>
               <View style={styles.inputBox}>
               <VillageIcon height={25} width={25} fill='#A0A0A0'/> 
@@ -88,10 +147,10 @@ const AgentSignUp2 = ({ navigation }: any) => {
                 onChangeText={text => setFormData({ ...formData, city: text })}
               />
               </View>
-            </View>
+        </View>
 
 
-            <View style={styles.formGroup}>
+        <View style={styles.formGroup}>
               <Text style={styles.label}>Enter Pincode</Text>
               <View style={styles.inputBox}>
               <GpsIcon height={25} width={25} fill='#A0A0A0'/> 
@@ -110,63 +169,57 @@ const AgentSignUp2 = ({ navigation }: any) => {
                 maxLength={6}
               />
               </View>
-            </View>
+        </View>
 
 
-            <View style={styles.formGroup}>
-              <Text style={styles.label}>Enter State</Text>
-              <View style={styles.inputBox}>
-              <StateIcon height={25} width={25} />
-              <TextInput
-                placeholder="Choose your state"
-                style={styles.input}
-                placeholderTextColor="#C0C0C0"
-                value={formData.state}
-                onChangeText={text => setFormData({ ...formData, state: text })}
-              />
-              </View>
-            </View>
-            
+        <View style={styles.formGroup}>
+          <Text style={styles.label}>Enter State</Text>
+          <View style={styles.inputBox}>
+            <StateIcon height={25} width={25} />
+            <TextInput
+              placeholder="Choose your state"
+              style={styles.input}
+              placeholderTextColor="#C0C0C0"
+              value={formData.state}
+              onChangeText={text => setFormData({ ...formData, state: text })}
+            />
+          </View>
+        </View>
+
          <Pressable style={styles.checkboxRow} onPress={() => setChecked(!checked)}>
                          {checked?<View style={styles.checked}/>:<View style={styles.checkbox}/>}
                          <Text style={{fontSize: 12,fontWeight: '500',color: '#797979',}}>Use this as Correspondence Address</Text>
           </Pressable>
            <View style={{gap:16}}>
-            <TouchableOpacity style={styles.button} onPress={()=>{navigation.navigate('AgentSignUp3',{formData,checked})}}>
-              <Text style={styles.buttonText}>Continue</Text>
-            </TouchableOpacity>
-</View>
-           </View>
-
-
-        </ScrollView>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+            <LargeButton title="Continue"  onPress={handleRegisterAgent}/>
+            </View>
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollContainer: {
-    flexGrow: 1,
-    paddingTop:24,
-    padding: 24,
+  formContainer: {
+    gap: 24,
+   marginBottom: 24,
+   marginTop:24
   },
     label0: {
-    marginHorizontal:24,
+    marginHorizontal:32,
+    //marginHorizontal:24,
     color:'#797979',
-    width: 245,
-    paddingTop:40,
+    //width: 245,
+    paddingTop:20,
     fontSize:14,
-    alignItems: 'center', // applies if in a View
-     // ⚠️ Only works in newer RN versions or with View
+    alignItems: 'center', 
   },
   container: {
     flex: 1,
-  
-    gap:24
+    padding: 16,
+    backgroundColor:'#fff'
   },
   formGroup: {
-    
     gap:8
   },
   label: {
@@ -192,7 +245,7 @@ const styles = StyleSheet.create({
   },
   button: {
     height: 60,
-    backgroundColor: '#54219D',
+    backgroundColor: '#6929C4',
     borderRadius: 48,
     justifyContent: 'center',
     alignItems: 'center',
@@ -201,6 +254,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 16,
     color: '#FFFFFF',
+    fontWeight: '500',
   },
   footerText: {
     fontSize: 12,

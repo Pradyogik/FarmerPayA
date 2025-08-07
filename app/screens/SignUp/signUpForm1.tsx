@@ -7,43 +7,90 @@ import {
   StyleSheet,
   Dimensions,
   Pressable,
+  ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import ArrowBack from '../../assets/images/ArrowBack.svg';
 import HomeIcon from '../../assets/images/HomeIcon.svg';
 import RNPickerSelect from 'react-native-picker-select';
-const { width, height } = Dimensions.get('window');
+import axios from 'axios';
+import { BASE_URL } from '../../utils/api';
+//import { Alert } from 'react-native';
 
-const SignUpFormScreen1 = ({ navigation }: any) => {
+const { width, height } = Dimensions.get('window');
+const SignUpFormScreen1 = ({ navigation, route }: any) => {
+
+  const { user_id, mobile } = route.params;
+
   const [fullName, setFullName] = useState('');
   const [contact, setContact] = useState('');
-                  {/* Gender Drop Down */}
+  const [error, setError] = useState('');
+  {/* Gender Drop Down */}
   const genderOptions = [
-  { label: 'Male', value: 'male' },
-  { label: 'Female', value: 'female' },
-  { label: 'Other', value: 'other' },
-];
-const ageOptions = [
-  { label: '18-29', value: '18-29' },
-  { label: '29-55', value: '29-55' },
-  { label: '55+', value: '55+' },
-];
+    { label: 'Male', value: 'male' },
+    { label: 'Female', value: 'female' },
+    { label: 'Other', value: 'other' },
+  ];
+  const ageOptions = [
+    { label: '18-29', value: '18-29' },
+    { label: '29-55', value: '29-55' },
+    { label: '55+', value: '55+' },
+  ];
 
-// Replace fatherName with gender in your state:
-const [gender, setGender] = useState('');
-const [age, setAge] = useState('')
+  const [gender, setGender] = useState('');
+  const [age, setAge] = useState('');
+
+const handleRegisterFarmer = async () => {
+  try {
+    if (!fullName || !gender || !age || !contact) {
+      setError('');
+      setError('Please fill all fields.');
+      return;
+    }
+
+    const response = await axios.post(`${BASE_URL}/farmer/register`, {
+      user_id,  
+      full_name: fullName,
+      gender,
+      age,
+      mobile_number: contact, 
+      email: '' 
+    });
+
+    if (response.status === 201) {
+      console.log('Farmer registered successfully');
+
+      try {
+        const patchRes = await axios.patch(`${BASE_URL}/user/update-isRegistered/${user_id}`);
+        console.log('Status updated to REGISTERED:', patchRes.data);
+      } catch (patchError) {
+        console.error('Failed to update user status:', patchError);
+      }
+
+      navigation.navigate('SignUpForm2',{user_id });
+    }
+  } catch (error) {
+    const err = error as any;
+    console.error('Registration Error:', err?.response?.data || err?.message);
+    setError('');
+    setError(err?.response?.data?.message || 'Something went wrong');
+  }
+};
 
   return (
+    <ScrollView>
     <View style={styles.container}>
-              <Pressable onPress={()=>{navigation.goBack()}} style={{marginBottom:40}}>
-               <ArrowBack/>
-              </Pressable>
+      <Pressable onPress={()=>{navigation.goBack()}} style={{marginBottom:40}}>
+        <ArrowBack/>
+      </Pressable>
       <View style={styles.headerContainer}>
         <Text style={styles.heading}>Hello! Farmer</Text>
         <Text style={styles.subheading}>Create your account to continue</Text>
       </View>
+      {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
       <View style={styles.formContainer}>
+
         {/* Full Name */}
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Enter Full Name</Text>
@@ -60,66 +107,76 @@ const [age, setAge] = useState('')
         </View>
 
        
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Enter Contact Number</Text>
+          <View style={styles.inputBox}>
+            <Icon name="phone" size={20} color="#C0C0C0" />
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your mobile number"
+              placeholderTextColor="#C0C0C0"
+              keyboardType="phone-pad"
+              value={contact}
+              onChangeText={setContact}
+            />
+          </View>
+        </View> 
 
-
-
-
-...
-
-<View style={styles.inputGroup}>
-  <Text style={styles.label}>Select Gender</Text>
-  <View style={styles.pickerContainer}>
-    <RNPickerSelect
-      onValueChange={setGender}
-      value={gender}
-      placeholder={{ label: 'Select your Gender', value: null }}
-      items={genderOptions}
-      useNativeAndroidPickerStyle={false}
-      style={{
-        inputAndroid: styles.pickerInput,
-        inputIOS: styles.pickerInput,
-        placeholder: {
-          color: '#C0C0C0',
-        },
-      }}
-      Icon={() => (
-        <Icon
-          name="chevron-down"
-          size={20}
-          color="#C0C0C0"
-          style={styles.pickerIcon}
-        />
-      )}
-    />
-  </View>
-</View>
-<View style={styles.inputGroup}>
-  <Text style={styles.label}>Select Age</Text>
-  <View style={styles.pickerContainer}>
-    <RNPickerSelect
-      onValueChange={setAge}
-      value={age}
-      placeholder={{ label: 'Select your Age group', value: null }}
-      items={ageOptions}
-      useNativeAndroidPickerStyle={false}
-      style={{
-        inputAndroid: styles.pickerInput,
-        inputIOS: styles.pickerInput,
-        placeholder: {
-          color: '#C0C0C0',
-        },
-      }}
-      Icon={() => (
-        <Icon
-          name="chevron-down"
-          size={20}
-          color="#C0C0C0"
-          style={styles.pickerIcon}
-        />
-      )}
-    />
-  </View>
-</View>
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Select Gender</Text>
+          <View style={styles.pickerContainer}>
+            <RNPickerSelect
+              onValueChange={setGender}
+              value={gender}
+              placeholder={{ label: 'Select your Gender', value: null }}
+              items={genderOptions}
+              useNativeAndroidPickerStyle={false}
+              style={{
+                inputAndroid: styles.pickerInput,
+                inputIOS: styles.pickerInput,
+                placeholder: {
+                  color: '#C0C0C0',
+                },
+              }}
+              Icon={() => (
+                <Icon
+                  name="chevron-down"
+                  size={20}
+                  color="#C0C0C0"
+                  style={styles.pickerIcon}
+                />
+              )}
+            />
+          </View>
+        </View>
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Select Age</Text>
+          <View style={styles.pickerContainer}>
+            <RNPickerSelect
+              onValueChange={setAge}
+              value={age}
+              placeholder={{ label: 'Select your Age group', value: null }}
+              items={ageOptions}
+              useNativeAndroidPickerStyle={false}
+              style={{
+                inputAndroid: styles.pickerInput,
+                inputIOS: styles.pickerInput,
+                placeholder: {
+                  color: '#C0C0C0',
+                },
+              }}
+              Icon={() => (
+                <Icon
+                  name="chevron-down"
+                  size={20}
+                  color="#C0C0C0"
+                  style={styles.pickerIcon}
+                />
+              )}
+            />
+          </View>
+        </View>
+        {/*
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Enter House Number</Text>
           <View style={styles.inputBox}>
@@ -134,9 +191,7 @@ const [age, setAge] = useState('')
             />
           </View>
         </View> 
-
-        {/* 
-        
+      
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Enter Father’s Name</Text>
           <View style={styles.inputBox}>
@@ -151,11 +206,10 @@ const [age, setAge] = useState('')
           </View>
         </View>
         */}
-     </View>
-     
+      </View>
 
       {/* Continue Button */}
-      <TouchableOpacity style={styles.continueButton} onPress={()=>{navigation.navigate('SignUpForm2')}}>
+      <TouchableOpacity style={styles.continueButton} onPress={handleRegisterFarmer}>
         <Text style={styles.continueButtonText}>Continue</Text>
       </TouchableOpacity>
 
@@ -170,8 +224,8 @@ const [age, setAge] = useState('')
         </Text>
       </Text>
     </View>
+    </ScrollView>
   );
-
 };
 export default SignUpFormScreen1;
 
@@ -227,7 +281,7 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   continueButton: {
-    backgroundColor: '#54219D',
+    backgroundColor: '#6929C4',
     height: 60,
     borderRadius: 48,
     justifyContent: 'center',
@@ -269,5 +323,10 @@ pickerIcon: {
   right:16,
   top: 14,
 },
-
+  errorText: {
+    fontSize: 14,
+    color: '#D00416',
+    marginBottom: 8,
+    textAlign: 'left',
+  },
 });

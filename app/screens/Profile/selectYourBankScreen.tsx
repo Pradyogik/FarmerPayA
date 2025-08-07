@@ -97,7 +97,7 @@ const FindingYourBank = () => {
             fontWeight: '600', // Optional if font file already includes weight
             fontSize: 16,
             lineHeight: 24, // 1.2x the fontSize is a good rule of thumb
-            letterSpacing: -0.5, // Slightly tight spacing (adjust as needed)
+            //letterSpacing: 0, // Slightly tight spacing (adjust as needed)
             color: '#3F1976', // Set a color explicitly
           }}
         >
@@ -110,7 +110,7 @@ const FindingYourBank = () => {
             fontWeight: '500', // Optional if the font file is already weighted
             fontSize: 12,
             lineHeight: 20, // Usually 1.2x fontSize is solid (16 * 1.25)
-            letterSpacing: -0.5, // Negative letter spacing (adjust as needed)
+            letterSpacing: 0, // Negative letter spacing (adjust as needed)
             color: '#000', // Always specify color to avoid surprises
           }}
         >

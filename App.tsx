@@ -23,11 +23,22 @@ import AgentSignUp3 from './app/screens/SignUp/Agent/agentSignUp3';
 import UploadDocumentsScreen from './app/screens/SignUp/Agent/UploadDocumentsScreen';
 import AgentSignUp4 from './app/screens/SignUp/Agent/agentSignUp4.tsx';
 import BankApproval from './app/screens/SignUp/Agent/bankApproval.tsx';
+import CropPlantSelection from './app/screens/SignUp/Farmer/cropPlantSelection';
+import HorticulturePlantSelection from './app/screens/SignUp/Farmer/HorticulturePlantSelection';
+import SpicePlantSelection from './app/screens/SignUp/Farmer/SpicePLantSelection';
+import FruitPlantSelection from './app/screens/SignUp/Farmer/FruitPlantSelection';
+import VegetableSelectionScreen from './app/screens/SignUp/Farmer/VegetablePlantSelection.tsx';
 import QrScreen from './app/screens/scanner/qr.tsx';
 import selectYourBankScreen from './app/screens/Profile/selectYourBankScreen.tsx';
 import addCardDetails from './app/screens/Profile/addCardScreen.tsx';
 import paymentSettings2 from './app/screens/Profile/paymentSetting2.tsx';
 
+//import ProfileScreen from './app/screens/profileScreen.tsx';
+import ProfileScreenz from './app/screens/Profile/Profile.tsx';
+import HelpAndSupport from './app/screens/Profile/HelpandSupport'; 
+import AddNewQuery from './app/screens/Profile/AddNewQuery'; 
+import FAQ from './app/screens/Profile/FAQScreen'; 
+import PaymentsSettings from './app/screens/Profile/PaymentsSettings';
 
 const Stack = createNativeStackNavigator();
 
@@ -36,7 +47,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Splash" component={SplashScreen} />
-        <Stack.Screen name="Splash2" component={paymentSettings2} />
+        <Stack.Screen name="Splash2" component={SplashScreen2} />
         <Stack.Screen name="primaryRole" component={PrimaryRoleScreen} /> 
         <Stack.Screen name="secondaryRole" component={SecondaryRoleScreen} />
         <Stack.Screen name="selectLanguage" component={SelectLanguageScreen}/>
@@ -56,7 +67,17 @@ const App = () => {
         <Stack.Screen name="AgentSignUp4" component={AgentSignUp4}/>
         <Stack.Screen name="BankApproval" component={BankApproval}/>
         <Stack.Screen name="UploadDocumentsScreen" component={UploadDocumentsScreen}/>
+        <Stack.Screen name="CropPlantSelection" component={CropPlantSelection} />
+        <Stack.Screen name="HorticulturePlantSelection" component={HorticulturePlantSelection} />
+        <Stack.Screen name="SpicePlantSelection" component={SpicePlantSelection} />
+        <Stack.Screen name="FruitPlantSelection" component={FruitPlantSelection} />
+        <Stack.Screen name="VegetablePlantSelection" component={VegetableSelectionScreen} />
         <Stack.Screen name="QrScreen" component={QrScreen}/>
+        <Stack.Screen name="HelpAndSupport" component={HelpAndSupport} /> 
+        <Stack.Screen name="addNewQuery" component={AddNewQuery} /> 
+        <Stack.Screen name="PaymentsSettings" component={PaymentsSettings} /> 
+        
+        <Stack.Screen name="FAQ" component={FAQ} /> 
         <Stack.Screen name="SelectYourBank" component={selectYourBankScreen} />
         <Stack.Screen name="AddCard" component={addCardDetails} />
         <Stack.Screen name="PaymentSettings2" component={paymentSettings2} />
