@@ -15,6 +15,7 @@ import QrIcon from '../assets/images/HomeScreen/FarmerPayUPI/qr.svg';
 import RechargeIcon from '../assets/images/HomeScreen/FarmerPayUPI/recharge.svg';
 import ElectricityIcon from '../assets/images/HomeScreen/FarmerPayUPI/electricity.svg';
 import UpiIcon from '../assets/images/HomeScreen/FarmerPayUPI/upi.svg';
+
 const { width } = Dimensions.get('window');
 
 const UPI_OPTIONS = [
@@ -39,12 +40,18 @@ const FarmerPayUPI = () => {
           </TouchableOpacity>
         ))}
       </View>
-      <AdSlider />
+      
     </View>
+    
   );
 };
 
 export default FarmerPayUPI;
+
+const GAP = 6;
+const BOX_COUNT = 4;
+const BOX_SIZE = (width - 32 - GAP * (BOX_COUNT - 1)) / BOX_COUNT; 
+// 32 → paddingHorizontal (16 left + 16 right)
 
 const styles = StyleSheet.create({
   container: {
@@ -54,26 +61,21 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     flex: 1,
   },
-  heading: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginVertical: 8,
-    color: '#1F077A',
-    marginBottom: 12,
-  },
   optionsRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    gap: GAP,
   },
   optionBox: {
+    width: BOX_SIZE,
+    height: BOX_SIZE, // square
     backgroundColor: '#4506A00D',
-    borderColor: '#4506A026',
+    borderColor: '#D1BDED',
     borderWidth: 1,
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 6,
-    paddingHorizontal: 6,
+    gap: 6,
   },
   icon: {
     width: 40,
@@ -84,36 +86,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter-Medium',
     fontWeight: '500',
     fontSize: 12,
-    lineHeight: 12, // 100% of font size
-    letterSpacing: -0.64, // -4% of 16px
+    lineHeight: 12,
+    letterSpacing: -0.64,
     textAlign: 'center',
     color: '#4506A0',
     marginTop: 6,
-  },
-
-  banner: {
-    borderRadius: 14,
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    width: '100%',
-  },
-  bannerLeft: {
-    flex: 1,
-    paddingRight: 12,
-  },
-  bannerTitle: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  bannerSubtitle: {
-    color: '#ddd',
-    fontSize: 13,
-  },
-  bannerImage: {
-    width: 70,
-    height: 70,
   },
 });

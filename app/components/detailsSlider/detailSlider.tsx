@@ -4,45 +4,88 @@ import DetailCard from './detailCard';
 import textStyles from '../../utils/constants/textStyles';
 
 const AddDetailSlider = () => {
-  return (
-    <View >
-      <ImageBackground source={require('../../assets/images/Union.png')} style={styles.container}>
-      <Text style={[textStyles.title,{letterSpacing:-0.8}]}>Add your details</Text>
+  const details = [
+    {
+      title: "Add Your Farm",
+      subtitle: "Add farm details for advisory and schemes.",
+      buttonLabel: "Add Farm",
+      image: require('../../assets/images/farm.png'),
+      onPress: () => console.log('Add Farm'),
+    },
+    {
+      title: "Add Your Livestock",
+      subtitle: "Manage livestock for insurance & health benefits.",
+      buttonLabel: "Add Livestock",
+      image: require('../../assets/images/liveStock.png'),
+      onPress: () => console.log('Add Livestock'),
+    },
+  ];
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        <DetailCard
-          title="Add Your Farm"
-          subtitle="Add farm details for advisory and schemes."
-          buttonLabel="Add Farm"
-          image={require('../../assets/images/farm.png')}
-          onPress={() => console.log('Add Farm')}
-        />
-        <DetailCard
-          title="Add Your Livestock"
-          subtitle="Manage livestock for insurance & health benefits."
-          buttonLabel="Add Livestock"
-          image={require('../../assets/images/liveStock.png')}
-          onPress={() => console.log('Add Livestock')}
-        />
+  const isFirst = 0;
+  const isLast = details.length - 1;
+
+  return (
+    <View>
+      <ImageBackground 
+        source={require('../../assets/images/Union.png')} 
+        style={styles.container}
+      >
+        <View style ={styles.title}>
+          <Text style={textStyles.title}>Add your details</Text>
+        </View>
       
-      </ScrollView></ImageBackground>
+        <ScrollView 
+          horizontal 
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.cardRow}
+        >
+          {details.map((item, index) => (
+            <View
+              key={index}
+              style={[
+                styles.cardWrapper,
+                index === isFirst && styles.isFirstCard,
+                index === isLast && styles.isLastCard
+              ]}
+            >
+              <DetailCard
+                title={item.title}
+                subtitle={item.subtitle}
+                buttonLabel={item.buttonLabel}
+                image={item.image}
+                onPress={item.onPress}
+              />
+            </View>
+          ))}
+        </ScrollView>
+      </ImageBackground>
     </View>  
   );
 };
 
 const styles = StyleSheet.create({
+  title:{
+    paddingLeft:16,
+  },
   container: {
-
     flex: 1,
     paddingTop: 24,
-    paddingHorizontal: 16,
-    paddingBottom:48
+    paddingBottom: 48
   },
-  heading: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#1F077A',
-    marginBottom: 14,
+  cardRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: 6, 
+  },
+  cardWrapper: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  isFirstCard: {
+    paddingLeft: 16,
+  },
+  isLastCard: {
+    paddingRight: 16,
   },
 });
 

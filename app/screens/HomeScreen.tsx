@@ -21,6 +21,8 @@ import RecommendedVideoSlider from '../components/recommendedVideoCard.tsx/video
 import Services from '../components/ServiceCard';
 import { InView, IOScrollView } from 'react-native-intersection-observer';
 import CheckBalanceCard from '../components/Profile/checkBalance';
+import AdSlider from '../components/AdSlider/AdCardSlider';
+
 const { width } = Dimensions.get('window');
 const HomeScreen = ({navigation}:any) => {
   const [aiVisible, setAiVisible] = useState(false);
@@ -33,6 +35,7 @@ const HomeScreen = ({navigation}:any) => {
         <ProfileStatusBar />
         <Services />
         <FarmerPayUPI />
+        <AdSlider />
         
         <InView
           onChange={(inView) => {

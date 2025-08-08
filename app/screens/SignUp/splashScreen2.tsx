@@ -19,7 +19,7 @@ const { width, height } = Dimensions.get('window');
 const SplashScreen2 = ({navigation}:any) => {
   return (
     <View style={styles.background}> 
-      <StatusBar backgroundColor="#fff" barStyle="dark-content" />
+      
       <ImageBackground
         source={require('../../assets/images/aiBgSmall.png')}
         style={{height:200,marginTop:55,width:width}}

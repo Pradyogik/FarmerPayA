@@ -8,9 +8,9 @@ import SecondaryRoleScreen from './app/screens/SignUp/Farmer/SecondaryRole.tsx';
 import SelectLanguageScreen from './app/screens/SignUp/selectLanguageScreen';
 import LoginScreen from './app/screens/SignUp/LogInScreen';
 import LoginOtpVerification from './app/screens/SignUp/otpScreen';
-import SignUpScreen from './app/screens/SignUp/signUpScreen';
-import SignUpFormScreen1 from './app/screens/SignUp/signUpForm1';
-import SignUpFormScreen2 from './app/screens/SignUp/SignUpForm2';
+import SignUpScreen from './app/screens/SignUp/signUpScreen.tsx';
+import SignUpFormScreen1 from './app/screens/SignUp/Farmer/signUpForm1.tsx';
+import SignUpFormScreen2 from './app/screens/SignUp/Farmer/SignUpForm2.tsx';
 import PlantSelectionScreen from './app/screens/SignUp/Farmer/PlantSelectionScreen.tsx';
 import NotificationScreen from './app/screens/NotificationScreen.tsx'
 import AppNavigator from './app/navigation/AppNavigator';
@@ -33,6 +33,7 @@ import HelpAndSupport from './app/screens/Profile/HelpandSupport';
 import AddNewQuery from './app/screens/Profile/AddNewQuery'; 
 import FAQ from './app/screens/Profile/FAQScreen'; 
 import PaymentsSettings from './app/screens/Profile/PaymentsSettings';
+import YourAccount from './app/screens/Profile/YourAccount';
 
 const Stack = createNativeStackNavigator();
 
@@ -69,6 +70,8 @@ const App = () => {
         <Stack.Screen name="FAQ" component={FAQ} /> 
         <Stack.Screen name="SelectYourBank" component={selectYourBankScreen} />
         <Stack.Screen name="AddCard" component={addCardDetails} />
+        <Stack.Screen name="YourAccount" component={YourAccount} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

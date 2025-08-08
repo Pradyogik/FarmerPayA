@@ -15,10 +15,10 @@ import {
   Alert,
 } from 'react-native';
 
-import VillageIcon from '../../assets/images/VillageIcon.svg';
-import StateIcon from '../../assets/images/StateIcon.svg';
-import ArrowBack from '../../assets/images/ArrowBack.svg';
-import GpsIcon from '../../assets/images/GpsIcon.svg';
+import VillageIcon from '../../../assets/images/VillageIcon.svg';
+import StateIcon from '../../../assets/images/StateIcon.svg';
+import ArrowBack from '../../../assets/images/ArrowBack.svg';
+import GpsIcon from '../../../assets/images/GpsIcon.svg';
 
 const SignUpFormScreen2 = ({ navigation }: any) => {
   return (
