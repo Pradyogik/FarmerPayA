@@ -201,14 +201,14 @@ const selectYourBankScreen = ({ navigation }: any) => {
                 />
                 <BankCard
                   onPress={() => {
-                     setFindBank(!findBank);
+                    setFindBank(!findBank);
                   }}
                   BankIcon={PnbIcon}
                   bankName={'PNB Bank'}
                 />
                 <BankCard
                   onPress={() => {
-                     setFindBank(!findBank);
+                    setFindBank(!findBank);
                   }}
                   BankIcon={KotakIcon}
                   bankName={'Kotak Mahindra bank'}
@@ -217,7 +217,7 @@ const selectYourBankScreen = ({ navigation }: any) => {
               <View style={{ flexDirection: 'column', gap: '16' }}>
                 <BankCard
                   onPress={() => {
-                   setFindBank(!findBank);
+                    setFindBank(!findBank);
                   }}
                   BankIcon={IciciIcon}
                   bankName={'ICICI Bank'}
@@ -231,7 +231,7 @@ const selectYourBankScreen = ({ navigation }: any) => {
                 />
                 <BankCard
                   onPress={() => {
-                     setFindBank(!findBank);
+                    setFindBank(!findBank);
                   }}
                   BankIcon={HdfcIcon}
                   bankName={'HDFC Bank'}
@@ -340,7 +340,7 @@ const selectYourBankScreen = ({ navigation }: any) => {
             </View>
           </View>
         </ScrollView>
-        {findBank &&<FindingYourBank />}
+        {findBank && <FindingYourBank />}
       </View>
     </LinearGradient>
   );
@@ -349,6 +349,7 @@ const selectYourBankScreen = ({ navigation }: any) => {
 export default selectYourBankScreen;
 
 //default screen
+
 // import React from "react";
 // import { Dimensions, Text, View } from "react-native";
 // import LinearGradient from "react-native-linear-gradient";

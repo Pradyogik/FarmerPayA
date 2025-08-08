@@ -31,6 +31,7 @@ import VegetableSelectionScreen from './app/screens/SignUp/Farmer/VegetablePlant
 import QrScreen from './app/screens/scanner/qr.tsx';
 import selectYourBankScreen from './app/screens/Profile/selectYourBankScreen.tsx';
 import addCardDetails from './app/screens/Profile/addCardScreen.tsx';
+import paymentSettings2 from './app/screens/Profile/paymentSetting2.tsx';
 
 //import ProfileScreen from './app/screens/profileScreen.tsx';
 import ProfileScreenz from './app/screens/Profile/Profile.tsx';
@@ -79,6 +80,7 @@ const App = () => {
         <Stack.Screen name="FAQ" component={FAQ} /> 
         <Stack.Screen name="SelectYourBank" component={selectYourBankScreen} />
         <Stack.Screen name="AddCard" component={addCardDetails} />
+        <Stack.Screen name="PaymentSettings2" component={paymentSettings2} />
       </Stack.Navigator>
     </NavigationContainer>
   );

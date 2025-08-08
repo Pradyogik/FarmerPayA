@@ -28,7 +28,7 @@ const HomeScreen = ({navigation}:any) => {
 
     <View style={styles.rootContainer}>
       <IOScrollView style={styles.container}>
-        <HeaderGreeting />
+        <HeaderGreeting navigation={navigation} />
 
         <ProfileStatusBar />
         <Services />
