@@ -10,8 +10,8 @@ import {
   ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import ArrowBack from '../../assets/images/ArrowBack.svg';
-import HomeIcon from '../../assets/images/HomeIcon.svg';
+import ArrowBack from '../../../assets/images/ArrowBack.svg';
+import HomeIcon from '../../../assets/images/HomeIcon.svg';
 import RNPickerSelect from 'react-native-picker-select';
 import axios from 'axios';
 import { BASE_URL } from '../../utils/api';

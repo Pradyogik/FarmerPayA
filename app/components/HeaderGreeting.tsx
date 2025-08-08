@@ -29,7 +29,7 @@ const Header = ({ navigation }: any) => {
       <StatusBar
         translucent
         backgroundColor="transparent"
-        barStyle="light-content" // or "dark-content" based on your gradient
+        barStyle="dark-content" // or "dark-content" based on your gradient
       />
       <ImageBackground
         source={require('../assets/images/grid.png')} // use your image path
@@ -77,6 +77,7 @@ const Header = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   container: {
     width: width,
+    paddingTop: 12,
   },
   grid: {
     width: width,
@@ -132,7 +133,7 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
   },
   greeting: {
-    fontSize: 20,
+    fontSize: 16,
     color: 'white',
     fontFamily: 'Inter-SemiBold', // or just 'Inter' depending on how fonts are linked
     fontWeight: '600', // optional if font file is specific weight
@@ -143,7 +144,7 @@ const styles = StyleSheet.create({
   username: {
     fontFamily: 'Inter-SemiBold', // Must be correctly linked
     fontWeight: '600', // Optional if font file handles weight
-    fontSize: 28,
+    fontSize: 16,
     lineHeight:35,
     letterSpacing: 0,
     color: '#FFAB00',
@@ -155,7 +156,7 @@ const styles = StyleSheet.create({
     fontWeight: '300', // optional if font file handles it
     fontSize: 14,
     lineHeight: 16.72, // 16 * 1.17
-    letterSpacing: -0.64, // -4% of 16
+    letterSpacing: 0, // -4% of 16
     color: 'white',
   },
 });

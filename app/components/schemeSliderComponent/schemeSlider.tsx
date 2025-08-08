@@ -44,6 +44,17 @@ const SchemeSlider: React.FC = () => {
   const width = Dimensions.get('window').width;
   const isFirst = 0;
   const isLast = schemes.length - 1;
+
+  const renderDots = () => (
+    <View style={styles.dotsContainer}>
+      {schemes.map((_, i) => (
+        <View
+          key={i}
+          style={i === activeIndex ? styles.activeDot : styles.inactiveDot}
+        />
+      ))}
+    </View>
+  );
   return (
     <View style={styles.wrapper}>
       <Text style={[textStyles.title,{paddingLeft:16}]}>Find Schemes for you</Text>
@@ -67,7 +78,9 @@ const SchemeSlider: React.FC = () => {
             <SchemeCard {...item} activeIndex={index === activeIndex} />
           </View>
         )}
+        pagingEnabled
       />
+      {renderDots()}
     </View>
   );
 };
@@ -93,5 +106,24 @@ const styles = StyleSheet.create({
   },
   isLastSlider: {
     paddingRight: 16,
+  },
+  dotsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 8,
+  },
+  activeDot: {
+    width: 16,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#1F077A',
+    marginHorizontal: 4,
+  },
+  inactiveDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#C0C0C0',
+    marginHorizontal: 4,
   },
 });
