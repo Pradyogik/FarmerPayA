@@ -4,11 +4,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import HomeScreen from '../screens/HomeScreen';;
 import Language_unavailableScreen from '../components/emptyState/Language-unavailable';
-import AIChat from '../screens/AIChat/AIChat.tsx';
-import NotificationScreen from '../components/emptyState/no-notification.tsx';
-import NoInternetScreen from '../components/emptyState/no-internet';
-import Error_404Screen from '../components/emptyState/error-404';
-import DualAnimatedRows from '../components/animation.tsx';
 import AiWelcomeScreen from '../screens/AIChat/AiWelcomeScreen.tsx';
 
 // Icons (SVGs)
@@ -22,7 +17,6 @@ import UpiActiveIcon from '../assets/images/nav/active-upi.svg';
 import ProfileActive from '../assets/images/nav/active-profile.svg';
 import ProfileInactive from '../assets/images/nav/profile.svg';
 import QrScreen from '../screens/scanner/qr.tsx';
-import ProfileScreen from '../screens/Profile/Profile.tsx'; // Adjust path if needed
 import ProfileScreenz from '../screens/Profile/Profile.tsx';
 
 const { width, height } = Dimensions.get('window');

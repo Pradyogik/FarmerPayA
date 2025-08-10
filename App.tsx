@@ -32,13 +32,14 @@ import QrScreen from './app/screens/scanner/qr.tsx';
 import selectYourBankScreen from './app/screens/Profile/selectYourBankScreen.tsx';
 import addCardDetails from './app/screens/Profile/addCardScreen.tsx';
 import paymentSettings2 from './app/screens/Profile/paymentSetting2.tsx';
-
 //import ProfileScreen from './app/screens/profileScreen.tsx';
 import ProfileScreenz from './app/screens/Profile/Profile.tsx';
 import HelpAndSupport from './app/screens/Profile/HelpandSupport'; 
 import AddNewQuery from './app/screens/Profile/AddNewQuery'; 
 import FAQ from './app/screens/Profile/FAQScreen'; 
 import PaymentsSettings from './app/screens/Profile/PaymentsSettings';
+import HomeScreen from './app/screens/HomeScreen.tsx';
+import SecurityScreen from './app/screens/Profile/security.tsx';
 
 const Stack = createNativeStackNavigator();
 
@@ -47,7 +48,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Splash" component={SplashScreen} />
-        <Stack.Screen name="Splash2" component={SplashScreen2} />
+        <Stack.Screen name="Splash2" component={SecurityScreen} />
         <Stack.Screen name="primaryRole" component={PrimaryRoleScreen} /> 
         <Stack.Screen name="secondaryRole" component={SecondaryRoleScreen} />
         <Stack.Screen name="selectLanguage" component={SelectLanguageScreen}/>
@@ -76,7 +77,6 @@ const App = () => {
         <Stack.Screen name="HelpAndSupport" component={HelpAndSupport} /> 
         <Stack.Screen name="addNewQuery" component={AddNewQuery} /> 
         <Stack.Screen name="PaymentsSettings" component={PaymentsSettings} /> 
-        
         <Stack.Screen name="FAQ" component={FAQ} /> 
         <Stack.Screen name="SelectYourBank" component={selectYourBankScreen} />
         <Stack.Screen name="AddCard" component={addCardDetails} />

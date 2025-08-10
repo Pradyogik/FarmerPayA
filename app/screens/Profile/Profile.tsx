@@ -20,8 +20,6 @@ import AccountCardSlider from '../../components/Profile/addAccountSlider';
 const ProfileScreenz = ({ navigation }: any) => {
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#fff" barStyle="dark-content" />
-
       {/* Top Bar */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Profile</Text>
@@ -48,35 +46,41 @@ const ProfileScreenz = ({ navigation }: any) => {
           upiId="animesh@ybl"
           onManage={() => console.log('Manage bank account')}
         />
-        
-        <CheckBalanceCard/>
-        <AccountCardSlider navigation={navigation}/>
-        <SettingsCompo/>
-        <Text style={{fontSize:30, fontWeight:600,color:'#D1BDED'}}>Built with ❤️ for Indian Agriculture</Text>
+
+        <CheckBalanceCard />
+
+          <AccountCardSlider navigation={navigation} />
+
+
+        <SettingsCompo />
+
+        <Text style={{ fontSize: 30, fontWeight: 600, color: '#D1BDED' }}>
+          Built with ❤️ for Indian Agriculture
+        </Text>
       </ScrollView>
-              {/* Floating Icon */}
-              <TouchableOpacity
-                onPress={() => {
-                  console.log('Floating icon pressed');
-                }}
-                style={styles.floatingButton}
-              >
-                <Image
-                  source={require('../../assets/images/mic.png')}
-                  style={styles.floatingIcon}
-                />
-              </TouchableOpacity>
+      {/* Floating Icon */}
+      <TouchableOpacity
+        onPress={() => {
+          console.log('Floating icon pressed');
+        }}
+        style={styles.floatingButton}
+      >
+        <Image
+          source={require('../../assets/images/mic.png')}
+          style={styles.floatingIcon}
+        />
+      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection:'column',
+    flexDirection: 'column',
     backgroundColor: '#FFFFFF',
-    padding:16,
-    paddingTop:8
-    },
+    padding: 16,
+    paddingTop: StatusBar.currentHeight || 40,
+  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -95,14 +99,14 @@ const styles = StyleSheet.create({
     padding: 6,
   },
   scrollContainer: {
-    bottom:20,
-    paddingBottom:100,
-    paddingTop:25,
-    flexDirection:'column',
-    gap:20,
+    bottom: 20,
+    paddingBottom: 100,
+    paddingTop: 25,
+    flexDirection: 'column',
+    gap: 20,
     backgroundColor: '#FFFFFF', // <-- ensure scroll area is also white
   },
-    floatingButton: {
+  floatingButton: {
     position: 'absolute',
     width: 71,
     height: 71,
@@ -111,14 +115,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     bottom: 60, // Replace `top: 779` with bottom for responsive layout
-    right: 20,  // Replace `left: 356` with right for alignment on all screens
+    right: 20, // Replace `left: 356` with right for alignment on all screens
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 6,
     elevation: 5,
   },
-    floatingIcon: {
+  floatingIcon: {
     width: 32,
     height: 32,
     tintColor: '#fff',
