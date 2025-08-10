@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
   card: {
     width: CARD_WIDTH,
     aspectRatio:1,
-    borderRadius: 20,
+    borderRadius: 16,
     backgroundColor: '#F8F8F8',
     borderWidth: 2,
     borderColor: '#3D65CA',
@@ -157,11 +157,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#3D65CA',
   },
   langLabel: {
-    fontSize: 12,
+    fontSize: 16,
     color: '#3D65CA',
   },
   nativeText: {
-    fontSize: 12,
+    fontSize: 14,
     color: '#3D65CA',
   },
   selectedText: {
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
   },
   voiceText: {
     color: '#EEEEEE',
-    fontSize: 12,
+    fontSize: 16,
  
   },
   saveButton: {
@@ -198,7 +198,8 @@ const styles = StyleSheet.create({
   },
   saveText: {
     color: '#FFFFFF',
-    fontSize: 12,
+    fontSize: 16,
+    fontWeight: '400',
     alignSelf:'center'
   },
 });
