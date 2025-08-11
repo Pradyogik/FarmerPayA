@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
   card: {
     width: CARD_WIDTH,
     aspectRatio:1,
-    borderRadius: 20,
+    borderRadius: 16,
     backgroundColor: '#F8F8F8',
     borderWidth: 2,
     borderColor: '#326CF9',
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
   },
   voiceText: {
     color: '#EEEEEE',
-    fontSize: 12,
+    fontSize: 16,
  
   },
   saveButton: {
@@ -198,7 +198,8 @@ const styles = StyleSheet.create({
   },
   saveText: {
     color: '#FFFFFF',
-    fontSize: 12,
+    fontSize: 16,
+    fontWeight: '400',
     alignSelf:'center'
   },
 });

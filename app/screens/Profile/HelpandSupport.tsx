@@ -51,15 +51,15 @@ const categories = [
   { label: 'Loan EMI', Icon: LoanEMI },
 ];
 
-const HelpAndSupport = () => {
-  const navigation = useNavigation();
+const HelpAndSupport = ({navigation}:any) => {
+
 
   return (
     <LinearGradient
       colors={['#4506A0', '#6929C4']}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 0 }}
-      style={{ flex: 1 }}
+      style={{ flex: 1 ,paddingTop:StatusBar.currentHeight||40}}
     >
       <StatusBar backgroundColor="#fff" barStyle="dark-content" />
       

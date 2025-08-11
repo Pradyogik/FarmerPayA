@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   Dimensions,
   ScrollView,
+  StatusBar,
   Text,
   TouchableOpacity,
   View,
@@ -128,7 +129,7 @@ const selectYourBankScreen = ({ navigation }: any) => {
       colors={['#4506A0', '#6929C4']}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 0 }}
-      style={{ flex: 1 }}
+      style={{ flex: 1 ,    paddingTop: StatusBar.currentHeight || 40,}}
     >
       //header
       <View
