@@ -14,13 +14,13 @@ import {
   Image,
   //Alert,
 } from 'react-native';
-import VillageIcon from '../../assets/images/VillageIcon.svg';
-import StateIcon from '../../assets/images/StateIcon.svg';
-import ArrowBack from '../../assets/images/ArrowBack.svg';
-import HomeIcon from '../../assets/images/HomeIcon.svg';
-import GpsIcon from '../../assets/images/GpsIcon.svg';
+import VillageIcon from '../../../assets/images/VillageIcon.svg';
+import StateIcon from '../../../assets/images/StateIcon.svg';
+import ArrowBack from '../../../assets/images/ArrowBack.svg';
+import HomeIcon from '../../../assets/images/HomeIcon.svg';
+import GpsIcon from '../../../assets/images/GpsIcon.svg';
 import axios from 'axios';
-import { BASE_URL } from '../../utils/api';
+import { BASE_URL } from '../../../utils/api';
 
 const SignUpFormScreen2 = ({ navigation, route }: any) => {
 

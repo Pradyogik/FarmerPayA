@@ -14,7 +14,7 @@ import ArrowBack from '../../../assets/images/ArrowBack.svg';
 import HomeIcon from '../../../assets/images/HomeIcon.svg';
 import RNPickerSelect from 'react-native-picker-select';
 import axios from 'axios';
-import { BASE_URL } from '../../utils/api';
+import { BASE_URL } from '../../../utils/api';
 //import { Alert } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
