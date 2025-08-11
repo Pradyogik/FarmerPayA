@@ -34,7 +34,7 @@ const ProfileScreenz = ({ navigation }: any) => {
           role="Crop Farmer"
           location="Nashik"
           id="FX - 1000256"
-          onAddDetails={() => console.log('Navigate to add details')}
+          onAddDetails={() => {navigation.navigate('addMissingDetails1')}}
         />
 
         <LivelihoodScoreCard />
@@ -49,8 +49,7 @@ const ProfileScreenz = ({ navigation }: any) => {
 
         <CheckBalanceCard />
 
-          <AccountCardSlider navigation={navigation} />
-
+        <AccountCardSlider navigation={navigation} />
 
         <SettingsCompo />
 

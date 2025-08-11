@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter',         // Ensure Inter is linked/loaded
     fontWeight: '400',           // 400 = Regular
     fontStyle: 'normal',         // RN uses 'normal' or 'italic' only
-    fontSize: 16,
+    fontSize: 14,
     lineHeight: 24,
     letterSpacing: 0,
     textAlign: 'center',         // Same as CSS

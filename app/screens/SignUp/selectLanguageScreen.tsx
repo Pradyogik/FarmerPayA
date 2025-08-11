@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
   },
   voiceText: {
     color: '#EEEEEE',
-    fontSize: 16,
+    fontSize: 14,
  
   },
   saveButton: {
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
   },
   saveText: {
     color: '#FFFFFF',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '400',
     alignSelf:'center'
   },

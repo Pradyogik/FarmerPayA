@@ -10,7 +10,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 const { height, width } = Dimensions.get('window');
 import BackArrow from '../../assets/images/Profile/backArrow.svg';
-import InfoIcon from '../../assets/images/Profile/infoIcon.svg';
+import InfoIcon from '../../assets/images/Icons/threeDot.svg';
 import Frontarrow from '../../assets/images/Icons/frontArrow.svg';
 import { SvgProps } from 'react-native-svg';
 
@@ -63,6 +63,7 @@ const BankItem: React.FC<bankItemProps> = ({
                 fontSize: 12, // px in web translates to number in RN
                 lineHeight: 18, // in dp
                 letterSpacing: 0, // in dp
+                color:'#656f77'
                 // leadingTrim: NONE — not supported in RN
               }}
             >
@@ -89,7 +90,7 @@ const BankItem: React.FC<bankItemProps> = ({
 
 const SecurityScreen = () => {
   const [active, setActive] = useState(false);
-
+  const [fingerActive, setFingerActive]=useState(false);
   return (
     <LinearGradient
       colors={['#4506A0', '#6929C4']}
@@ -111,7 +112,7 @@ const SecurityScreen = () => {
         <View style={{ flexDirection: 'row', gap: 12 }}>
           <BackArrow />
           <Text style={{ fontSize: 16, color: '#fff' }}>
-            Select your Bank Account
+            Security
           </Text>
         </View>
         <InfoIcon />
@@ -184,7 +185,7 @@ const SecurityScreen = () => {
                 )}
               </View>
               <TouchableOpacity
-                onPress={() => setActive(!active)}
+                onPress={() => {setActive(!active);setFingerActive(!fingerActive)}}
                 style={{
                   borderRadius: 48,
                   backgroundColor: active ? '#1FC16B' : '#F2F2F7',
@@ -212,11 +213,10 @@ const SecurityScreen = () => {
           </View>
         </View>
       </View>
-{/* 
-      //this is finger print popup  */}
-      {/* <FingerPrintPopUp
-      visible={true}
-      onTryAgain={()=>{}}/> */}
+
+      <FingerPrintPopUp
+      visible={fingerActive}
+      onTryAgain={()=>{setFingerActive(!fingerActive)}}/>
     </LinearGradient>
   );
 };
@@ -235,7 +235,6 @@ const Styles = StyleSheet.create({
   box: {
     flexDirection: 'column',
     borderRadius: 32,
-    elevation: 4,
     padding: 16,
     backgroundColor: '#fff',
     borderWidth: 1,
