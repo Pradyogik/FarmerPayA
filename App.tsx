@@ -43,6 +43,10 @@ import SecurityScreen from './app/screens/Profile/security.tsx';
 import AdditionalDetailScreen from './app/screens/Profile/AddMissingValues/additionalDetails.tsx';
 import MaritalStatus from './app/screens/Profile/AddMissingValues/maritalstatus.tsx';
 import EducationStatus from './app/screens/Profile/AddMissingValues/education.tsx';
+import DomesticTravel from './app/screens/Profile/AddMissingValues/domesticTravels.tsx';
+import InternationalTravel from './app/screens/Profile/AddMissingValues/internationalTravel.tsx';
+import FamilyMembers from './app/screens/Profile/AddMissingValues/familyMembers.tsx';
+import PersonalIntrests from './app/screens/Profile/AddMissingValues/personalIntrests.tsx';
 
 const Stack = createNativeStackNavigator();
 
@@ -103,9 +107,21 @@ const App = () => {
         <Stack.Screen name="AddCard" component={addCardDetails} />
         <Stack.Screen name="PaymentSettings2" component={paymentSettings2} />
         <Stack.Screen name="SecurityScreen" component={SecurityScreen} />
-        <Stack.Screen name="addMissingDetails1" component={AdditionalDetailScreen}/>
-        <Stack.Screen name="maritalStatus" component={MaritalStatus}/>
-        <Stack.Screen name="educationStatus" component={EducationStatus}/>
+
+        {/* Add Missing Details */}
+        <Stack.Screen
+          name="addMissingDetails1"
+          component={AdditionalDetailScreen}
+        />
+        <Stack.Screen name="maritalStatus" component={MaritalStatus} />
+        <Stack.Screen name="educationStatus" component={EducationStatus} />
+        <Stack.Screen name="domesticTravel" component={DomesticTravel} />
+        <Stack.Screen
+          name="internationalTravel"
+          component={InternationalTravel}
+        />
+        <Stack.Screen name="familyMembers" component={FamilyMembers} />
+        <Stack.Screen name="personalInterests" component={PersonalIntrests}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

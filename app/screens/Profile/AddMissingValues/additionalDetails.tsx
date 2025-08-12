@@ -167,7 +167,14 @@ const AdditionalDetailScreen = ({ navigation }: any) => {
                   onPress={() => navigation.navigate('educationStatus')}
                   navigation={navigation}
                 />
-                <Item title="Family Members" subTitle="Who do you live with?" />
+                <Item
+                  title="Family Members"
+                  subTitle="Who do you live with?"
+                  onPress={() => {
+                    navigation.navigate('familyMembers');
+                  }}
+                  navigation={navigation}
+                />
               </>
             ) : null}
           </View>
@@ -211,14 +218,26 @@ const AdditionalDetailScreen = ({ navigation }: any) => {
                 <Item
                   title="Domestic Travel"
                   subTitle="How often do you travel domestically?"
+                  onPress={() => {
+                    navigation.navigate('domesticTravel');
+                  }}
+                  navigation={navigation}
                 />
                 <Item
                   title="International Travel"
                   subTitle="How often do you travel internationally?"
+                  onPress={() => {
+                    navigation.navigate('internationalTravel');
+                  }}
+                  navigation={navigation}
                 />
                 <Item
                   title="Personal Interests"
                   subTitle="Which of the following categories do you have an interest in?"
+                  onPress={() => {
+                    navigation.navigate('personalInterests');
+                  }}
+                  navigation={navigation}
                 />
               </>
             ) : null}
