@@ -47,83 +47,95 @@ import DomesticTravel from './app/screens/Profile/AddMissingValues/domesticTrave
 import InternationalTravel from './app/screens/Profile/AddMissingValues/internationalTravel.tsx';
 import FamilyMembers from './app/screens/Profile/AddMissingValues/familyMembers.tsx';
 import PersonalIntrests from './app/screens/Profile/AddMissingValues/personalIntrests.tsx';
+import { ActiveProvider } from './app/context/ActiveContext.tsx';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Splash" component={SplashScreen} />
-        <Stack.Screen name="Splash2" component={SplashScreen2} />
-        <Stack.Screen name="primaryRole" component={PrimaryRoleScreen} />
-        <Stack.Screen name="secondaryRole" component={SecondaryRoleScreen} />
-        <Stack.Screen name="selectLanguage" component={SelectLanguageScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="OtpScreen" component={LoginOtpVerification} />
-        <Stack.Screen name="SignUp" component={SignUpScreen} />
-        <Stack.Screen name="SignUpForm1" component={SignUpFormScreen1} />
-        <Stack.Screen name="SignUpForm2" component={SignUpFormScreen2} />
-        <Stack.Screen name="PlantSelection" component={PlantSelectionScreen} />
-        <Stack.Screen name="Main" component={AppNavigator} />
-        <Stack.Screen name="Notification" component={NotificationScreen} />
-        <Stack.Screen name="AiChat" component={AIChat} />
-        <Stack.Screen name="WhoAreU" component={WhoAreUScreen} />
-        <Stack.Screen name="AgentSignUp1" component={AgentSignUp1} />
-        <Stack.Screen name="AgentSignUp2" component={AgentSignUp2} />
-        <Stack.Screen name="AgentSignUp3" component={AgentSignUp3} />
-        <Stack.Screen name="AgentSignUp4" component={AgentSignUp4} />
-        <Stack.Screen name="BankApproval" component={BankApproval} />
-        <Stack.Screen
-          name="UploadDocumentsScreen"
-          component={UploadDocumentsScreen}
-        />
-        <Stack.Screen
-          name="CropPlantSelection"
-          component={CropPlantSelection}
-        />
-        <Stack.Screen
-          name="HorticulturePlantSelection"
-          component={HorticulturePlantSelection}
-        />
-        <Stack.Screen
-          name="SpicePlantSelection"
-          component={SpicePlantSelection}
-        />
-        <Stack.Screen
-          name="FruitPlantSelection"
-          component={FruitPlantSelection}
-        />
-        <Stack.Screen
-          name="VegetablePlantSelection"
-          component={VegetableSelectionScreen}
-        />
-        <Stack.Screen name="QrScreen" component={QrScreen} />
-        <Stack.Screen name="HelpAndSupport" component={HelpAndSupport} />
-        <Stack.Screen name="addNewQuery" component={AddNewQuery} />
-        <Stack.Screen name="PaymentsSettings" component={PaymentsSettings} />
-        <Stack.Screen name="FAQ" component={FAQ} />
-        <Stack.Screen name="SelectYourBank" component={selectYourBankScreen} />
-        <Stack.Screen name="AddCard" component={addCardDetails} />
-        <Stack.Screen name="PaymentSettings2" component={paymentSettings2} />
-        <Stack.Screen name="SecurityScreen" component={SecurityScreen} />
+    <ActiveProvider>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Splash" component={SplashScreen} />
+          <Stack.Screen name="Splash2" component={SplashScreen2} />
+          <Stack.Screen name="primaryRole" component={PrimaryRoleScreen} />
+          <Stack.Screen name="secondaryRole" component={SecondaryRoleScreen} />
+          <Stack.Screen
+            name="selectLanguage"
+            component={SelectLanguageScreen}
+          />
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="OtpScreen" component={LoginOtpVerification} />
+          <Stack.Screen name="SignUp" component={SignUpScreen} />
+          <Stack.Screen name="SignUpForm1" component={SignUpFormScreen1} />
+          <Stack.Screen name="SignUpForm2" component={SignUpFormScreen2} />
+          <Stack.Screen
+            name="PlantSelection"
+            component={PlantSelectionScreen}
+          />
+          <Stack.Screen name="Main" component={AppNavigator} />
+          <Stack.Screen name="Notification" component={NotificationScreen} />
+          <Stack.Screen name="AiChat" component={AIChat} />
+          <Stack.Screen name="WhoAreU" component={WhoAreUScreen} />
+          <Stack.Screen name="AgentSignUp1" component={AgentSignUp1} />
+          <Stack.Screen name="AgentSignUp2" component={AgentSignUp2} />
+          <Stack.Screen name="AgentSignUp3" component={AgentSignUp3} />
+          <Stack.Screen name="AgentSignUp4" component={AgentSignUp4} />
+          <Stack.Screen name="BankApproval" component={BankApproval} />
+          <Stack.Screen
+            name="UploadDocumentsScreen"
+            component={UploadDocumentsScreen}
+          />
+          <Stack.Screen
+            name="CropPlantSelection"
+            component={CropPlantSelection}
+          />
+          <Stack.Screen
+            name="HorticulturePlantSelection"
+            component={HorticulturePlantSelection}
+          />
+          <Stack.Screen
+            name="SpicePlantSelection"
+            component={SpicePlantSelection}
+          />
+          <Stack.Screen
+            name="FruitPlantSelection"
+            component={FruitPlantSelection}
+          />
+          <Stack.Screen
+            name="VegetablePlantSelection"
+            component={VegetableSelectionScreen}
+          />
+          <Stack.Screen name="QrScreen" component={QrScreen} />
+          <Stack.Screen name="HelpAndSupport" component={HelpAndSupport} />
+          <Stack.Screen name="addNewQuery" component={AddNewQuery} />
+          <Stack.Screen name="PaymentsSettings" component={PaymentsSettings} />
+          <Stack.Screen name="FAQ" component={FAQ} />
+          <Stack.Screen
+            name="SelectYourBank"
+            component={selectYourBankScreen}
+          />
+          <Stack.Screen name="AddCard" component={addCardDetails} />
+          <Stack.Screen name="PaymentSettings2" component={paymentSettings2} />
+          <Stack.Screen name="SecurityScreen" component={SecurityScreen} />
 
-        {/* Add Missing Details */}
-        <Stack.Screen
-          name="addMissingDetails1"
-          component={AdditionalDetailScreen}
-        />
-        <Stack.Screen name="maritalStatus" component={MaritalStatus} />
-        <Stack.Screen name="educationStatus" component={EducationStatus} />
-        <Stack.Screen name="domesticTravel" component={DomesticTravel} />
-        <Stack.Screen
-          name="internationalTravel"
-          component={InternationalTravel}
-        />
-        <Stack.Screen name="familyMembers" component={FamilyMembers} />
-        <Stack.Screen name="personalInterests" component={PersonalIntrests}/>
-      </Stack.Navigator>
-    </NavigationContainer>
+          {/* Add Missing Details */}
+          <Stack.Screen
+            name="addMissingDetails1"
+            component={AdditionalDetailScreen}
+          />
+          <Stack.Screen name="maritalStatus" component={MaritalStatus} />
+          <Stack.Screen name="educationStatus" component={EducationStatus} />
+          <Stack.Screen name="familyMembers" component={FamilyMembers} />
+          <Stack.Screen name="domesticTravel" component={DomesticTravel} />
+          <Stack.Screen
+            name="internationalTravel"
+            component={InternationalTravel}
+          />
+          <Stack.Screen name="personalInterests" component={PersonalIntrests} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </ActiveProvider>
   );
 };
 

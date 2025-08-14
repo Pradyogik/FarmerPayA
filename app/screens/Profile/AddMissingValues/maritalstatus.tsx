@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Alert,
   Dimensions,
   StatusBar,
   Text,
@@ -14,15 +15,17 @@ import InfoIcon from '../../../assets/images/Profile/infoIcon.svg';
 import CustomText from '../../../utils/customs/customText';
 import Radio from '../../../utils/customs/radioCompo';
 import CustomRadio from '../../../utils/customs/radioCompo';
-import { Navigation } from 'lucide-react-native';
 import LargeButton from '../../../utils/customs/LargeButton';
 import LargeWhiteButton from '../../../utils/customs/LargeWhiteButton';
-const MaritalStatus = ({navigation}:any) => {
+import { useActivez } from '../../../context/ActiveContext';
+const MaritalStatus = ({ navigation }: any) => {
+  const {activez ,setActivez} =useActivez();
   const [active, setActive] = useState({
     Single: false,
     Married: false,
     Other: false,
   });
+  const isAnySelected = Object.values(active).some(Boolean);
   return (
     <LinearGradient
       colors={['#4506A0', '#6929C4']}
@@ -93,8 +96,25 @@ const MaritalStatus = ({navigation}:any) => {
           </View>
         </View>
         <View>
-          <LargeButton title="Next" onPress={() => {navigation.navigate('educationStatus')}} width={width-60} />
-          <LargeWhiteButton title="Cancel" onPress={() => {navigation.goBack()}} width={width-60}/>
+          <LargeButton
+            title="Next"
+            onPress={() => {
+              if (!isAnySelected) {
+                Alert.alert('Please select at least one interest.');
+                return;
+              }
+              setActivez({...activez,maritalStatus:true});
+              navigation.replace('educationStatus');
+            }}
+            width={width - 60}
+          />
+          <LargeWhiteButton
+            title="Cancel"
+            onPress={() => {
+              navigation.goBack();
+            }}
+            width={width - 60}
+          />
         </View>
       </View>
     </LinearGradient>

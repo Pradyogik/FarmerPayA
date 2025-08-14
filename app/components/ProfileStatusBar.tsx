@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import CircularProgress from './circularBar';
 import LinearGradient from 'react-native-linear-gradient';
 import textStyles from '../utils/constants/textStyles';
+import CustomText from '../utils/customs/customText';
 
 const ProfileStatusCard = () => {
   const progress = 70;
@@ -10,7 +11,7 @@ const ProfileStatusCard = () => {
   return (
 
     <View style={styles.container}>
-      <Text style={textStyles.title}>Onboarding</Text>
+      <CustomText weight={600} lineHeight={24} color='#3F1976' style={{marginBottom:10}} >Onboarding</CustomText>
       
           <LinearGradient
             colors={['#E9EBFC', '#F5F4FA', '#E9EBFC']}
@@ -21,12 +22,12 @@ const ProfileStatusCard = () => {
           >
 
         <View style={styles.textSection}>
-          <Text style={styles.statusTitle}>
+          <CustomText weight={600} size={14} color='#1F077A'>
             Profile Status: {progress}% Complete
-          </Text>
-          <Text style={styles.description}>
+          </CustomText>
+          <CustomText weight={400} size={12} color='#1F077AB2'>
             Please complete your profile to gain full access to all services
-          </Text>
+          </CustomText>
         </View>
 
         <CircularProgress progress={progress} />
@@ -56,8 +57,8 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   textSection: {
-    flex: 1,
-    paddingRight: 12,
+    maxWidth: '80%',
+    paddingRight: 2,
   },
 statusTitle: {
   fontFamily: 'Inter-SemiBold',    // Must match internal font name from .ttf

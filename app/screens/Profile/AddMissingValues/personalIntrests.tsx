@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import {
+  Alert,
   Dimensions,
+  ScrollView,
   StatusBar,
   Text,
   TouchableOpacity,
@@ -18,15 +20,24 @@ import { Navigation } from 'lucide-react-native';
 import LargeButton from '../../../utils/customs/LargeButton';
 import LargeWhiteButton from '../../../utils/customs/LargeWhiteButton';
 import CustomCheckBox from '../../../utils/customs/checkBoxCompo';
+import { useActivez } from '../../../context/ActiveContext';
 const PersonalIntrests = ({ navigation }: any) => {
+  const {activez,setActivez}= useActivez();
   const [active, setActive] = useState({
-    Spouse: false,
-    Children: false,
-    ParentsInLaw: false,
-    Siblings: false,
-    freinds: false,
-    Others: false,
+    travel: false,
+    mobileElectronics: false,
+    fashionClothing: false,
+    onlineGaming: false,
+    entertainment: false,
+    food: false,
+    healthWellness: false,
+    dailyNeeds: false,
+    beautyPersonalCare: false,
+    wealthManagement: false,
+    learningEducation: false,
+    others: false,
   });
+  const isAnySelected = Object.values(active).some(Boolean);
   return (
     <LinearGradient
       colors={['#4506A0', '#6929C4']}
@@ -49,7 +60,9 @@ const PersonalIntrests = ({ navigation }: any) => {
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <BackArrow />
           </TouchableOpacity>
-          <Text style={{ fontSize: 16, color: '#fff' }}>Family Members</Text>
+          <Text style={{ fontSize: 16, color: '#fff' }}>
+            Personal Interests
+          </Text>
         </View>
       </View>
       <View
@@ -59,98 +72,166 @@ const PersonalIntrests = ({ navigation }: any) => {
           borderTopEndRadius: 32,
           backgroundColor: '#fff',
           padding: 16,
+          paddingBottom: 0,
           justifyContent: 'space-between',
         }}
       >
-        {/* <View>
-          <View style={{ gap: 24 }}>
-            <CustomText weight={500} size={12} lineHeight={18}>
-              This information will be used for personalizing your experience &
-              services across Farmerpay platform
-            </CustomText>
-            <CustomText weight={600} color="#1F077A">
-              Who do you live with?
-            </CustomText>
+        <ScrollView contentContainerStyle={{ gap: 32 }}>
+          <View>
+            <View style={{ gap: 24 }}>
+              <CustomText weight={500} size={12} lineHeight={18}>
+                This information will be used for personalizing your experience
+                & services across Farmerpay platform
+              </CustomText>
+              <CustomText weight={600} color="#1F077A">
+                Which of the following categories do you have an interest in?
+              </CustomText>
+            </View>
+            <View style={{ marginTop: 32, gap: 8 }}>
+              <CustomCheckBox
+                content={'Travel'}
+                active={active.travel}
+                onPress={() =>
+                  setActive({
+                    ...active,
+                    travel: !active.travel,
+                  })
+                }
+              />
+              <CustomCheckBox
+                content={'Mobile & Electronics'}
+                active={active.mobileElectronics}
+                onPress={() =>
+                  setActive({
+                    ...active,
+                    mobileElectronics: !active.mobileElectronics,
+                  })
+                }
+              />
+              <CustomCheckBox
+                content={'Fashion & Clothing'}
+                active={active.fashionClothing}
+                onPress={() =>
+                  setActive({
+                    ...active,
+                    fashionClothing: !active.fashionClothing,
+                  })
+                }
+              />
+              <CustomCheckBox
+                content={'Online Gaming '}
+                active={active.onlineGaming}
+                onPress={() =>
+                  setActive({
+                    ...active,
+                    onlineGaming: !active.onlineGaming,
+                  })
+                }
+              />
+              <CustomCheckBox
+                content={'Entertainment'}
+                active={active.entertainment}
+                onPress={() =>
+                  setActive({
+                    ...active,
+                    entertainment: !active.entertainment,
+                  })
+                }
+              />
+              <CustomCheckBox
+                content={'Food'}
+                active={active.food}
+                onPress={() =>
+                  setActive({
+                    ...active,
+                    food: !active.food,
+                  })
+                }
+              />
+              <CustomCheckBox
+                content={'Health & Wellness'}
+                active={active.healthWellness}
+                onPress={() =>
+                  setActive({
+                    ...active,
+                    healthWellness: !active.healthWellness,
+                  })
+                }
+              />
+              <CustomCheckBox
+                content={'Daily Needs'}
+                active={active.dailyNeeds}
+                onPress={() =>
+                  setActive({
+                    ...active,
+                    dailyNeeds: !active.dailyNeeds,
+                  })
+                }
+              />
+              <CustomCheckBox
+                content={'Beauty & Personal Care'}
+                active={active.beautyPersonalCare}
+                onPress={() =>
+                  setActive({
+                    ...active,
+                    beautyPersonalCare: !active.beautyPersonalCare,
+                  })
+                }
+              />
+              <CustomCheckBox
+                content={'Wealth Management'}
+                active={active.wealthManagement}
+                onPress={() =>
+                  setActive({
+                    ...active,
+                    wealthManagement: !active.wealthManagement,
+                  })
+                }
+              />
+              <CustomCheckBox
+                content={'Learning & Education'}
+                active={active.learningEducation}
+                onPress={() =>
+                  setActive({
+                    ...active,
+                    learningEducation: !active.learningEducation,
+                  })
+                }
+              />
+              <CustomCheckBox
+                content={'Others'}
+                active={active.others}
+                onPress={() =>
+                  setActive({
+                    ...active,
+                    others: !active.others,
+                  })
+                }
+              />
+            </View>
           </View>
-          <View style={{ marginTop: 32, gap: 8 }}>
-            <CustomCheckBox
-              content={'Spouse'}
-              active={active.Spouse}
-              onPress={() =>
-                setActive({
-                  ...active,
-                  Spouse: !active.Spouse,
-                })
-              }
+          <View>
+            <LargeButton
+              title="Complete"
+              onPress={() => {
+                if (!isAnySelected) {
+                  Alert.alert('Please select at least one interest.');
+                  return;
+                }
+                setActivez({...activez, personalIntrests: true});
+                navigation.replace('addMissingDetails1');
+              }}
+              width={width - 60}
             />
-            <CustomCheckBox
-              content={'Children'}
-              active={active.Children}
-              onPress={() =>
-                setActive({
-                  ...active,
-                  Children: !active.Children,
-                })
-              }
-            />
-            <CustomCheckBox
-              content={'Parents /In Laws'}
-              active={active.ParentsInLaw}
-              onPress={() =>
-                setActive({
-                  ...active,
-                  ParentsInLaw: !active.ParentsInLaw,
-                })
-              }
-            />
-            <CustomCheckBox
-              content={'Siblings'}
-              active={active.Siblings}
-              onPress={() =>
-                setActive({
-                  ...active,
-                  Siblings: !active.Siblings,
-                })
-              }
-            />
-            <CustomCheckBox
-              content={'Freinds'}
-              active={active.freinds}
-              onPress={() =>
-                setActive({
-                  ...active,
-                  freinds: !active.freinds,
-                })
-              }
-            />
-            <CustomCheckBox
-              content={'Others'}
-              active={active.Others}
-              onPress={() =>
-                setActive({
-                  ...active,
-                  Others: !active.Others,
-                })
-              }
+            <LargeWhiteButton
+              title="Cancel"
+              onPress={() => {
+                navigation.goBack();
+              }}
+              width={width - 60}
             />
           </View>
-        </View>
-        <View>
-          <LargeButton
-            title="Next"
-            onPress={() => {
-              navigation.navigate('domesticTravel');
-            }}
-            width={width - 60}
-          />
-          <LargeWhiteButton
-            title="Cancel"
-            onPress={() => {
-              navigation.goBack();
-            }}
-            width={width - 60}
-          />
-        </View> */}
+        </ScrollView>
       </View>
     </LinearGradient>
   );

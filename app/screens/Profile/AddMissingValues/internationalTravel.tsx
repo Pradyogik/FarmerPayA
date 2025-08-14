@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Alert,
   Dimensions,
   StatusBar,
   Text,
@@ -17,7 +18,9 @@ import CustomRadio from '../../../utils/customs/radioCompo';
 import { Navigation } from 'lucide-react-native';
 import LargeButton from '../../../utils/customs/LargeButton';
 import LargeWhiteButton from '../../../utils/customs/LargeWhiteButton';
+import { useActivez } from '../../../context/ActiveContext';
 const InternationalTravel = ({ navigation }: any) => {
+  const {activez,setActivez} =useActivez();
   const [active, setActive] = useState({
     threeMonth: false,
     sixMonth: false,
@@ -25,6 +28,7 @@ const InternationalTravel = ({ navigation }: any) => {
     fiveYear: false,
     IDoNotTravel: false,
   });
+  const isAnySelected = Object.values(active).some(Boolean);
   return (
     <LinearGradient
       colors={['#4506A0', '#6929C4']}
@@ -145,7 +149,12 @@ const InternationalTravel = ({ navigation }: any) => {
           <LargeButton
             title="Next"
             onPress={() => {
-              navigation.navigate('educationStatus');
+              if (!isAnySelected) {
+                Alert.alert('Please select from the options.');
+                return;
+              }
+              setActivez({...activez,internationalTravel:true});
+              navigation.replace('personalInterests');
             }}
             width={width - 60}
           />

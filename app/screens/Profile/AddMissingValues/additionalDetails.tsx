@@ -11,20 +11,31 @@ import DownArrow from '../../../assets/images/Icons/downArrow.svg';
 import { StatusBar } from 'react-native';
 import { ScrollView } from 'react-native';
 import { Navigation } from 'lucide-react-native';
+import MaritalStatus from './maritalstatus';
+import DomesticTravel from './domesticTravels';
+import ThreeDotsVertical from '../../../utils/customs/IconsCompo/ThreeDotVertical';
+import { useActivez } from '../../../context/ActiveContext';
+
 interface ItemsProps {
   title: string;
   subTitle: string;
   onPress?: () => void;
   navigation?: any;
+  active?: boolean;
 }
 const Item: React.FC<ItemsProps> = ({
   title,
   subTitle,
   onPress,
   navigation,
+  active = false,
 }) => {
+  const [isMenuOpen, setMenuOpen] = useState(false);
+
+  const toggleMenu = () => setMenuOpen(!isMenuOpen);
+
   return (
-    <View style={{ flexDirection: 'column' }}>
+    <View style={{ flexDirection: 'column', position: 'relative' }}>
       <View
         style={{
           flexDirection: 'row',
@@ -42,21 +53,30 @@ const Item: React.FC<ItemsProps> = ({
             </CustomText>
           </View>
         </View>
-        <TouchableOpacity
-          onPress={onPress}
-          style={{
-            borderColor: '#54219D',
-            borderRadius: 48,
-            paddingVertical: 6,
-            paddingHorizontal: 16,
-            borderWidth: 2,
-          }}
-        >
-          <CustomText color="#54219D" weight={500} size={12} lineHeight={18}>
-            Add
-          </CustomText>
-        </TouchableOpacity>
+
+        {active ? (
+          <TouchableOpacity onPress={toggleMenu}>
+            <ThreeDotsVertical color="#000" />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={onPress}
+            style={{
+              borderColor: '#54219D',
+              borderRadius: 48,
+              paddingVertical: 6,
+              paddingHorizontal: 16,
+              borderWidth: 2,
+            }}
+          >
+            <CustomText color="#54219D" weight={500} size={12} lineHeight={18}>
+              Add
+            </CustomText>
+          </TouchableOpacity>
+        )}
       </View>
+
+      {/* Divider */}
       <View
         style={{
           height: 1,
@@ -66,13 +86,55 @@ const Item: React.FC<ItemsProps> = ({
           marginVertical: 10,
         }}
       />
+
+      {/* Floating Menu */}
+      {isMenuOpen && (
+        <View
+          style={{
+            position: 'absolute',
+            top: 25,
+            right: 0,
+            backgroundColor: '#fff',
+            borderRadius: 8,
+            elevation: 3,
+            shadowColor: '#000',
+            shadowOpacity: 0.1,
+            shadowOffset: { width: 0, height: 2 },
+            shadowRadius: 4,
+            paddingVertical: 8,
+            width: 120,
+            zIndex: 1000,
+          }}
+        >
+          <TouchableOpacity
+            style={{ paddingVertical: 8, paddingHorizontal: 12 }}
+            onPress={() => {
+              setMenuOpen(false);
+              console.log('Edit pressed');
+            }}
+          >
+            <Text>Edit</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ paddingVertical: 8, paddingHorizontal: 12 }}
+            onPress={() => {
+              setMenuOpen(false);
+              console.log('Delete pressed');
+            }}
+          >
+            <Text>Delete</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
 
+
 const AdditionalDetailScreen = ({ navigation }: any) => {
   const [drop1, setDropActive1] = useState(true);
   const [drop2, setDropActive2] = useState(true);
+   const { activez, setActivez } = useActivez();
   return (
     <LinearGradient
       colors={['#4506A0', '#6929C4']}
@@ -92,10 +154,7 @@ const AdditionalDetailScreen = ({ navigation }: any) => {
         }}
       >
         <View style={{ flexDirection: 'row', gap: 12 }}>
-          <BackArrow />
-          {/* <Text style={{ fontSize: 16, color: '#fff' }}>
-            Additional Details
-          </Text> */}
+          <TouchableOpacity onPress={() => navigation.goBack()}><BackArrow /></TouchableOpacity>
           <CustomText color={'#fff'}>Additional Details</CustomText>
         </View>
         <InfoIcon />
@@ -105,6 +164,7 @@ const AdditionalDetailScreen = ({ navigation }: any) => {
           flex: 1,
           borderTopStartRadius: 32,
           borderTopEndRadius: 32,
+          paddingTop:8,
           backgroundColor: '#FDFDFD',
         }}
       >
@@ -158,13 +218,17 @@ const AdditionalDetailScreen = ({ navigation }: any) => {
                 <Item
                   title="Marital Status"
                   subTitle="What is your current marital status?"
-                  onPress={() => navigation.navigate('maritalStatus')}
+                  onPress={() =>
+                    navigation.navigate('maritalStatus')
+                  }
+                  active={activez.maritalStatus}
                   navigation={navigation}
                 />
                 <Item
                   title="Education "
                   subTitle="What is your highest education?"
                   onPress={() => navigation.navigate('educationStatus')}
+                  active={activez.education}
                   navigation={navigation}
                 />
                 <Item
@@ -173,6 +237,7 @@ const AdditionalDetailScreen = ({ navigation }: any) => {
                   onPress={() => {
                     navigation.navigate('familyMembers');
                   }}
+                  active={activez.familyMembers}
                   navigation={navigation}
                 />
               </>
@@ -221,6 +286,7 @@ const AdditionalDetailScreen = ({ navigation }: any) => {
                   onPress={() => {
                     navigation.navigate('domesticTravel');
                   }}
+                  active={activez.domesticTravel}
                   navigation={navigation}
                 />
                 <Item
@@ -229,6 +295,7 @@ const AdditionalDetailScreen = ({ navigation }: any) => {
                   onPress={() => {
                     navigation.navigate('internationalTravel');
                   }}
+                  active={activez.internationalTravel}
                   navigation={navigation}
                 />
                 <Item
@@ -237,6 +304,7 @@ const AdditionalDetailScreen = ({ navigation }: any) => {
                   onPress={() => {
                     navigation.navigate('personalInterests');
                   }}
+                  active={activez.personalIntrests}
                   navigation={navigation}
                 />
               </>

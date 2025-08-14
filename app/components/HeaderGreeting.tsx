@@ -16,8 +16,9 @@ import FarmerBigImg from '../assets/images/HomeScreen/Header/farmerBigImage.svg'
 import FarmerLogo from '../assets/images/HomeScreen/Header/farmerLogo.svg';
 import TranslatorIcon from '../assets/images/Icons/translatorIcon.svg';
 import NotificationIcon from '../assets/images/Icons/notificationIcon.svg';
+import CustomText from '../utils/customs/customText';
 const { width, height } = Dimensions.get('window');
-
+import ScanIcon from '../assets/images/Icons/scan.svg';
 const Header = ({ navigation }: any) => {
   return (
     <LinearGradient
@@ -37,9 +38,36 @@ const Header = ({ navigation }: any) => {
         style={styles.grid}
       >
         <View style={styles.topRow}>
-          <View style={styles.logoRow}>
-            <FarmerLogo />
-            <Text style={styles.appName}>Farme₹Pay</Text>
+          <View style={{ flexDirection: 'column', gap: 12 }}>
+            <View style={styles.logoRow}>
+              <FarmerLogo />
+              <CustomText
+                weight={500}
+                size={20}
+                lineHeight={30}
+                color="#ffffff"
+              >
+                Farme₹Pay
+              </CustomText>
+            </View>
+            <LinearGradient
+              colors={[
+                'rgba(239, 239, 239, 0.08)',
+                'rgba(255, 255, 255, 0.64)',
+              ]}
+              start={{ x: -0.385, y: 0 }} // -38.5% in decimal form
+              end={{ x: 1.0184, y: 0 }} // 101.84% in decimal form
+              style={{
+                borderRadius: 8,
+                padding: 4,
+                paddingHorizontal:6,
+                flexDirection: 'row',
+                gap: 4,
+                alignItems: 'center',
+              }}
+            ><ScanIcon/>
+              <CustomText weight={500} size={12} lineHeight={21} color='#fff'>My UPI ID: animesh@ybl</CustomText>
+            </LinearGradient>
           </View>
           <View style={styles.iconsRow}>
             <TouchableOpacity style={styles.iconButton}>
@@ -58,9 +86,15 @@ const Header = ({ navigation }: any) => {
 
         <View style={styles.contentRow}>
           <View style={styles.textBlock}>
-            <Text style={styles.greeting}>Namaste,</Text>
-            <Text style={styles.username}>Animesh 🙏</Text>
-            <Text style={styles.subText}>How can we help you today?</Text>
+            <CustomText weight={600} size={16} color="#ffffff">
+              Namaste,
+            </CustomText>
+            <CustomText weight={600} size={16} color="#FFAB00" lineHeight={18}>
+              Animesh 🙏
+            </CustomText>
+            <CustomText size={12} color="#ffffff">
+              How can we help you today?
+            </CustomText>
           </View>
           {/* <Image
             source={require('../assets/images/farmer.png')} // illustration image
@@ -88,10 +122,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    gap:4
   },
   logoRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 8,
   },
 
   appName: {
@@ -112,7 +148,7 @@ const styles = StyleSheet.create({
   },
   iconsRow: {
     flexDirection: 'row',
-    gap: 12,
+    gap: 8,
   },
   iconButton: {
     backgroundColor: 'white',
@@ -121,7 +157,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
   },
   contentRow: {
-    width: width,
+    width: width-32,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
@@ -144,7 +180,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter-SemiBold', // Must be correctly linked
     fontWeight: '600', // Optional if font file handles weight
     fontSize: 28,
-    lineHeight:35,
+    lineHeight: 35,
     letterSpacing: 0,
     color: '#FFAB00',
     marginVertical: 2,

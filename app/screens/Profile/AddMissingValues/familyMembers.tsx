@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Alert,
   Dimensions,
   StatusBar,
   Text,
@@ -18,7 +19,9 @@ import { Navigation } from 'lucide-react-native';
 import LargeButton from '../../../utils/customs/LargeButton';
 import LargeWhiteButton from '../../../utils/customs/LargeWhiteButton';
 import CustomCheckBox from '../../../utils/customs/checkBoxCompo';
+import { useActivez } from '../../../context/ActiveContext';
 const FamilyMembers = ({ navigation }: any) => {
+  const {activez,setActivez}=useActivez();
   const [active, setActive] = useState({
     Spouse: false,
     Children: false,
@@ -27,6 +30,7 @@ const FamilyMembers = ({ navigation }: any) => {
     freinds: false,
     Others: false,
   });
+  const isAnySelected = Object.values(active).some(Boolean);
   return (
     <LinearGradient
       colors={['#4506A0', '#6929C4']}
@@ -139,7 +143,12 @@ const FamilyMembers = ({ navigation }: any) => {
           <LargeButton
             title="Next"
             onPress={() => {
-              navigation.navigate('domesticTravel');
+              if (!isAnySelected) {
+                Alert.alert('Please select at least one option.');
+                return;
+              }
+              setActivez({...activez,familyMembers:true});
+              navigation.replace('domesticTravel');
             }}
             width={width - 60}
           />

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Alert,
   Dimensions,
   StatusBar,
   Text,
@@ -17,7 +18,9 @@ import CustomRadio from '../../../utils/customs/radioCompo';
 import { Navigation } from 'lucide-react-native';
 import LargeButton from '../../../utils/customs/LargeButton';
 import LargeWhiteButton from '../../../utils/customs/LargeWhiteButton';
+import { useActivez } from '../../../context/ActiveContext';
 const DomesticTravel = ({ navigation }: any) => {
+  const {activez, setActivez} = useActivez();
   const [active, setActive] = useState({
     EveryWeek: false,
     EveryMonth: false,
@@ -26,6 +29,7 @@ const DomesticTravel = ({ navigation }: any) => {
     Annualy: false,
     IDoNotTravel: false,
   });
+  const isAnySelected = Object.values(active).some(Boolean);
   return (
     <LinearGradient
       colors={['#4506A0', '#6929C4']}
@@ -162,7 +166,12 @@ const DomesticTravel = ({ navigation }: any) => {
           <LargeButton
             title="Next"
             onPress={() => {
-              navigation.navigate('internationalTravel');
+              if (!isAnySelected) {
+                Alert.alert('Please select from the option.');
+                return;
+              }
+              setActivez({...activez, domesticTravel: true});
+              navigation.replace('internationalTravel');
             }}
             width={width - 60}
           />

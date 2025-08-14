@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   formContainer: {
-    minHeight: 350,
+    minHeight: 370,
     justifyContent: 'space-between', 
     borderTopEndRadius: 30,
     borderTopStartRadius: 30,

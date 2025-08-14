@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Alert,
   Dimensions,
   StatusBar,
   Text,
@@ -17,15 +18,18 @@ import CustomRadio from '../../../utils/customs/radioCompo';
 import { Navigation } from 'lucide-react-native';
 import LargeButton from '../../../utils/customs/LargeButton';
 import LargeWhiteButton from '../../../utils/customs/LargeWhiteButton';
-const EducationStatus = ({navigation}:any) => {
+import { useActivez } from '../../../context/ActiveContext';
+const EducationStatus = ({ navigation }: any) => {
+  const {activez, setActivez} = useActivez();
   const [active, setActive] = useState({
     PostGraduate: false,
     Graduate: false,
     twelth: false,
-    tenth:false,
-    primary:false,
-    noFormal:false
+    tenth: false,
+    primary: false,
+    noFormal: false,
   });
+  const isAnySelected = Object.values(active).some(Boolean);
   return (
     <LinearGradient
       colors={['#4506A0', '#6929C4']}
@@ -68,7 +72,7 @@ const EducationStatus = ({navigation}:any) => {
               services across Farmerpay platform
             </CustomText>
             <CustomText weight={600} color="#1F077A">
-             What is your highest education?
+              What is your highest education?
             </CustomText>
           </View>
           <View style={{ marginTop: 32, gap: 8 }}>
@@ -76,51 +80,106 @@ const EducationStatus = ({navigation}:any) => {
               content={'Post Graduate'}
               active={active.PostGraduate}
               onPress={() =>
-                setActive({ PostGraduate: true, Graduate: false ,twelth:false,tenth:false,primary:false,noFormal:false}) 
+                setActive({
+                  PostGraduate: true,
+                  Graduate: false,
+                  twelth: false,
+                  tenth: false,
+                  primary: false,
+                  noFormal: false,
+                })
               }
             />
             <CustomRadio
               content={'Graduate'}
               active={active.Graduate}
               onPress={() =>
-                setActive({ PostGraduate: false, Graduate: true ,twelth:false,tenth:false,primary:false,noFormal:false}) 
+                setActive({
+                  PostGraduate: false,
+                  Graduate: true,
+                  twelth: false,
+                  tenth: false,
+                  primary: false,
+                  noFormal: false,
+                })
               }
             />
             <CustomRadio
               content={'12th Grade'}
               active={active.twelth}
               onPress={() =>
-                setActive({ PostGraduate: false, Graduate: false,twelth:true,tenth:false,primary:false,noFormal:false })
+                setActive({
+                  PostGraduate: false,
+                  Graduate: false,
+                  twelth: true,
+                  tenth: false,
+                  primary: false,
+                  noFormal: false,
+                })
               }
             />
-                        <CustomRadio
+            <CustomRadio
               content={'10th Grade'}
               active={active.tenth}
               onPress={() =>
-                setActive({ PostGraduate: false, Graduate: false,twelth:false,tenth:true,primary:false,noFormal:false })
+                setActive({
+                  PostGraduate: false,
+                  Graduate: false,
+                  twelth: false,
+                  tenth: true,
+                  primary: false,
+                  noFormal: false,
+                })
               }
             />
-                        <CustomRadio
+            <CustomRadio
               content={'Primary (10th Grade)'}
               active={active.primary}
               onPress={() =>
-                setActive({ PostGraduate: false, Graduate: false,twelth:false,tenth:false,primary:true,noFormal:false })
+                setActive({
+                  PostGraduate: false,
+                  Graduate: false,
+                  twelth: false,
+                  tenth: false,
+                  primary: true,
+                  noFormal: false,
+                })
               }
             />
-                        <CustomRadio
+            <CustomRadio
               content={'No Formal Schooling'}
               active={active.noFormal}
               onPress={() =>
-                setActive({ PostGraduate: false, Graduate: false,twelth:false,tenth:false,primary:false,noFormal:true })
+                setActive({
+                  PostGraduate: false,
+                  Graduate: false,
+                  twelth: false,
+                  tenth: false,
+                  primary: false,
+                  noFormal: true,
+                })
               }
             />
           </View>
         </View>
         <View>
-          <LargeButton title="Next" onPress={() => {}} width={width - 60} />
+          <LargeButton
+            title="Next"
+            onPress={() => {
+              if (!isAnySelected) {
+                Alert.alert('Please select from the Options.');
+                return;
+              }
+              setActivez({...activez,education:true});
+              navigation.replace('familyMembers');
+            }}
+            width={width - 60}
+          />
           <LargeWhiteButton
             title="Cancel"
-            onPress={() => {}}
+            onPress={() => {
+              navigation.goBack();
+            }}
             width={width - 60}
           />
         </View>

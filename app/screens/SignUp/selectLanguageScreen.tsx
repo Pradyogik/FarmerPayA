@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import VoiceInputErrorModal from '../../components/VoiceInputErrorModal';
+import CustomText from '../../utils/customs/customText';
 //import VoiceInputErrorModal from '../../components/VoiceInputErrorModal.tsx';
 
 
@@ -52,9 +53,9 @@ export default function SelectLanguageScreen({navigation}:any) {
         style={[styles.card, isSelected && styles.selectedCard]}
         onPress={() => setSelected(item.label)}
       >
-        <Text style={[styles.langLabel, isSelected && styles.selectedText]}>
+        <CustomText size={14} color={isSelected?'#ffffff':'#326CF9'} weight={600} lineHeight={21} >
           {item.label}
-        </Text>
+        </CustomText>
         <Text style={[styles.nativeText, isSelected && styles.selectedText]}>
           {item.native}
         </Text>
@@ -68,8 +69,8 @@ export default function SelectLanguageScreen({navigation}:any) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Select One Language</Text>
-      <Text style={styles.subtitle}>Tap or speak in your preferred language</Text>
+      <CustomText color='#3F1976' size={20} lineHeight={30} weight={700}>Select One Language</CustomText>
+      <CustomText weight={500} size={16} lineHeight={24}>Tap or speak in your preferred language</CustomText>
 
       <FlatList
         data={languages}
@@ -168,12 +169,10 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
   footer: {
-  
     bottom: 32,
-    width: '100%',
+    width: width-32,
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    gap:'10%'
+    justifyContent: 'space-between',
   },
   voiceButton: {
 

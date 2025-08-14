@@ -27,7 +27,7 @@ const CustomText: React.FC<CustomTextProps> = ({
   size = 16,
   color = '#000',
   letterSpacing = 0,
-  lineHeight = size,
+  lineHeight,
   style,
   ...rest
 }) => {
@@ -42,10 +42,10 @@ const CustomText: React.FC<CustomTextProps> = ({
       style={[
         {
           fontFamily: resolvedFont,
-          fontSize: size,
+          fontSize:size, // 🔹 responsive font size
           color,
           letterSpacing,
-          lineHeight,
+          lineHeight: lineHeight,
         },
         style,
       ]}
