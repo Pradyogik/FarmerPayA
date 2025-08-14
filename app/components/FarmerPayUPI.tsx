@@ -27,7 +27,7 @@ const UPI_OPTIONS = [
 const FarmerPayUPI = () => {
   return (
     <View style={styles.container}>
-      <Text style={textStyles.title}>FarmerPay UPI</Text>
+      <Text style={[textStyles.title, {paddingLeft:16}]}>FarmerPay UPI</Text>
 
       <View style={styles.optionsRow}>
         {UPI_OPTIONS.map((item, index) => (
@@ -48,7 +48,6 @@ export default FarmerPayUPI;
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 16,
     paddingVertical: 20,
     backgroundColor: '#fff',
     marginBottom: 24,
@@ -64,6 +63,7 @@ const styles = StyleSheet.create({
   optionsRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingHorizontal:16
   },
   optionBox: {
     backgroundColor: '#4506A00D',

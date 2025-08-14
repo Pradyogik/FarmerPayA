@@ -41,6 +41,7 @@ const AdSlider = () => {
   return (
     <View>
       <FlatList
+      contentContainerStyle={{paddingHorizontal:16,gap:16, justifyContent:'center', alignItems:'center'}}
         data={ads}
         ref={flatRef}
         horizontal

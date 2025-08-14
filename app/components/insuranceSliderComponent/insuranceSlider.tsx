@@ -76,9 +76,10 @@ const InsuranceSlider: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={[textStyles.title,{letterSpacing:-0.8}]}>Featured Insurances</Text>
+      <Text style={[textStyles.title,{letterSpacing:-0.8, paddingHorizontal:16}]}>Featured Insurances</Text>
 
       <FlatList
+      contentContainerStyle={{paddingHorizontal:16}}
         data={grouped}
         horizontal
         pagingEnabled
@@ -111,10 +112,8 @@ export default InsuranceSlider;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 6,
     marginTop: 24,
     marginBottom: 16,
-    paddingHorizontal:16
   },
   title: {
     fontSize: 16,

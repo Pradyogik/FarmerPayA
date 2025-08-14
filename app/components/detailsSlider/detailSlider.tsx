@@ -7,9 +7,9 @@ const AddDetailSlider = () => {
   return (
     <View >
       <ImageBackground source={require('../../assets/images/Union.png')} style={styles.container}>
-      <Text style={[textStyles.title,{letterSpacing:-0.8}]}>Add your details</Text>
+      <Text style={[textStyles.title,{letterSpacing:-0.8 , paddingLeft:16}]}>Add your details</Text>
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{paddingHorizontal:16}}>
         <DetailCard
           title="Add Your Farm"
           subtitle="Add farm details for advisory and schemes."
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 
     flex: 1,
     paddingTop: 24,
-    paddingHorizontal: 16,
+
     paddingBottom:48
   },
   heading: {

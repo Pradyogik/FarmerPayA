@@ -49,6 +49,7 @@ const SchemeSlider: React.FC = () => {
       <Text style={[textStyles.title,{paddingLeft:16}]}>Find Schemes for you</Text>
 
       <FlatList
+      contentContainerStyle={{gap:12}}
         data={schemes}
         keyExtractor={(_, index) => index.toString()}
         horizontal

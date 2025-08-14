@@ -22,7 +22,8 @@ const SchemeCard: React.FC<Props> = ({
 }) => {
   return (
     <View
-      style={activeIndex ? [styles.card, { width: width - 20 }] : styles.card}
+      // style={activeIndex ? [styles.card, { width: width - 40 }] : styles.card}
+      style={styles.card}
     >
       <View style={styles.cardContent}>
         <View style={{ height: '30%', width: '70%' }}>
@@ -68,7 +69,7 @@ export default SchemeCard;
 
 const styles = StyleSheet.create({
   card: {
-    width: width - 44,
+    width: (width-44),
     aspectRatio: 1.62,
     borderRadius: 16,
     backgroundColor: '#1F3E29',
