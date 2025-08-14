@@ -70,13 +70,13 @@ const textStyles = StyleSheet.create<TextStyles>({
     color: '#e63946',
   },
   title: {
-    fontFamily: 'Inter-Bold', 
+    fontFamily: 'Inter-SemiBold', 
     fontSize: 16,
     lineHeight: 16, // 100% of 20px
     letterSpacing: 0, // 0% = 0px
     color: '#1F077A',
     marginVertical: 8,
-    marginBottom: 12,
+    marginBottom: 20,
   },
 });
 
