@@ -41,7 +41,8 @@ import PaymentsSettings from './app/screens/Profile/PaymentsSettings';
 import YourAccount from './app/screens/Profile/YourAccount';
 import HomeScreen from './app/screens/HomeScreen.tsx';
 import SecurityScreen from './app/screens/Profile/security.tsx';
-
+import EditProfile from './app/screens/Profile/EditProfile';
+import UPISettings from './app/screens/Profile/UPISettings';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -49,7 +50,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Splash" component={SplashScreen} />
-        <Stack.Screen name="Splash2" component={SecurityScreen} />
+        <Stack.Screen name="Splash2" component={SplashScreen2} />
         <Stack.Screen name="primaryRole" component={PrimaryRoleScreen} /> 
         <Stack.Screen name="secondaryRole" component={SecondaryRoleScreen} />
         <Stack.Screen name="selectLanguage" component={SelectLanguageScreen}/>
@@ -83,7 +84,8 @@ const App = () => {
         <Stack.Screen name="AddCard" component={addCardDetails} />
         <Stack.Screen name="PaymentSettings2" component={paymentSettings2} />
         <Stack.Screen name="YourAccount" component={YourAccount} />
-
+        <Stack.Screen name="EditProfile" component={EditProfile} />
+        <Stack.Screen name="UPISettings" component={UPISettings} />
       </Stack.Navigator>
     </NavigationContainer>
   );

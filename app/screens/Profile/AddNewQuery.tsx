@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  StatusBar
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
@@ -24,7 +25,7 @@ const AddNewQuery = () => {
       colors={['#4506A0', '#6929C4']}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 0 }}
-      style={{ flex: 1 }}
+      style={{ flex: 1,paddingTop: StatusBar.currentHeight || 40, }}
     >
       {/* Gradient Header */}
       <View
@@ -94,7 +95,7 @@ const tileWidth = (screenWidth - 2 * gridPadding - spacing * (columns - 1)) / co
 const styles = StyleSheet.create({
   headerText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '500',
   },
   contentContainer: {

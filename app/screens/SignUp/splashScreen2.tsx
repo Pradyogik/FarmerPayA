@@ -1,15 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   ImageBackground,
-  StatusBar,
-  Image,
-  TouchableOpacity,
   Dimensions,
-  ScrollView,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import DualAnimatedRows3 from '../../components/animation3';
 import AutoScrollingText from '../../components/autoScrollingText';
 import LargeButton from '../../utils/customs/LargeButton';
@@ -17,6 +13,20 @@ import LargeButton from '../../utils/customs/LargeButton';
 const { width, height } = Dimensions.get('window');
 
 const SplashScreen2 = ({navigation}:any) => {
+  useEffect(() => {
+    const checkLogin = async () => {
+      try {
+        const savedUserId = await AsyncStorage.getItem('user_id');
+        if (savedUserId) {
+          navigation.replace('Main', { user_id: savedUserId });
+        }
+      } catch (err) {
+        console.log('Error reading user_id:', err);
+      }
+    };
+
+    checkLogin();
+  }, []);
   return (
     <View style={styles.background}> 
       

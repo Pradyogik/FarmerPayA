@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  StatusBar
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
@@ -22,6 +23,8 @@ import PhonePeIcon from '../../assets/images/Profile/phonepe.svg';
 import GPayIcon from '../../assets/images/Profile/gpay.svg';
 import BHIMIcon from '../../assets/images/Profile/bhim.svg';
 import PaytmIcon from '../../assets/images/Profile/paytm.svg';
+import LargeButton from '../../utils/customs/LargeButton';
+import colors from '../../assets/colors.tsx';
 
 const { height } = Dimensions.get('window');
 
@@ -33,6 +36,10 @@ const PaymentsSettings = () => {
   const toggleMenu = () => setIsVisible(!isVisible);
   const toggleActivate = () => setIsActivate(!isActivate);
 
+  const handleActivate = () => {
+
+  };
+
   const copyToClipboard = () => {
     Clipboard.setString('123');
     //Alert.alert('Copied', 'Farmer ID copied to clipboard.');
@@ -43,10 +50,9 @@ const PaymentsSettings = () => {
       colors={['#4506A0', '#6929C4']}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 0 }}
-      style={{ flex: 1 }}
+      style={{ flex: 1 ,paddingTop: StatusBar.currentHeight || 40, }}
     >
       {/* Gradient Header */}
-
       <View
         style={{
           flexDirection: 'row',
@@ -192,16 +198,16 @@ const PaymentsSettings = () => {
 
           
           <LinearGradient
-            colors={['#1E31CA', 'rgba(30, 49, 202, 0.68)', 'rgba(30, 49, 202, 0)']}
+            colors={['#326CF9', '#97EAD2', 'rgba(30, 49, 202, 0)']}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={styles.gradientLine}
           />
-
+          <View style={styles.activateButton}>
+            <LargeButton title="Activate Now"  onPress={handleActivate}/>
+            </View>
           
-          <TouchableOpacity style={styles.activateButton}>
-            <Text style={styles.buttonText}>Activate Now</Text>
-          </TouchableOpacity>
+          
         </View>              
         </Modal>
 
@@ -431,12 +437,15 @@ addBank:{
   },
   upiLabel: {
     fontSize: 14,
-    color: '#666',
+    color:colors.neutral[700],
+    fontWeight: '400',
+    fontFamily: 'Inter-Regular',
   },
   upiValue: {
     fontSize: 14,
-    fontWeight: 'bold',
-    color: '#1A1A1A',
+    fontWeight: '400',
+    fontFamily: 'Inter-Regular',
+    color: colors.neutral[800],
   },
   gradientLine: {
     height: 4,
@@ -445,11 +454,7 @@ addBank:{
     marginBottom: 24,
   },
   activateButton: {
-    backgroundColor: '#6A0DAD',
-    borderRadius: 32,
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    width: '90%',
+    
     alignItems: 'center',
   },
   buttonText: {

@@ -17,6 +17,7 @@ const MediumButton: React.FC<ButtonProps> = ({ title, onPress }) => {
 const styles = StyleSheet.create({
   button: {
     height: 48,
+    width:290,
     backgroundColor: '#6929C4',
     borderRadius: 48,
     minWidth: '100%',

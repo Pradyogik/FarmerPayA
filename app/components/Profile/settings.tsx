@@ -15,7 +15,7 @@ const SettingsCompo=()=>{
              <Text style={{color:'#252525' , fontSize:16, fontWeight:600}}>Settings</Text>
              <View style={{flexDirection:'row',gap:12, alignItems:'center' }}><TouchableOpacity onPress={() => navigation.navigate('YourAccount')}><Avatar/></TouchableOpacity><Text style={{fontSize:14 , color:'#252525', fontWeight:500, lineHeight:28}}>Your Account</Text></View>
               <View style={{flexDirection:'row',gap:12, alignItems:'center' }}><TouchableOpacity onPress={() => navigation.navigate('HelpAndSupport')} ><QuestionIcon/></TouchableOpacity><Text style={{fontSize:14 , color:'#252525', fontWeight:500, lineHeight:28}}>Help and Support</Text></View>
-              <View style={{flexDirection:'row',gap:12, alignItems:'center' }}><TouchableOpacity><UpiIcon/></TouchableOpacity><Text style={{fontSize:14 , color:'#252525', fontWeight:500, lineHeight:28}}>UPI Settings</Text></View>
+              <View style={{flexDirection:'row',gap:12, alignItems:'center' }}><TouchableOpacity  onPress={() => navigation.navigate('UPISettings')}><UpiIcon/></TouchableOpacity><Text style={{fontSize:14 , color:'#252525', fontWeight:500, lineHeight:28}}>UPI Settings</Text></View>
               <View style={{flexDirection:'row',gap:12, alignItems:'center' }}><TouchableOpacity><SecurityIcon/></TouchableOpacity><Text style={{fontSize:14 , color:'#252525', fontWeight:500, lineHeight:28}}>Security</Text></View>
               <View style={{flexDirection:'row',gap:12, alignItems:'center' }}><TouchableOpacity><LockIcon/></TouchableOpacity><Text style={{fontSize:14 , color:'#252525', fontWeight:500, lineHeight:28}}>Report Fraud</Text></View>  
              
