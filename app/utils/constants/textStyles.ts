@@ -72,10 +72,10 @@ const textStyles = StyleSheet.create<TextStyles>({
   title: {
     fontFamily: 'Inter-Bold', 
     fontSize: 16,
-    lineHeight: 16, // 100% of 20px
+    lineHeight: 20, // 100% of 20px
     letterSpacing: 0, // 0% = 0px
     color: '#1F077A',
-    marginVertical: 8,
+    marginVertical: 6,
     marginBottom: 12,
   },
 });

@@ -82,9 +82,9 @@ const styles = StyleSheet.create({
   },
   label: {
     fontFamily: 'Inter-Medium',
-    fontWeight: '500',
-    fontSize: 12,
-    lineHeight: 12, // 100% of font size
+    fontWeight: '400',
+    fontSize: 14,
+    lineHeight: 20, // 100% of font size
     letterSpacing: -0.64, // -4% of 16px
     textAlign: 'center',
     color: '#4506A0',

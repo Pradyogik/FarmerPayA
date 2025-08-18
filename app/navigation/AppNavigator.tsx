@@ -1,122 +1,160 @@
-import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, StyleSheet, TouchableOpacity, Dimensions, Animated, Platform } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import HomeScreen from '../screens/HomeScreen';;
-import Language_unavailableScreen from '../components/emptyState/Language-unavailable';
-import AIChat from '../screens/AIChat/AIChat.tsx';
-import NotificationScreen from '../components/emptyState/no-notification.tsx';
-import NoInternetScreen from '../components/emptyState/no-internet';
-import Error_404Screen from '../components/emptyState/error-404';
-import DualAnimatedRows from '../components/animation.tsx';
+import HomeScreen from '../screens/HomeScreen';
 import AiWelcomeScreen from '../screens/AIChat/AiWelcomeScreen.tsx';
-
-// Icons (SVGs)
-import HomeActive from '../assets/images/nav/active-home.svg';
-import HomeInactive from '../assets/images/nav/home.svg';
-import AiActive from '../assets/images/nav/active-ai.svg';
-import AiInactive from '../assets/images/nav/ai.svg';
-import ScanIcon from '../assets/images/nav/scan.svg';
-import UpiIcon from '../assets/images/nav/upi.svg';
-import UpiActiveIcon from '../assets/images/nav/active-upi.svg';
-import ProfileActive from '../assets/images/nav/active-profile.svg';
-import ProfileInactive from '../assets/images/nav/profile.svg';
+import Language_unavailableScreen from '../components/emptyState/Language-unavailable';
 import QrScreen from '../screens/scanner/qr.tsx';
-import ProfileScreen from '../screens/Profile/Profile.tsx'; // Adjust path if needed
-import ProfileScreenz from '../screens/Profile/Profile.tsx';
+import ProfileScreen from '../screens/Profile/Profile.tsx';
 
-const { width, height } = Dimensions.get('window');
+// ✅ Your TSX icon components (adjust paths if yours are under /assets/Navbar)
+import HomeIcon from '../assets/Navbar/home';
+import AiIcon from '../assets/Navbar/ai';
+import RupeeIcon from '../assets/Navbar/rupee';
+import ProfileIcon from '../assets/Navbar/profile';
+
+
+// If you also have a TSX scanner icon, import it and replace the SVG below
+import ScanIcon from '../assets/images/nav/scan.svg';
+
+const { width } = Dimensions.get('window');
 const Tab = createBottomTabNavigator();
 
-const AppNavigator = ({navigation}:any) => (
+const PRIMARY = '#54219D';
+const INACTIVE = '#656565';
+
+function AnimatedIcon({
+  focused,
+  children,
+}: {
+  focused: boolean;
+  children: React.ReactNode;
+}) {
+  const scale = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    Animated.spring(scale, {
+      toValue: focused ? 1.1 : 1,
+      friction: 7,
+      tension: 120,
+      useNativeDriver: true,
+    }).start();
+  }, [focused, scale]);
+
+  return <Animated.View style={{ transform: [{ scale }] }}>{children}</Animated.View>;
+}
+
+const AppNavigator = ({ navigation }: any) => (
   <Tab.Navigator
     screenOptions={({ route }) => ({
-      tabBarShowLabel: false,
       headerShown: false,
-      tabBarIcon: ({ focused }) => {
-        let IconComponent;
-        switch (route.name) {
-          case 'Home':
-            IconComponent = focused ? HomeActive : HomeInactive;
-            break;
-          case 'Chat':
-            IconComponent = focused ? AiActive : AiInactive;
-            break;
-          case 'Scanner':
-            IconComponent = ScanIcon;
-            break;
-          case 'Weather':
-            IconComponent = focused ? UpiActiveIcon : UpiIcon;
-            break;
-          case 'Profile':
-            IconComponent = focused ? ProfileActive : ProfileInactive;
-            break;
-          default:
-            IconComponent = HomeInactive;
-        }
-
-  const isScanner = route.name === 'Scanner';
-
-        return (
-          <View style={isScanner ? styles.scannerIconContainer : styles.iconWrapper}>
-            {focused&&<View style={{height:2, width:15, backgroundColor:'#6929C4' }}/>}
-            <IconComponent width={isScanner ? 56 : 56} height={isScanner ? 56 : 56}/>
-          </View>
-        );
-      },
-
+      tabBarShowLabel: false,
+      tabBarHideOnKeyboard: true,
       tabBarStyle: {
-        backgroundColor: '#fff',
+        backgroundColor: '#FFFFFF',
         borderTopWidth: 0,
-        elevation: 5,
+        elevation: 8,
         height: 70,
-        paddingBottom: 0,
         paddingTop: 6,
       },
       tabBarItemStyle: {
         justifyContent: 'center',
         alignItems: 'center',
       },
+      tabBarIcon: ({ focused }) => {
+        const isScanner = route.name === 'Scanner';
+        const color = focused ? PRIMARY : INACTIVE;
+        const size = 26;
+        const stroke = 2;
+
+        let iconNode: React.ReactNode = null;
+
+        switch (route.name) {
+          case 'Home':
+            iconNode = <HomeIcon size={size} color={color} strokeWidth={stroke} />;
+            break;
+          case 'Chat':
+            iconNode = <AiIcon size={size} color={color} strokeWidth={stroke} />;
+            break;
+          case 'Weather': // (this is your UPI tab)
+            iconNode = <RupeeIcon size={size} color={color} strokeWidth={stroke} />;
+            break;
+          case 'Profile':
+            iconNode = <ProfileIcon size={size} color={color} strokeWidth={1.8} />;
+            break;
+          case 'Scanner':
+            // Center FAB uses its own styling; still render icon here
+            iconNode = <ScanIcon width={32} height={32} />;
+            break;
+          default:
+            iconNode = <HomeIcon size={size} color={color} strokeWidth={stroke} />;
+        }
+
+        if (isScanner) {
+          return (
+            <View style={styles.scannerIconContainer}>
+              {iconNode}
+            </View>
+          );
+        }
+
+        return (
+          <View style={styles.iconWrapper}>
+            <AnimatedIcon focused={focused}>{iconNode}</AnimatedIcon>
+            {/* {focused && <View style={styles.activeUnderline} />} */}
+          </View>
+        );
+      },
     })}
   >
     <Tab.Screen name="Home" component={HomeScreen} />
     <Tab.Screen name="Chat" component={AiWelcomeScreen} />
+
     <Tab.Screen
       name="Scanner"
       component={QrScreen}
       options={{
         tabBarButton: (props) => (
           <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() =>{navigation.navigate('QrScreen')}}
+            {...props}
+            activeOpacity={0.85}
+            onPress={() => navigation.navigate('QrScreen')}
             style={styles.scannerButtonWrapper}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            accessibilityLabel="Open QR Scanner"
+            accessibilityRole="button"
           >
             {props.children}
           </TouchableOpacity>
         ),
       }}
     />
+
+    {/* Rename this route to "UPI" later if you like; using your RupeeIcon now */}
     <Tab.Screen name="Weather" component={Language_unavailableScreen} />
-    <Tab.Screen name="Profile" component={ProfileScreenz} />
+    <Tab.Screen name="Profile" component={ProfileScreen} />
   </Tab.Navigator>
 );
 
 const styles = StyleSheet.create({
   iconWrapper: {
-    width: 40,
-    height: 40,
-    justifyContent: 'center',
+    width: 48,
+    height: 48,
     alignItems: 'center',
-    paddingTop:16
+    justifyContent: 'center',
+    paddingTop: 8,
   },
-  notFocused: {
-  marginTop: 8, // 👈 tweak this value to control spacing
-},
-  svgIcon: {
-    width: 24,
-    height: 24,
-    alignSelf: 'center',
+  activeUnderline: {
+    position: 'absolute',
+    bottom: 8,
+    width: 16,
+    height: 3,
+    borderRadius: 2,
+    backgroundColor: PRIMARY,
   },
+
+  // Center FAB
   scannerButtonWrapper: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -125,19 +163,21 @@ const styles = StyleSheet.create({
     width: 64,
     height: 64,
     borderRadius: 32,
-    backgroundColor: '#6929C4',
+    backgroundColor: PRIMARY,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
     bottom: 10,
     alignSelf: 'center',
-    padding: 10,
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
-    zIndex: 10,
+    ...Platform.select({
+      android: { elevation: 8 },
+      ios: {
+        shadowColor: '#000',
+        shadowOpacity: 0.2,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 6,
+      },
+    }),
   },
 });
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   Image,
   Dimensions,
@@ -16,6 +15,9 @@ import FarmerBigImg from '../assets/images/HomeScreen/Header/farmerBigImage.svg'
 import FarmerLogo from '../assets/images/HomeScreen/Header/farmerLogo.svg';
 import TranslatorIcon from '../assets/images/Icons/translatorIcon.svg';
 import NotificationIcon from '../assets/images/Icons/notificationIcon.svg';
+import Text from './Text/Text';
+
+
 const { width, height } = Dimensions.get('window');
 
 const Header = ({ navigation }: any) => {
@@ -39,7 +41,7 @@ const Header = ({ navigation }: any) => {
         <View style={styles.topRow}>
           <View style={styles.logoRow}>
             <FarmerLogo />
-            <Text style={styles.appName}>Farme₹Pay</Text>
+            <Text  style={styles.appName} fontWeight='600'>Farme₹Pay</Text>
           </View>
           <View style={styles.iconsRow}>
             <TouchableOpacity style={styles.iconButton}>
@@ -58,9 +60,9 @@ const Header = ({ navigation }: any) => {
 
         <View style={styles.contentRow}>
           <View style={styles.textBlock}>
-            <Text style={styles.greeting}>Namaste,</Text>
-            <Text style={styles.username}>Animesh 🙏</Text>
-            <Text style={styles.subText}>How can we help you today?</Text>
+            <Text style={styles.greeting} fontWeight='500'>Namaste,</Text>
+            <Text style={styles.username} fontWeight='600'>Animesh <Image source={require("../assets/images/namaste.webp")} style={styles.namaste}/></Text>
+            <Text style={styles.subText} fontWeight='500'>How can we help you today?</Text>
           </View>
           {/* <Image
             source={require('../assets/images/farmer.png')} // illustration image
@@ -95,11 +97,7 @@ const styles = StyleSheet.create({
   },
 
   appName: {
-    fontFamily: 'Inter-Medium', // This must match the internal name in the TTF
-    fontWeight: '500', // Optional if font file handles the weight
     fontSize: 24,
-    lineHeight: 24, // 100% of font size
-    letterSpacing: -0.96, // -4% of 24px
     color: '#fff',
     marginLeft: 8,
   },
@@ -134,15 +132,12 @@ const styles = StyleSheet.create({
   greeting: {
     fontSize: 20,
     color: 'white',
-    fontFamily: 'Inter-SemiBold', // or just 'Inter' depending on how fonts are linked
-    fontWeight: '600', // optional if font file is specific weight
-    lineHeight: 20, // 100% of fontSize
-    letterSpacing: 0, // default is 0
-    textAlignVertical: 'center', // only supported on Android
+
+    lineHeight: 20, 
+    letterSpacing: 0, 
+    textAlignVertical: 'center', 
   },
   username: {
-    fontFamily: 'Inter-SemiBold', // Must be correctly linked
-    fontWeight: '600', // Optional if font file handles weight
     fontSize: 28,
     lineHeight:35,
     letterSpacing: 0,
@@ -151,13 +146,15 @@ const styles = StyleSheet.create({
   },
 
   subText: {
-    fontFamily: 'Inter-Light', // depends on how font is loaded
-    fontWeight: '300', // optional if font file handles it
     fontSize: 14,
     lineHeight: 16.72, // 16 * 1.17
-    letterSpacing: -0.64, // -4% of 16
+    letterSpacing: -0.5, // -4% of 16
     color: 'white',
   },
+  namaste:{
+    width:25,
+    height:25
+  }
 });
 
 export default Header;

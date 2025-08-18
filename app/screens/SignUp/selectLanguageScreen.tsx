@@ -1,4 +1,3 @@
-// SelectLanguageScreen.tsx
 import React, { useEffect, useState } from 'react';
 import {
   View,
@@ -8,11 +7,11 @@ import {
   FlatList,
   Dimensions,
   Image,
-} from 'react-native';
+} from 'react-native'; 
 import LinearGradient from 'react-native-linear-gradient';
 import VoiceInputErrorModal from '../../components/VoiceInputErrorModal';
+import { LangDetect } from '../../components/Icons/Index';
 //import VoiceInputErrorModal from '../../components/VoiceInputErrorModal.tsx';
-
 
 const { width } = Dimensions.get('window');
 
@@ -31,7 +30,7 @@ const languages = [
   { label: 'Punjabi', native: 'ਪੰਜਾਬੀ' },
 ];
 
-export default function SelectLanguageScreen({navigation}:any) {
+export default function SelectLanguageScreen({ navigation }: any) {
   const [selected, setSelected] = useState('Hindi');
   // const { permissionStatus, requestPermission } = useMicrophonePermission();
   const [showPopup, setShowPopup] = useState(false);
@@ -41,10 +40,10 @@ export default function SelectLanguageScreen({navigation}:any) {
   //     setShowPopup(true);
   //   }
   // }, [permissionStatus]);
-  
-  const handleSave=()=>{
+
+  const handleSave = () => {
     navigation.navigate('Login');
-  }
+  };
   const renderItem = ({ item }: any) => {
     const isSelected = selected === item.label;
     return (
@@ -69,35 +68,42 @@ export default function SelectLanguageScreen({navigation}:any) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Select One Language</Text>
-      <Text style={styles.subtitle}>Tap or speak in your preferred language</Text>
+      <Text style={styles.subtitle}>
+        Tap or speak in your preferred language
+      </Text>
 
       <FlatList
         data={languages}
         renderItem={renderItem}
-        keyExtractor={(item) => item.label}
+        keyExtractor={item => item.label}
         numColumns={3}
         contentContainerStyle={styles.grid}
         columnWrapperStyle={{ justifyContent: 'space-between' }}
         showsVerticalScrollIndicator={false}
       />
-    
+
       <VoiceInputErrorModal
         visible={showPopup}
         onTryAgain={() => {
           setShowPopup(false);
-          requestPermission(); // re-trigger permission check
+          requestPermission();
         }}
       />
       <View style={styles.footer}>
         <LinearGradient
-            colors={['#FDCA4F', '#6929C4', '#97EAD2']}
-            start={{ x: 0.1, y: 0.0 }}
-            end={{ x: 1.0, y: 1.0 }}
-            locations={[0.0, 0.35, 1.0]}
-            style={styles.voiceButton}
+          colors={['#FDCA4F', '#6929C4', '#97EAD2']}
+          start={{ x: 0.1, y: 0.0 }}
+          end={{ x: 1.0, y: 1.0 }}
+          locations={[0.0, 0.35, 1.0]}
+          style={styles.voiceButton}
         >
-          <TouchableOpacity style={{flexDirection:'row', alignSelf:'flex-start'}} onPress={()=>{setShowPopup(true);}}>
-            <Image source={require('../../assets/images/mic2.png')}/>
+          <TouchableOpacity
+            style={{ flexDirection: 'row', alignSelf: 'flex-start' }}
+            onPress={() => {
+              setShowPopup(true);
+            }}
+          >
+            <LangDetect color="#FFFFFF" width={19} height={21} />
             <Text style={styles.voiceText}> Speak Your Language</Text>
           </TouchableOpacity>
         </LinearGradient>
@@ -105,12 +111,11 @@ export default function SelectLanguageScreen({navigation}:any) {
         <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
           <Text style={styles.saveText}>Save</Text>
         </TouchableOpacity>
-
       </View>
     </View>
   );
 }
-const CARD_WIDTH = (width - 72) / 3; // 24px padding + 16px gap * 2
+const CARD_WIDTH = (width - 72) / 3;
 
 const styles = StyleSheet.create({
   container: {
@@ -118,32 +123,30 @@ const styles = StyleSheet.create({
     paddingTop: 64,
     paddingHorizontal: 16,
     backgroundColor: '#FDFDFD',
-    alignContent:"center",
-    justifyContent:'center'
+    alignContent: 'center',
+    justifyContent: 'center',
   },
   title: {
     fontSize: 24,
-    fontWeight: '700',
     color: '#3F1976',
-    alignSelf:'flex-start'
+    alignSelf: 'flex-start',
+    fontFamily: 'Inter-Bold',
   },
   subtitle: {
     marginTop: 8,
     fontSize: 14,
     fontWeight: '500',
     color: '#4B5768',
-    alignSelf:'flex-start'
+    alignSelf: 'flex-start',
+    fontFamily: 'Inter-Semibold',
   },
   grid: {
-    marginTop:16,
-    alignItems:'stretch',
+    marginTop: 16,
     gap: 8,
-    aspectRatio:0.69
-
   },
   card: {
     width: CARD_WIDTH,
-    aspectRatio:1,
+    aspectRatio: 1,
     borderRadius: 16,
     backgroundColor: '#F8F8F8',
     borderWidth: 2,
@@ -168,15 +171,12 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
   footer: {
-  
     bottom: 32,
     width: '100%',
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    gap:'10%'
+    justifyContent: 'space-between',
   },
   voiceButton: {
-
     borderRadius: 5,
     paddingVertical: 12,
     paddingHorizontal: 16,
@@ -186,20 +186,19 @@ const styles = StyleSheet.create({
   voiceText: {
     color: '#EEEEEE',
     fontSize: 16,
- 
   },
   saveButton: {
     backgroundColor: '#54219D',
-    marginLeft:2,
+    marginLeft: 2,
     borderRadius: 48,
     paddingVertical: 12,
     paddingHorizontal: 32,
-    alignSelf:'flex-end'
+    alignSelf: 'flex-end',
   },
   saveText: {
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '400',
-    alignSelf:'center'
+    alignSelf: 'center',
   },
 });

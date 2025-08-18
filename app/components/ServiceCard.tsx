@@ -9,11 +9,14 @@ import {
 } from 'react-native';
 import { SvgProps } from 'react-native-svg';
 const { width, height } = Dimensions.get('window');
-import LoanIcon from '../assets/images/components/services/LoansIcon.svg';
+import LoanIcon from '../assets/Services/loans.png';
+// import LoanIcon from '../assets/images/components/services/LoansIcon.svg';
 import InsuranceIcon from '../assets/images/components/services/InsuranceIcon.svg';
 import SchemeIcon from '../assets/images/components/services/Schemes.svg';
 import ScoreIcon from '../assets/images/components/services/ScoreIcon.svg';
 import textStyles from '../utils/constants/textStyles';
+
+
 const ServiceCard = ({
   title,
   icon,
@@ -45,7 +48,7 @@ const Services = () => {
       </Text>
       <View style={styles.servicesGrid}>
         <View style={{ width: '48.8%' }}>
-          <ServiceCard title="Loans" Icon={LoanIcon} />
+          <ServiceCard title="Loans" icon={LoanIcon} />
           <ServiceCard title="Insurance" Icon={InsuranceIcon} />
           <ServiceCard title="Schemes" Icon={SchemeIcon} />
         </View>
@@ -55,10 +58,8 @@ const Services = () => {
               <Text
                 style={[
                   {
-                    fontFamily: 'Inter-Medium', // Use correct weight/style
-                    fontWeight: '500',
-                    fontSize: 14,
-                    lineHeight: 14, // 100% of font size
+                    fontFamily: 'Inter-SemiBold', // Use correct weight/style
+                    fontSize: 16,
                     letterSpacing: -0.88, // -4% of 22px
                     color: '#4506A0',
                   },
@@ -112,10 +113,9 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   label: {
-    fontFamily: 'Inter-Medium', // Use correct weight/style
-    fontWeight: '500',
-    fontSize: 14,
-    lineHeight: 14, // 100% of font size
+    fontFamily: 'Inter-SemiBold', // Use correct weight/style
+    fontSize: 16,
+    lineHeight: 18, // 100% of font size
     letterSpacing: -0.88, // -4% of 22px
     color: '#4506A0',
   },
