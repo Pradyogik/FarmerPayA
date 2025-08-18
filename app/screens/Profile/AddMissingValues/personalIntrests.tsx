@@ -76,7 +76,7 @@ const PersonalIntrests = ({ navigation }: any) => {
           justifyContent: 'space-between',
         }}
       >
-        <ScrollView contentContainerStyle={{ gap: 32 }}>
+        <ScrollView contentContainerStyle={{ gap: 32 }} showsVerticalScrollIndicator={false}>
           <View>
             <View style={{ gap: 24 }}>
               <CustomText weight={500} size={12} lineHeight={18}>

@@ -14,14 +14,17 @@ import InsuranceIcon from '../assets/images/components/services/InsuranceIcon.sv
 import SchemeIcon from '../assets/images/components/services/Schemes.svg';
 import ScoreIcon from '../assets/images/components/services/ScoreIcon.svg';
 import textStyles from '../utils/constants/textStyles';
+
 const ServiceCard = ({
   title,
   icon,
   Icon,
+  style,
 }: {
   title: string;
   icon?: any;
   Icon?: React.FC<SvgProps>;
+  style?: any;
 }) => (
   <TouchableOpacity style={styles.card}>
     <View style={{ width: '54%', paddingTop: 16, paddingLeft: 16 }}>
@@ -39,42 +42,26 @@ const ServiceCard = ({
 
 const Services = () => {
   return (
-    <View style={{ width: width * 0.96, aspectRatio: 1.26 }}>
-      <Text style={[textStyles.title, { paddingHorizontal: 16 }]}>
+    <View style={{ width: width * 0.96, aspectRatio: 1.26, alignSelf: 'center'  ,paddingHorizontal: '2%' }}>
+      <Text style={[textStyles.title,]}>
         Services
       </Text>
       <View style={styles.servicesGrid}>
-        <View style={{ width: '48.8%' }}>
-          <ServiceCard title="Loans" Icon={LoanIcon} />
-          <ServiceCard title="Insurance" Icon={InsuranceIcon} />
-          <ServiceCard title="Schemes" Icon={SchemeIcon} />
+        <View style={styles.leftColumn}>
+          <ServiceCard title="Loans" Icon={LoanIcon} style={{ flex: 89 }} /> {/*(87/95)*/}
+          <ServiceCard title="Insurance" Icon={InsuranceIcon} style={{ flex: 95 }}/> {/*95 baseline*/}
+          <ServiceCard title="Schemes" Icon={SchemeIcon} style={{ flex: 95 }}/>
         </View>
-        <View style={{ width: '48.8%', marginLeft: 6 }}>
-          <View style={{ height: '62.255%', marginBottom: 3 }}>
-            <TouchableOpacity style={styles.card2}>
-              <Text
-                style={[
-                  {
-                    fontFamily: 'Inter-Medium', // Use correct weight/style
-                    fontWeight: '500',
-                    fontSize: 14,
-                    lineHeight: 14, // 100% of font size
-                    letterSpacing: -0.88, // -4% of 22px
-                    color: '#4506A0',
-                  },
-                ]}
-              >
-                {'AI Advisory'}
-              </Text>
+        <View style={styles.rightColumn}>
+          
+            <TouchableOpacity style={[styles.card2]}> {/*(190/95)*/}
+              <Text style={styles.label}>{'AI Advisory'}</Text>
               <Image
                 source={require('../assets/images/ai.png')}
                 style={[styles.icon, { alignSelf: 'flex-end', marginTop: 4 }]}
               />
             </TouchableOpacity>
-          </View>
-          <View style={{ height: '20%', marginTop: 6 }}>
-            <ServiceCard title="My Score" Icon={ScoreIcon} />
-          </View>
+            <ServiceCard title="My Score" Icon={ScoreIcon} style={{ flex: 95}} />
         </View>
       </View>
     </View>
@@ -84,55 +71,46 @@ export default Services;
 
 const styles = StyleSheet.create({
   card: {
-    width: '102%',
-    aspectRatio: 2.3508,
-    backgroundColor: '#4506A00D',
+    backgroundColor: '#6929C41A', 
     borderRadius: 12,
-    paddingBottom: 12,
-    margin: 3,
+    borderWidth: 1,
+    borderColor: '#D1BDED',
     flexDirection: 'row',
-    borderWidth: 1.5,
-    borderColor: '#4506A026',
     justifyContent: 'space-between',
   },
   card2: {
-    width: '102%',
-    aspectRatio: 1.14522,
-    borderWidth: 1.5,
-    backgroundColor: '#4506A00D',
-    borderColor: '#4506A026',
+    backgroundColor: '#6929C41A',
     borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#D1BDED',
     padding: 12,
-    margin: 3,
   },
   icon: {
     width: '80%',
     aspectRatio: 1,
-    marginBottom: 8,
     resizeMode: 'contain',
   },
   label: {
-    fontFamily: 'Inter-Medium', // Use correct weight/style
+    fontFamily: 'Inter-Medium',
     fontWeight: '500',
     fontSize: 14,
-    lineHeight: 14, // 100% of font size
-    letterSpacing: -0.88, // -4% of 22px
+    lineHeight: 14,
+    letterSpacing: 0,
     color: '#4506A0',
-  },
-
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginLeft: 16,
-    marginVertical: 8,
-    color: '#1F077A',
   },
   servicesGrid: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    verticalAlign: 'auto',
-    paddingHorizontal: 10,
-    marginLeft: 6,
+    justifyContent: 'space-between', 
+    alignItems: 'stretch',
+    gap: 6,
+    flex: 1,
+  },
+  leftColumn: {
+    flex: 1,
+    gap: 6,
+  },
+  rightColumn: {
+    flex: 1,
+    gap: 6,
   },
 });

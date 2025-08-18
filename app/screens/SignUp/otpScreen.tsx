@@ -10,9 +10,11 @@ import {
 } from 'react-native';
 
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BASE_URL } from '../../utils/api';
 import BackArrow from '../../assets/images/back-arrow.svg';
 import LargeButton from '../../utils/customs/LargeButton';
+
 export default function LoginOtpVerification({ navigation, route }: any) {
   const { mobile } = route.params;
 
@@ -100,6 +102,7 @@ const handleVerify = async () => {
     const {user_id } = response.data;
 
     console.log(' OTP Verified. user_id:', user_id);
+    await AsyncStorage.setItem('user_id', user_id.toString());
 
     setError(''); 
     setInfoMessage('');
@@ -121,7 +124,7 @@ const handleVerify = async () => {
       if (isRegistered) {
 
         console.log('🚀 Navigating to Main screen...');
-        setnoError('');
+        setnoError('Navigating to Main screen...');
         navigation.navigate('Main', { mobile, user_id });
       } else {
         console.log('📝 User not registered yet. Navigating to WhoAreU...');

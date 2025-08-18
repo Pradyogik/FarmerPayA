@@ -7,6 +7,7 @@ import {
   ScrollView,
   findNodeHandle,
   Dimensions,
+  StatusBar,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FeatherIcon from 'react-native-vector-icons/Feather';
@@ -67,7 +68,7 @@ const FAQScreen = () => {
       colors={['#4506A0', '#6929C4']}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 0 }}
-      style={{ flex: 1 }}
+      style={{ flex: 1 ,paddingTop: StatusBar.currentHeight || 40,}}
     >
       {/* Header */}
       <View
@@ -142,7 +143,7 @@ export default FAQScreen;
 const styles = StyleSheet.create({
   headerText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '500',
   },
   contentContainer: {

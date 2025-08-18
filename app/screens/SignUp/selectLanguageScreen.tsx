@@ -148,22 +148,22 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     backgroundColor: '#F8F8F8',
     borderWidth: 2,
-    borderColor: '#3D65CA',
+    borderColor: '#326CF9',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 8,
     marginBottom: 16,
   },
   selectedCard: {
-    backgroundColor: '#3D65CA',
+    backgroundColor: '#326CF9',
   },
   langLabel: {
-    fontSize: 16,
-    color: '#3D65CA',
+    fontSize: 12,
+    color: '#326CF9',
   },
   nativeText: {
-    fontSize: 14,
-    color: '#3D65CA',
+    fontSize: 12,
+    color: '#326CF9',
   },
   selectedText: {
     color: '#FFFFFF',
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
  
   },
   saveButton: {
-    backgroundColor: '#54219D',
+    backgroundColor: '#6929C4',
     marginLeft:2,
     borderRadius: 48,
     paddingVertical: 12,

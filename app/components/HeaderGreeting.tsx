@@ -30,7 +30,7 @@ const Header = ({ navigation }: any) => {
       <StatusBar
         translucent
         backgroundColor="transparent"
-        barStyle="light-content" // or "dark-content" based on your gradient
+        barStyle="dark-content" // or "dark-content" based on your gradient
       />
       <ImageBackground
         source={require('../assets/images/grid.png')} // use your image path
@@ -50,7 +50,7 @@ const Header = ({ navigation }: any) => {
                 Farme₹Pay
               </CustomText>
             </View>
-            <LinearGradient
+            {/* <LinearGradient
               colors={[
                 'rgba(239, 239, 239, 0.08)',
                 'rgba(255, 255, 255, 0.64)',
@@ -67,7 +67,7 @@ const Header = ({ navigation }: any) => {
               }}
             ><ScanIcon/>
               <CustomText weight={500} size={12} lineHeight={21} color='#fff'>My UPI ID: animesh@ybl</CustomText>
-            </LinearGradient>
+            </LinearGradient> */}
           </View>
           <View style={styles.iconsRow}>
             <TouchableOpacity style={styles.iconButton}>
@@ -111,6 +111,7 @@ const Header = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   container: {
     width: width,
+    paddingTop: 12,
   },
   grid: {
     width: width,
@@ -168,7 +169,7 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
   },
   greeting: {
-    fontSize: 20,
+    fontSize: 16,
     color: 'white',
     fontFamily: 'Inter-SemiBold', // or just 'Inter' depending on how fonts are linked
     fontWeight: '600', // optional if font file is specific weight
@@ -191,7 +192,7 @@ const styles = StyleSheet.create({
     fontWeight: '300', // optional if font file handles it
     fontSize: 14,
     lineHeight: 16.72, // 16 * 1.17
-    letterSpacing: -0.64, // -4% of 16
+    letterSpacing: 0, // -4% of 16
     color: 'white',
   },
 });

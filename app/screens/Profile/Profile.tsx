@@ -20,6 +20,7 @@ import AccountCardSlider from '../../components/Profile/addAccountSlider';
 const ProfileScreenz = ({ navigation }: any) => {
   return (
     <View style={styles.container}>
+
       {/* Top Bar */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Profile</Text>

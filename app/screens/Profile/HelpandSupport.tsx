@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
-  StatusBar,
+  SafeAreaView,
+  StatusBar
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -60,6 +61,8 @@ const HelpAndSupport = ({navigation}:any) => {
       end={{ x: 1, y: 0 }}
       style={{ flex: 1 ,paddingTop:StatusBar.currentHeight||40}}
     >
+      <StatusBar backgroundColor="#fff" barStyle="dark-content" />
+      
       {/* Gradient Header */}
       <View
         style={{

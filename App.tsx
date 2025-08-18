@@ -8,9 +8,9 @@ import SecondaryRoleScreen from './app/screens/SignUp/Farmer/SecondaryRole.tsx';
 import SelectLanguageScreen from './app/screens/SignUp/selectLanguageScreen';
 import LoginScreen from './app/screens/SignUp/LogInScreen';
 import LoginOtpVerification from './app/screens/SignUp/otpScreen';
-import SignUpScreen from './app/screens/SignUp/signUpScreen';
-import SignUpFormScreen1 from './app/screens/SignUp/signUpForm1';
-import SignUpFormScreen2 from './app/screens/SignUp/SignUpForm2';
+import SignUpScreen from './app/screens/SignUp/signUpScreen.tsx';
+import SignUpFormScreen1 from './app/screens/SignUp/Farmer/signUpForm1.tsx';
+import SignUpFormScreen2 from './app/screens/SignUp/Farmer/SignUpForm2.tsx';
 import PlantSelectionScreen from './app/screens/SignUp/Farmer/PlantSelectionScreen.tsx';
 import NotificationScreen from './app/screens/NotificationScreen.tsx';
 import AppNavigator from './app/navigation/AppNavigator';
@@ -38,6 +38,7 @@ import HelpAndSupport from './app/screens/Profile/HelpandSupport';
 import AddNewQuery from './app/screens/Profile/AddNewQuery';
 import FAQ from './app/screens/Profile/FAQScreen';
 import PaymentsSettings from './app/screens/Profile/PaymentsSettings';
+import YourAccount from './app/screens/Profile/YourAccount';
 import HomeScreen from './app/screens/HomeScreen.tsx';
 import SecurityScreen from './app/screens/Profile/security.tsx';
 import AdditionalDetailScreen from './app/screens/Profile/AddMissingValues/additionalDetails.tsx';
@@ -48,7 +49,8 @@ import InternationalTravel from './app/screens/Profile/AddMissingValues/internat
 import FamilyMembers from './app/screens/Profile/AddMissingValues/familyMembers.tsx';
 import PersonalIntrests from './app/screens/Profile/AddMissingValues/personalIntrests.tsx';
 import { ActiveProvider } from './app/context/ActiveContext.tsx';
-
+import EditProfile from './app/screens/Profile/EditProfile';
+import UPISettings from './app/screens/Profile/UPISettings';
 const Stack = createNativeStackNavigator();
 
 const App = () => {

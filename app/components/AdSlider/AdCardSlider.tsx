@@ -26,6 +26,9 @@ const ads: AdCardProps[] = [
 const AdSlider = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const flatRef = useRef(null);
+  const width = Dimensions.get('window').width;
+  const isFirst = 0;
+  const isLast = ads.length - 1;
 
   const renderDots = () => (
     <View style={styles.dotsContainer}>
@@ -53,6 +56,13 @@ const AdSlider = () => {
           setActiveIndex(index);
         }}
         renderItem={({ item ,index}) => (
+          <View
+            style={[
+              styles.slider,
+              index === isFirst && styles.isFirstSlider,
+              index === isLast && styles.isLastSlider,
+            ]}
+          >
           <LoanCard
             title={item.title}
             subtitle={item.subtitle}
@@ -62,6 +72,7 @@ const AdSlider = () => {
             index={0}         // and also index/total
             total={0}
           />
+          </View>
         )}
       />
       {renderDots()}
@@ -70,6 +81,16 @@ const AdSlider = () => {
 };
 
 const styles = StyleSheet.create({
+  slider: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  isFirstSlider: {
+    paddingLeft: 16,
+  },
+  isLastSlider: {
+    paddingRight: 16,
+  },
   dotsContainer: {
     flexDirection: 'row',
     justifyContent: 'center',

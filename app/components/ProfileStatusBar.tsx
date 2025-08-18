@@ -57,24 +57,25 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   textSection: {
-    maxWidth: '80%',
-    paddingRight: 2,
+    flex: 1,
+    paddingRight: 12,
+    maxWidth: '75%',
   },
 statusTitle: {
   fontFamily: 'Inter-SemiBold',    // Must match internal font name from .ttf
   fontWeight: '600',               // Optional if font handles it
-  fontSize: 14.96,  //line height change from 18.96 to 14.96 to make sutiable with the screen 
-  lineHeight: 14.96,
-  letterSpacing: -0.76,            // Rounded from -0.7584
+  fontSize: 16,  //line height change from 18.96 to 14.96 to make sutiable with the screen 
+  lineHeight: 16,
+  letterSpacing: 0,            // Rounded from -0.7584
   color: '#1F077A',
-  marginBottom: 4,
+  marginBottom: 8,
 },
 description: {
   fontFamily: 'Inter-Regular',      // Must match actual internal font name
   fontWeight: '400',
-  fontSize: 11,
-  lineHeight: 13,
-  letterSpacing: -0.59,             // Rounded from -0.5896
+  fontSize: 14,
+  lineHeight: 14,
+  letterSpacing: 0,             // Rounded from -0.5896
   color: '#1F077AB2',               // Semi-transparent indigo
 },
 

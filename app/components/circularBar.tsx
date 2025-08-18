@@ -12,10 +12,10 @@ interface Props {
 
 const CircularProgress = ({
   progress,
-  size = 60,
+  size = 48,
   strokeWidth = 6,
   color = '#4506A0',
-  backgroundColor = '#E3DFF2',
+  backgroundColor = '#fff',
 }: Props) => {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
@@ -67,8 +67,8 @@ const styles = StyleSheet.create({
 progressText: {
   fontFamily: 'Inter-Medium',     // Make sure this matches actual internal font name
   fontWeight: '500',
-  fontSize: 15.04,
-  lineHeight: 15.04,
+  fontSize: 12,
+  lineHeight: 16,
   letterSpacing: -0.6,            // Rounded from -0.6016
   color: '#4506A0',
 },

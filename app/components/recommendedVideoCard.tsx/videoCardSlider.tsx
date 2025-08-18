@@ -26,7 +26,7 @@ const RecommendedVideoSlider: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={[textStyles.title,{letterSpacing:-0.8, paddingHorizontal:10}]}>Recommended Videos for you</Text>
+      <Text style={[textStyles.title,{ paddingHorizontal:10}]}>Recommended Videos for you</Text>
 
       <Animated.FlatList
         data={videoData}

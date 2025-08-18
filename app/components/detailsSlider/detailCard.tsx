@@ -20,80 +20,82 @@ const DetailCard: React.FC<DetailCardProps> = ({
 }) => {
   return (
     <View style={styles.card}>
-      <Text style={styles.title}>{title}</Text>
+  <Text style={styles.title}>{title}</Text>
+  <Text style={styles.subtitle}>{subtitle}</Text>
 
-      <View style={{ height: '75%', flexDirection: 'row' }}>
-        <View style={{ width: '65%' }}>
-          <Text style={styles.subtitle}>{subtitle}</Text>
+  {/* Button */}
+  <TouchableOpacity style={styles.button} onPress={onPress}>
+    <Text style={styles.buttonText}>{buttonLabel}</Text>
+  </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button} onPress={onPress}>
-            <Text style={styles.buttonText}>{buttonLabel}</Text>
-          </TouchableOpacity>
-        </View>
-        <View
-          style={{
-            width: '40%',
-            alignItems: 'flex-end',
-            justifyContent: 'center',
-          }}
-        >
-          <Image source={image} style={styles.image} />
-        </View>
-      </View>
-    </View>
+  {/* Overlapping image */}
+  <Image source={image} style={styles.image} />
+</View>
+
   );
 };
+export default DetailCard;
+
+const cardWidth = 208; 
+const cardHeight = 166; 
 
 const styles = StyleSheet.create({
-  card: {
-    width: width * 0.7,
-    aspectRatio: 1.5,
-    backgroundColor: '#FFFDFC',
-    borderRadius: 16,
-    padding: 16,
-    paddingBottom: 4,
-    marginRight: 16,
-    shadowColor: '#FFFDFC',
-    elevation: 4,
-    flexDirection: 'column',
-  },
+card: {
+  width: cardWidth,
+  height: cardHeight,
+  backgroundColor: '#FFFDFC',
+  borderRadius: 16,
+  padding: 16,
+  marginRight: 16,
+  borderColor: '#C0C0C0',
+  borderWidth: 1,
+  position: 'relative', // Important for absolute positioning inside
+},
   title: {
     fontFamily: 'Inter',
-    fontWeight: '600', // Semi-bold = 600
+    fontWeight: '600',
     fontSize: 16,
-    lineHeight: 16, // 100% of fontSize
-    letterSpacing: -0.64, // -4% of 16px
+    lineHeight: 20,
     color: '#1F077A',
   },
-  subtitle: {
-    fontFamily: 'Inter',
-    fontWeight: '400', // Regular
-    fontSize: 12,
-    lineHeight: 12, // 100% of 12
-    letterSpacing: -0.48, // -4% of 12px
-    color: 'rgba(31, 7, 122, 0.6)', // '#1F077A99' in RGBA
-    marginVertical: 16,
-  },
-  image: {
-    width: 105,
-    height: 115,
-    resizeMode: 'contain',
-  },
-  button: {
-    backgroundColor: '#1F077A',
-    width: 'auto',
-    padding: 6,
-    borderRadius: 8,
+subtitle: {
+  fontFamily: 'Inter',
+  fontWeight: '400',
+  fontSize: 12,
+  lineHeight: 12,
+  color: 'rgba(31, 7, 122, 0.6)',
+  marginVertical: 8,
+  flexShrink: 1,
+  paddingRight: 60, // So text doesn’t hide behind image
+},
+  bottomRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
   },
+image: {
+  width: 90,
+  height: 100,
+  resizeMode: 'contain',
+  position: 'absolute',
+  bottom: 4,   // distance from bottom
+  right: 2,    // distance from right
+  zIndex: 1,
+},
+button: {
+  backgroundColor: '#1F077A',
+  height: 28,
+  paddingHorizontal: 12,
+  borderRadius: 8,
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginTop: 4,
+  alignSelf: 'flex-start',
+},
   buttonText: {
     color: '#fff',
-    textAlign: 'center',
     fontWeight: '600',
-    fontSize: 12,
+    fontSize: 10,
   },
 });
-
-export default DetailCard;
