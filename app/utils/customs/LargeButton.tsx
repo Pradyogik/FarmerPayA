@@ -1,0 +1,37 @@
+import React from 'react';
+import { TouchableOpacity, Text, StyleSheet, GestureResponderEvent, DimensionValue } from 'react-native';
+
+interface ButtonProps {
+  title: string;
+  onPress: (event: GestureResponderEvent) => void;
+  width?: DimensionValue
+}
+
+const LargeButton: React.FC<ButtonProps> = ({ title, onPress ,width=290 }) => {
+  return (
+    <TouchableOpacity style={[styles.button,{width:width}]} onPress={onPress} activeOpacity={0.7}>
+      <Text style={styles.text}>{title}</Text>
+    </TouchableOpacity>
+  );
+};
+
+const styles = StyleSheet.create({
+  button: {
+    height: 60,
+    backgroundColor: '#6929C4',
+    borderRadius: 48,
+    //minWidth: '100%',
+    alignItems: 'center',
+    alignSelf:'center',
+    justifyContent: 'center',
+    //paddingHorizontal: 20,
+    marginBottom: 16,
+  },
+  text: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '500',
+  },
+});
+
+export default LargeButton;
