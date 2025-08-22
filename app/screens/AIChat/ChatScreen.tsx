@@ -1,5 +1,6 @@
 // app/screens/AIChat/ChatScreen.tsx
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { use, useEffect, useMemo, useRef, useState } from 'react';
+import axios from 'axios';
 import {
   View,
   Text,
@@ -15,7 +16,9 @@ import {
   Animated,
   Easing,
   PermissionsAndroid,
+  Image,
 } from 'react-native';
+import { pick, types } from '@react-native-documents/picker';
 import Clipboard from '@react-native-clipboard/clipboard';
 import LinearGradient from 'react-native-linear-gradient';
 import Markdown from 'react-native-markdown-display';
@@ -37,6 +40,81 @@ type Msg = {
   text: string;
   createdAt: number;
   reaction?: 'like' | 'dislike' | null;
+};
+const MIC_COLOR = '#865DFF';
+const MIC_RING = 'rgba(68, 7, 249, 0.9)';
+
+const PulsingMic = ({
+  onPress,
+  size = 48,
+}: {
+  onPress: () => void;
+  size?: number;
+}) => {
+  const pulse = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.timing(pulse, {
+        toValue: 1,
+        duration: 1300,
+        easing: Easing.out(Easing.quad),
+        useNativeDriver: true,
+      }),
+    ).start();
+  }, [pulse]);
+
+  // ring grows & fades
+  const ringScale = pulse.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, 1.35],
+  });
+  const ringOpacity = pulse.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.5, 0],
+  });
+
+  return (
+    <TouchableOpacity
+      activeOpacity={0.9}
+      onPress={onPress}
+      style={[
+        styles.micWrap,
+        { width: size, height: size, borderRadius: size / 2 },
+      ]}
+    >
+      {/* pulsating ring */}
+      <Animated.View
+        pointerEvents="none"
+        style={[
+          styles.micRing,
+          {
+            width: size,
+            height: size,
+            borderRadius: size / 2,
+            transform: [{ scale: ringScale }],
+            opacity: ringOpacity,
+            backgroundColor: MIC_RING,
+          },
+        ]}
+      />
+      {/* solid circle */}
+      <View
+        style={[
+          styles.micCore,
+          {
+            width: size,
+            height: size,
+            borderRadius: size / 2,
+            backgroundColor: MIC_COLOR,
+          },
+        ]}
+      >
+        {/* your mic icon centered */}
+        {typeof LockIcon === 'function' ? <LockIcon color="white" /> : null}
+      </View>
+    </TouchableOpacity>
+  );
 };
 
 // ====== CONFIG (store secrets securely e.g. react-native-config) ======
@@ -68,9 +146,10 @@ type Props = { route: any; navigation: any };
 
 const ChatScreen: React.FC<Props> = ({ route }) => {
   const initialText: string | undefined = route?.params?.initialText;
-
+  const mic: string | undefined = route?.params?.mic;
+  const gallery: string | undefined = route?.params?.gallery;
   const [messages, setMessages] = useState<Msg[]>([]);
-  console.log('messages',messages);
+  // console.log('messages',messages);
   const [inputText, setInputText] = useState('');
   const [isThinking, setIsThinking] = useState(false);
 
@@ -88,6 +167,16 @@ const ChatScreen: React.FC<Props> = ({ route }) => {
   const bars = new Array(5).fill(0);
   const barValues = useRef(bars.map(() => new Animated.Value(0.3))).current;
 
+  //soilhealth file
+  const [file, setFile] = useState<any>(null);
+  const [fileInfo, setFileInfo] = useState<{
+    id: string;
+    name: string;
+    type: any;
+  } | null>(null);
+  const [fileState ,setFileState]=useState<string>("File selected");
+  const [soilContext, setSoilContext] = useState<any>({});
+  let soilContext1="";
   const showToast = (message: string) => {
     setToast(message);
     toastOpacity.setValue(0);
@@ -126,7 +215,13 @@ const ChatScreen: React.FC<Props> = ({ route }) => {
       pushMessage('user', initialText);
       askAssistant(initialText);
     }
-  }, [initialText]);
+    if (mic) {
+      startRecording();
+    }
+    if (gallery) {
+      pickFile();
+    }
+  }, [initialText, mic, gallery]);
 
   // ====== Chat helpers ======
   const pushMessage = (role: Role, text: string) => {
@@ -146,8 +241,15 @@ const ChatScreen: React.FC<Props> = ({ route }) => {
 
   const chatHistoryForAPI = useMemo(() => {
     const mapped = messages.map(m => ({ role: m.role, content: m.text }));
-    return [{ role: 'system', content: SYSTEM_PROMPT }, ...mapped];
-  }, [messages]);
+    const SoilHealth = soilContext ? JSON.stringify(soilContext) : '';
+    return [
+      {
+        role: 'system',
+        content: `${SYSTEM_PROMPT}\n\nSoil health card context: ${SoilHealth}`,
+      },
+      ...mapped,
+    ];
+  }, [messages, soilContext]);
 
   // ====== OpenAI call ======
   const askAssistant = async (userText: string) => {
@@ -171,9 +273,9 @@ const ChatScreen: React.FC<Props> = ({ route }) => {
 
       if (!res.ok) throw new Error(await res.text());
       const json = await res.json();
-      console.log('json',json);
-      const reply  = json?.choices?.[0]?.message?.content?.trim();
-      console.log('reply',reply);
+      console.log('json', json);
+      const reply = json?.choices?.[0]?.message?.content?.trim();
+      console.log('reply', reply);
       pushMessage('assistant', reply || "Sorry, I couldn't generate a reply.");
     } catch (e) {
       console.error(e);
@@ -488,6 +590,266 @@ const ChatScreen: React.FC<Props> = ({ route }) => {
     return `${m.toString().padStart(2, '0')}:${ss.toString().padStart(2, '0')}`;
   };
 
+  // 1. Function to pick a file
+  const pickFile = async () => {
+    try {
+      const [res] = await pick({ type: [types.allFiles] });
+
+      setFile(res);
+      // await uploadFile(res);
+      // simulateUpload(res.size ?? 100 * 1024, setProgress1, setUploadSpeed1, setIsUploading1);
+    } catch (err: any) {
+      if (err.name !== 'Cancel') {
+        console.warn('Picker error:', err);
+      }
+    }
+  };
+  // 2. Function to upload picked file to API
+  const uploadFile = async (file: any) => {
+    try {
+      if (!file) {
+        Alert.alert('Error', 'No file selected');
+        return;
+      }
+      setFileState("Uploading...");
+      const formData = new FormData();
+      formData.append('purpose', 'user_data'); // required by OpenAI
+      formData.append('file', {
+        uri: file.uri,
+        type: file.type,
+        name: file.name || 'soil_health_card.pdf',
+      });
+
+      const response = await axios.post(
+        'https://api.openai.com/v1/files',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${OPENAI_API_KEY}`,
+          },
+        },
+      );
+
+      console.log('Upload success:', response.data);
+      setFileState("Uploaded");
+      // Save file_id and name
+      setFileInfo({
+        id: response.data.id,
+        name: response.data.filename,
+        type: file.type,
+      });
+      
+      await saveContextSoilHealth(
+        response.data.id,
+        response.data.filename,
+        file.type,
+      );
+      setFile(null);
+      setFileState("File Selected");
+     
+      
+    } catch (err: any) {
+      console.error('Upload error:', err);
+      Alert.alert('Error', 'Upload failed. Please try again.');
+    }
+  };
+
+  const saveContextSoilHealth = async (
+    id: string,
+    name: string,
+    type: string | undefined,
+  ) => {
+    try {
+      setFileState("Extracting....");
+      const isPdf = type === 'application/pdf'; // use passed `type`, not undefined `file`
+      const fileType = isPdf ? 'input_file' : 'input_image';
+
+      const body = {
+        model: 'gpt-4o-mini',
+        input: [
+          {
+            role: 'user',
+            content: [
+              {
+                type: 'input_text',
+                text: 'Extract all fields from this Soil Health Card into JSON exactly as schema defines. Do not paraphrase. Preserve units. If value missing, set it to null.',
+              },
+              {
+                type: fileType,
+                file_id: id,
+              },
+            ],
+          },
+        ],
+        text: {
+          format: {
+            type: 'json_schema',
+            name: 'Soil_health_card',
+            strict: true,
+            schema: {
+              type: 'object',
+              properties: {
+                center: {
+                  type: 'object',
+                  properties: {
+                    name: { type: 'string' },
+                    address: { type: 'string' },
+                  },
+                  required: ['name', 'address'],
+                  additionalProperties: false,
+                },
+                test: {
+                  type: 'object',
+                  properties: {
+                    id: { type: 'string' },
+                    testing_date: { type: 'string' },
+                    validity: { type: 'string' },
+                  },
+                  required: ['id', 'testing_date', 'validity'],
+                  additionalProperties: false,
+                },
+                sample_info: {
+                  type: 'object',
+                  properties: {
+                    survey_no: { type: 'string' },
+                    plot_address: { type: 'string' },
+                    sampling_date: { type: 'string' },
+                    gps: { type: 'string' },
+                  },
+                  required: [
+                    'survey_no',
+                    'plot_address',
+                    'sampling_date',
+                    'gps',
+                  ],
+                  additionalProperties: false,
+                },
+                farmer: {
+                  type: 'object',
+                  properties: {
+                    name: { type: 'string' },
+                    phone: { type: 'string' },
+                    address: { type: 'string' },
+                  },
+                  required: ['name', 'phone', 'address'],
+                  additionalProperties: false,
+                },
+                crop: { type: 'string' },
+                plot: {
+                  type: 'object',
+                  properties: {
+                    size_hectare: { type: 'string' },
+                    soil_type: { type: 'string' },
+                  },
+                  required: ['size_hectare', 'soil_type'],
+                  additionalProperties: false,
+                },
+                nutrients: {
+                  type: 'object',
+                  properties: {
+                    nitrogen: { type: 'string' },
+                    phosphorus: { type: 'string' },
+                    potassium: { type: 'string' },
+                    ph: { type: 'string' },
+                    ec: { type: 'string' },
+                    organic_carbon: { type: 'string' },
+                    sulphur: { type: 'string' },
+                    zinc: { type: 'string' },
+                    boron: { type: 'string' },
+                    iron: { type: 'string' },
+                    manganese: { type: 'string' },
+                    copper: { type: 'string' },
+                  },
+                  required: [
+                    'nitrogen',
+                    'phosphorus',
+                    'potassium',
+                    'ph',
+                    'ec',
+                    'organic_carbon',
+                    'sulphur',
+                    'zinc',
+                    'boron',
+                    'iron',
+                    'manganese',
+                    'copper',
+                  ],
+                  additionalProperties: false,
+                },
+                recommendations: {
+                  type: 'object',
+                  properties: {
+                    crop: { type: 'string' },
+                    soil_conditioner: { type: ['string', 'null'] },
+                    fertilizer_combination_1: { type: 'string' },
+                    fertilizer_combination_2: { type: 'string' },
+                  },
+                  required: [
+                    'crop',
+                    'soil_conditioner',
+                    'fertilizer_combination_1',
+                    'fertilizer_combination_2',
+                  ],
+                  additionalProperties: false,
+                },
+                disclaimer: { type: ['string', 'null'] },
+              },
+              required: [
+                'center',
+                'test',
+                'sample_info',
+                'farmer',
+                'crop',
+                'plot',
+                'nutrients',
+                'recommendations',
+                'disclaimer',
+              ],
+              additionalProperties: false,
+            },
+          },
+        },
+      };
+
+      const response = await axios.post(
+        'https://api.openai.com/v1/responses',
+        body,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${OPENAI_API_KEY}`,
+          },
+        },
+      );
+      setFileState("Extracted Soil data!");
+
+      console.log('received Soil data:', response.data.output?.[0]?.content?.[0]?.text );
+      await setSoilContext(response.data.output?.[0]?.content?.[0]?.text);
+      console.log('context', soilContext);
+      setFileState("Soil Context Saved");
+      console.log('context Saved ✅');
+    } catch (err: any) {
+      console.error(
+        'Error fetching soil data:',
+        err,
+      );
+    }
+  };
+const handleSendFileText = async () => {
+  if(file){
+    setFileState("File Sellected");
+    await uploadFile(file);
+    console.log("inputText",inputText);
+      if(inputText.trim().length>0){
+       pushMessage('user', "Thank you for uploading the File."+inputText.trim()); 
+       askAssistant(inputText.trim());
+    }
+      if(inputText.trim().length==0){ pushMessage('user', "Thank you for uploading Soil health card. let me give you all details");
+        setTimeout(()=>{askAssistant("Give detail of my soil health card .");},2000);}
+  }
+
+}
   // ====== UI ======
   return (
     <SafeAreaView style={styles.safe}>
@@ -497,8 +859,6 @@ const ChatScreen: React.FC<Props> = ({ route }) => {
       <View style={styles.header}>
         <Text style={styles.headerTitle}>AI advisory</Text>
       </View>
-
-      {/* <Text>this is a text</Text> */}
 
       <FlatList
         contentContainerStyle={{ padding: 16, paddingBottom: 96 }}
@@ -534,6 +894,68 @@ const ChatScreen: React.FC<Props> = ({ route }) => {
 
       {/* Bottom composer */}
       <View style={styles.composerWrap}>
+        {file && (
+          <View style={{ marginBottom: 8}}>
+            {file.type?.startsWith('image/') ? (
+              <View style={{ position: 'relative',flexDirection:'row',  height: 90 }}>
+                <Image
+                  source={{ uri: file.uri }}
+                  style={{ width: 90, height: '100%', borderRadius: 8 }}
+                  resizeMode="cover"
+                />
+
+                <TouchableOpacity
+                  onPress={() => setFile(null)}
+                  style={{
+                    position: 'absolute',
+                    top: -8,
+                    left:70,
+                    backgroundColor: 'rgba(0,0,0,0.6)',
+                    borderRadius: 12,
+                    paddingHorizontal: 8,
+                    padding: 4,
+                  }}
+                >
+                  <Text
+                    style={{ color: '#fff', fontWeight: 'bold', fontSize: 12 }}
+                  >
+                    X
+                  </Text>
+                </TouchableOpacity>
+                <Text style={{marginLeft:12}}>{fileState}</Text>
+              </View>
+            ) : (
+              <View
+                style={{
+                  height: 50,
+                  borderRadius: 8,
+                  backgroundColor: '#f0f0f0',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  paddingHorizontal: 12,
+                }}
+              ><View style={{gap:8,flexDirection:'row',alignItems:'center'}}>
+                <Text
+                  style={{ fontSize: 12, color: '#555', textAlign: 'center' }}
+                >
+                  {file.name || 'File selected'}
+                </Text>
+                <TouchableOpacity onPress={() => setFile(null) }                  
+                 style={{
+                    backgroundColor: '#d0d0d0',
+                    borderRadius: 12,
+                    paddingHorizontal: 8,
+                    padding: 4,
+                  }}>
+                  <Text style={{fontSize:12}}>X</Text>
+                </TouchableOpacity></View>
+                <Text>{fileState}</Text>
+              </View>
+            )}
+          </View>
+        )}
+
         <LinearGradient
           colors={['rgba(255,0,0,0.8)', 'rgba(255,165,0,0.8)']}
           start={{ x: 0, y: 0 }}
@@ -552,27 +974,38 @@ const ChatScreen: React.FC<Props> = ({ route }) => {
                 onSubmitEditing={handleSend}
                 multiline
               />
-
-              <TouchableOpacity
-                onPress={() => Alert.alert('Gallery', 'Open image picker here')}
-                style={{ marginRight: 8 }}
-                hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
-              >
-                <GalleryIcon size={22} color="#8A8A8A" />
-              </TouchableOpacity>
-
-              {/* Right-side: Mic OR Send */}
-              {inputText.trim().length > 0 ? (
-                <TouchableOpacity onPress={handleSend} activeOpacity={0.9}>
-                  <View style={styles.sendBtnSolid}>
+              {file ? (
+                <TouchableOpacity onPress={handleSendFileText} activeOpacity={0.9}>
+                  <View style={[styles.sendBtnSolid, { marginRight: 8 }]}>
                     <SendIcon size={20} color="#fff" />
                   </View>
                 </TouchableOpacity>
               ) : (
+                <TouchableOpacity
+                  onPress={() => pickFile()}
+                  style={{ marginRight: 8 }}
+                  hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
+                >
+                  <GalleryIcon size={32} color="#8A8A8A" />
+                </TouchableOpacity>
+              )}
+              {/* Right-side: Mic OR Send */}
+              {inputText.trim().length > 0 ? (
+                <>
+                  {!file && (
+                    <TouchableOpacity onPress={handleSend} activeOpacity={0.9}>
+                      <View style={styles.sendBtnSolid}>
+                        <SendIcon size={20} color="#fff" />
+                      </View>
+                    </TouchableOpacity>
+                  )}
+                </>
+              ) : (
                 <TouchableOpacity onPress={startRecording} activeOpacity={0.9}>
-                  <View style={styles.micBtnSolid}>
+                  {/* <View style={styles.micBtnSolid}>
                     <LockIcon color="#fff" />
-                  </View>
+                  </View> */}
+                  <PulsingMic onPress={startRecording} />
                 </TouchableOpacity>
               )}
             </View>
@@ -715,9 +1148,10 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   micBtnSolid: {
-    width: 32,
-    height: 32,
+    width: 39,
+    height: 39,
     borderRadius: 50,
+    paddingVertical: 4,
     backgroundColor: '#6929C4',
     justifyContent: 'center',
     alignItems: 'center',
@@ -789,6 +1223,23 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   toastText: { color: 'white', fontSize: 13, fontWeight: '600' },
+  micWrap: {
+    position: 'relative',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  micRing: {
+    position: 'absolute',
+  },
+  micCore: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#865DFF',
+    shadowOpacity: 0.55,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 6,
+  },
 });
 
 // Markdown styles (assistant messages)

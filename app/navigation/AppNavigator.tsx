@@ -114,7 +114,6 @@ const AppNavigator = ({ navigation }: any) => (
       options={{
         tabBarButton: (props) => (
           <TouchableOpacity
-            {...props}
             activeOpacity={0.85}
             onPress={() => navigation.navigate('QrScreen')}
             style={styles.scannerButtonWrapper}

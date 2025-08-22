@@ -69,12 +69,11 @@ export default SchemeCard;
 
 const styles = StyleSheet.create({
   card: {
-    width: (width-44),
+    width: (width-32),
     aspectRatio: 1.62,
     borderRadius: 16,
     backgroundColor: '#1F3E29',
     padding: 6,
-    marginRight: 6,
   },
   cardContent: {
     flexDirection: 'column',

@@ -8,7 +8,7 @@ const LockIcon = ({ color = 'white', size = 33 }) => {
       <Svg
         width={size}
         height={(size * 34) / 33} // Maintain aspect ratio
-        viewBox="0 0 33 34"
+        viewBox="0 0 33 42"
         fill="none"
       >
         <Path

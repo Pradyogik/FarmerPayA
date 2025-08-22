@@ -25,7 +25,7 @@ const LoanCard: React.FC<Props> = ({ title, subtitle, image, onPress }) => {
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.subtitle}>{subtitle}</Text>
         </View>
-        <View style={{ width: '20%', right: 16, bottom: -4 }}>
+        <View style={{ width: '20%', bottom: -4 }}>
           <Image source={image} style={styles.image} resizeMode="contain" />
         </View>
       </View>
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     letterSpacing: -0.56,
   },
   image: {
-    width: '100%',
+    height:'100%',
     aspectRatio:1,
     resizeMode:'contain'
   },

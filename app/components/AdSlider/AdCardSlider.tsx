@@ -44,7 +44,7 @@ const AdSlider = () => {
   return (
     <View>
       <FlatList
-      contentContainerStyle={{paddingHorizontal:16,gap:16, justifyContent:'center', alignItems:'center'}}
+      contentContainerStyle={{paddingHorizontal:16,gap:32, justifyContent:'center', alignItems:'center'}}
         data={ads}
         ref={flatRef}
         horizontal
@@ -55,14 +55,8 @@ const AdSlider = () => {
           const index = Math.round(event.nativeEvent.contentOffset.x / width);
           setActiveIndex(index);
         }}
-        renderItem={({ item ,index}) => (
-          <View
-            style={[
-              styles.slider,
-              index === isFirst && styles.isFirstSlider,
-              index === isLast && styles.isLastSlider,
-            ]}
-          >
+        renderItem={({ item }) => (
+ 
           <LoanCard
             title={item.title}
             subtitle={item.subtitle}
@@ -72,7 +66,6 @@ const AdSlider = () => {
             index={0}         // and also index/total
             total={0}
           />
-          </View>
         )}
       />
       {renderDots()}

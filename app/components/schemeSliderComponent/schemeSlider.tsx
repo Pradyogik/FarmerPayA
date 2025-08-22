@@ -60,7 +60,7 @@ const SchemeSlider: React.FC = () => {
       <Text style={[textStyles.title,{paddingLeft:16}]}>Find Schemes for you</Text>
 
       <FlatList
-      contentContainerStyle={{gap:12}}
+        contentContainerStyle={{paddingHorizontal:16,gap:32}}
         data={schemes}
         keyExtractor={(_, index) => index.toString()}
         horizontal
@@ -70,14 +70,14 @@ const SchemeSlider: React.FC = () => {
           setActiveIndex(index);
         }}
         renderItem={({ item, index }) => (
-          <View
-            style={[styles.slider,
-              index === isFirst && styles.isFirstSlider,
-              index === isLast && styles.isLastSlider,
-            ]}
-          >
+          // <View
+          //   style={[styles.slider,
+          //     index === isFirst && styles.isFirstSlider,
+          //     index === isLast && styles.isLastSlider,
+          //   ]}
+          // >
             <SchemeCard {...item} activeIndex={index === activeIndex} />
-          </View>
+          // </View>
         )}
         pagingEnabled
       />

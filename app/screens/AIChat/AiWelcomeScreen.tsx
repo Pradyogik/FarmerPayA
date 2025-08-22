@@ -231,7 +231,7 @@ const AiWelcomeScreen = ({ navigation }: any) => {
     Alert.alert('Question Selected', question);
   };
 
-  const handleMicPress = () => Alert.alert('Mic pressed');
+  const handleMicPress = () => navigation.navigate('ChatScreen' , {mic:"pressed"});
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -298,7 +298,7 @@ const AiWelcomeScreen = ({ navigation }: any) => {
             <TouchableOpacity
               style={{ marginRight: 8 }}
               onPress={() => {
-                /* open picker */
+                navigation.navigate('ChatScreen', { gallery: 'pressed' });
               }}
             >
               <GalleryIcon size={32} color="#8A8A8A" />
