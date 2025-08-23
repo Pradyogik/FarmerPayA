@@ -34,7 +34,6 @@ import addCardDetails from './app/screens/Profile/addCardScreen.tsx';
 import paymentSettings2 from './app/screens/Profile/paymentSetting2.tsx';
 import ChatScreen from './app/screens/AIChat/ChatScreen'; // adjust path
 
-
 //import ProfileScreen from './app/screens/profileScreen.tsx';
 import ProfileScreenz from './app/screens/Profile/Profile.tsx';
 import HelpAndSupport from './app/screens/Profile/HelpandSupport';
@@ -55,6 +54,9 @@ import { ActiveProvider } from './app/context/ActiveContext.tsx';
 import EditProfile from './app/screens/Profile/EditProfile';
 import UPISettings from './app/screens/Profile/UPISettings';
 import AudioChatScreen from './app/screens/AIChat/waveform.tsx';
+import loanScreen1 from './app/screens/Loans/loansScreen1.tsx';
+import loansScreen2 from './app/screens/Loans/loansScreen2.tsx';
+import CropLoans from './app/screens/Loans/cropLoans.tsx';
 
 const Stack = createNativeStackNavigator();
 
@@ -83,7 +85,7 @@ const App = () => {
           <Stack.Screen name="Main" component={AppNavigator} />
           <Stack.Screen name="Notification" component={NotificationScreen} />
           <Stack.Screen name="AiChat" component={AIChat} />
-          <Stack.Screen name="ChatScreen" component={ChatScreen}/>
+          <Stack.Screen name="ChatScreen" component={ChatScreen} />
           <Stack.Screen name="WhoAreU" component={WhoAreUScreen} />
           <Stack.Screen name="AgentSignUp1" component={AgentSignUp1} />
           <Stack.Screen name="AgentSignUp2" component={AgentSignUp2} />
@@ -141,53 +143,61 @@ const App = () => {
             component={InternationalTravel}
           />
           <Stack.Screen name="personalInterests" component={PersonalIntrests} />
+          <Stack.Screen name="loanScreen1" component={loanScreen1} />
+          <Stack.Screen name="CropLoans" component={CropLoans} />
+          <Stack.Screen name="loansScreen2" component={loansScreen2} />
         </Stack.Navigator>
       </NavigationContainer>
     </ActiveProvider>
-//     <NavigationContainer>
-//       <Stack.Navigator screenOptions={{ headerShown: false }}
-//         initialRouteName="Main"
-//       >
-//         <Stack.Screen name="Splash" component={SplashScreen} />
-//         <Stack.Screen name="Splash2" component={SplashScreen2} />
-//         <Stack.Screen name="primaryRole" component={PrimaryRoleScreen} /> 
-//         <Stack.Screen name="secondaryRole" component={SecondaryRoleScreen} />
-//         <Stack.Screen name="selectLanguage" component={SelectLanguageScreen}/>
-//         <Stack.Screen name="Login" component={LoginScreen}/>
-//         <Stack.Screen name="OtpScreen" component={LoginOtpVerification}/>
-//         <Stack.Screen name="SignUp" component={SignUpScreen}/>
-//         <Stack.Screen name="SignUpForm1" component={SignUpFormScreen1}/>
-//         <Stack.Screen name="SignUpForm2" component={SignUpFormScreen2}/>
-//         <Stack.Screen name="PlantSelection" component={PlantSelectionScreen} />
-//         <Stack.Screen name="Main" component={AppNavigator} />
-//         <Stack.Screen name="Notification" component={NotificationScreen} />
-//         {/* <Stack.Screen name="AiChat" component={AIChat} /> */}
-//         <Stack.Screen name="ChatScreen" component={ChatScreen} />
-//         <Stack.Screen name="WhoAreU" component={WhoAreUScreen} />
-//         <Stack.Screen name="AgentSignUp1" component={AgentSignUp1}/>
-//         <Stack.Screen name="AgentSignUp2" component={AgentSignUp2}/>
-//         <Stack.Screen name="AgentSignUp3" component={AgentSignUp3}/>
-//         <Stack.Screen name="AgentSignUp4" component={AgentSignUp4}/>
-//         <Stack.Screen name="BankApproval" component={BankApproval}/>
-//         <Stack.Screen name="UploadDocumentsScreen" component={UploadDocumentsScreen}/>
-//         <Stack.Screen name="CropPlantSelection" component={CropPlantSelection} />
-//         <Stack.Screen name="HorticulturePlantSelection" component={HorticulturePlantSelection} />
-//         <Stack.Screen name="SpicePlantSelection" component={SpicePlantSelection} />
-//         <Stack.Screen name="FruitPlantSelection" component={FruitPlantSelection} />
-//         <Stack.Screen name="VegetablePlantSelection" component={VegetableSelectionScreen} />
-//         <Stack.Screen name="QrScreen" component={QrScreen}/>
-//         <Stack.Screen name="HelpAndSupport" component={HelpAndSupport} /> 
-//         <Stack.Screen name="addNewQuery" component={AddNewQuery} /> 
-//         <Stack.Screen name="PaymentsSettings" component={PaymentsSettings} /> 
-        
-//         <Stack.Screen name="FAQ" component={FAQ} /> 
-//         <Stack.Screen name="SelectYourBank" component={selectYourBankScreen} />
-//         <Stack.Screen name="AddCard" component={addCardDetails} />
-//         <Stack.Screen name="PaymentSettings2" component={paymentSettings2} />
-//         <Stack.Screen name="AudioChatScreen" component={AudioChatScreen} />
-//       </Stack.Navigator>
-//     </NavigationContainer>
+  
   );
 };
 
 export default App;
+
+
+
+
+  //     <NavigationContainer>
+    //       <Stack.Navigator screenOptions={{ headerShown: false }}
+    //         initialRouteName="Main"
+    //       >
+    //         <Stack.Screen name="Splash" component={SplashScreen} />
+    //         <Stack.Screen name="Splash2" component={SplashScreen2} />
+    //         <Stack.Screen name="primaryRole" component={PrimaryRoleScreen} />
+    //         <Stack.Screen name="secondaryRole" component={SecondaryRoleScreen} />
+    //         <Stack.Screen name="selectLanguage" component={SelectLanguageScreen}/>
+    //         <Stack.Screen name="Login" component={LoginScreen}/>
+    //         <Stack.Screen name="OtpScreen" component={LoginOtpVerification}/>
+    //         <Stack.Screen name="SignUp" component={SignUpScreen}/>
+    //         <Stack.Screen name="SignUpForm1" component={SignUpFormScreen1}/>
+    //         <Stack.Screen name="SignUpForm2" component={SignUpFormScreen2}/>
+    //         <Stack.Screen name="PlantSelection" component={PlantSelectionScreen} />
+    //         <Stack.Screen name="Main" component={AppNavigator} />
+    //         <Stack.Screen name="Notification" component={NotificationScreen} />
+    //         {/* <Stack.Screen name="AiChat" component={AIChat} /> */}
+    //         <Stack.Screen name="ChatScreen" component={ChatScreen} />
+    //         <Stack.Screen name="WhoAreU" component={WhoAreUScreen} />
+    //         <Stack.Screen name="AgentSignUp1" component={AgentSignUp1}/>
+    //         <Stack.Screen name="AgentSignUp2" component={AgentSignUp2}/>
+    //         <Stack.Screen name="AgentSignUp3" component={AgentSignUp3}/>
+    //         <Stack.Screen name="AgentSignUp4" component={AgentSignUp4}/>
+    //         <Stack.Screen name="BankApproval" component={BankApproval}/>
+    //         <Stack.Screen name="UploadDocumentsScreen" component={UploadDocumentsScreen}/>
+    //         <Stack.Screen name="CropPlantSelection" component={CropPlantSelection} />
+    //         <Stack.Screen name="HorticulturePlantSelection" component={HorticulturePlantSelection} />
+    //         <Stack.Screen name="SpicePlantSelection" component={SpicePlantSelection} />
+    //         <Stack.Screen name="FruitPlantSelection" component={FruitPlantSelection} />
+    //         <Stack.Screen name="VegetablePlantSelection" component={VegetableSelectionScreen} />
+    //         <Stack.Screen name="QrScreen" component={QrScreen}/>
+    //         <Stack.Screen name="HelpAndSupport" component={HelpAndSupport} />
+    //         <Stack.Screen name="addNewQuery" component={AddNewQuery} />
+    //         <Stack.Screen name="PaymentsSettings" component={PaymentsSettings} />
+
+    //         <Stack.Screen name="FAQ" component={FAQ} />
+    //         <Stack.Screen name="SelectYourBank" component={selectYourBankScreen} />
+    //         <Stack.Screen name="AddCard" component={addCardDetails} />
+    //         <Stack.Screen name="PaymentSettings2" component={paymentSettings2} />
+    //         <Stack.Screen name="AudioChatScreen" component={AudioChatScreen} />
+    //       </Stack.Navigator>
+    //     </NavigationContainer>

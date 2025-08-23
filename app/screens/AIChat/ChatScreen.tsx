@@ -40,6 +40,7 @@ type Msg = {
   text: string;
   createdAt: number;
   reaction?: 'like' | 'dislike' | null;
+  file?: any;
 };
 const MIC_COLOR = '#865DFF';
 const MIC_RING = 'rgba(68, 7, 249, 0.9)';
@@ -174,9 +175,10 @@ const ChatScreen: React.FC<Props> = ({ route }) => {
     name: string;
     type: any;
   } | null>(null);
-  const [fileState ,setFileState]=useState<string>("File selected");
+  const [fileState, setFileState] = useState<string>('File selected');
   const [soilContext, setSoilContext] = useState<any>({});
-  let soilContext1="";
+  const [askDetailFile,setDetailFile]=useState<boolean>(false);
+  let soilContext1 = '';
   const showToast = (message: string) => {
     setToast(message);
     toastOpacity.setValue(0);
@@ -223,8 +225,13 @@ const ChatScreen: React.FC<Props> = ({ route }) => {
     }
   }, [initialText, mic, gallery]);
 
+useEffect(() =>{if(askDetailFile){
+          askAssistant('Give detail of my soil health card .');
+        setDetailFile(false);}
+},[soilContext,askDetailFile]);
+
   // ====== Chat helpers ======
-  const pushMessage = (role: Role, text: string) => {
+  const pushMessage = (role: Role, text: string, file?: any) => {
     setMessages(prev => [
       ...prev,
       {
@@ -233,8 +240,10 @@ const ChatScreen: React.FC<Props> = ({ route }) => {
         text,
         createdAt: Date.now(),
         reaction: null,
+        file: file
       },
     ]);
+   
   };
   const formatTime = (ts: number) =>
     new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -555,9 +564,50 @@ const ChatScreen: React.FC<Props> = ({ route }) => {
   // ====== Bubbles ======
   const renderItem = ({ item }: { item: Msg }) => {
     const isUser = item.role === 'user';
-
+    const file= item.file;
     return (
       <View style={[styles.bubble, isUser ? styles.user : styles.assistant]}>
+                {file && (
+          <View style={{ marginBottom: 8 }}>
+            {file.type?.startsWith('image/') ? (
+              <View
+                style={{
+                  position: 'relative',
+                  flexDirection: 'row',
+                  height: 90,
+                }}
+              >
+                <Image
+                  source={{ uri: file.uri }}
+                  style={{ width: 90, height: '100%', borderRadius: 8 }}
+                  resizeMode="cover"
+                />
+              </View>
+            ) : (
+              <View
+                style={{
+                  height: 50,
+                  borderRadius: 8,
+                  backgroundColor: '#f0f0f0',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  paddingHorizontal: 12,
+                }}
+              >
+                <View
+                  style={{ gap: 8, flexDirection: 'row', alignItems: 'center' }}
+                >
+                  <Text
+                    style={{ fontSize: 12, color: '#555', textAlign: 'center' }}
+                  >
+                    {file.name || 'File selected'}
+                  </Text>
+                </View>
+              </View>
+            )}
+          </View>
+        )}
         {isUser ? (
           <Text style={styles.textUser}>{item.text}</Text>
         ) : (
@@ -611,7 +661,7 @@ const ChatScreen: React.FC<Props> = ({ route }) => {
         Alert.alert('Error', 'No file selected');
         return;
       }
-      setFileState("Uploading...");
+      setFileState('Uploading...');
       const formData = new FormData();
       formData.append('purpose', 'user_data'); // required by OpenAI
       formData.append('file', {
@@ -632,23 +682,21 @@ const ChatScreen: React.FC<Props> = ({ route }) => {
       );
 
       console.log('Upload success:', response.data);
-      setFileState("Uploaded");
+      setFileState('Uploaded');
       // Save file_id and name
       setFileInfo({
         id: response.data.id,
         name: response.data.filename,
         type: file.type,
       });
-      
+
       await saveContextSoilHealth(
         response.data.id,
         response.data.filename,
         file.type,
       );
       setFile(null);
-      setFileState("File Selected");
-     
-      
+      setFileState('File Selected');
     } catch (err: any) {
       console.error('Upload error:', err);
       Alert.alert('Error', 'Upload failed. Please try again.');
@@ -661,7 +709,7 @@ const ChatScreen: React.FC<Props> = ({ route }) => {
     type: string | undefined,
   ) => {
     try {
-      setFileState("Extracting....");
+      setFileState('Extracting....');
       const isPdf = type === 'application/pdf'; // use passed `type`, not undefined `file`
       const fileType = isPdf ? 'input_file' : 'input_image';
 
@@ -822,34 +870,41 @@ const ChatScreen: React.FC<Props> = ({ route }) => {
           },
         },
       );
-      setFileState("Extracted Soil data!");
+      setFileState('Extracted Soil data!');
 
-      console.log('received Soil data:', response.data.output?.[0]?.content?.[0]?.text );
+      console.log(
+        'received Soil data:',
+        response.data.output?.[0]?.content?.[0]?.text,
+      );
       await setSoilContext(response.data.output?.[0]?.content?.[0]?.text);
       console.log('context', soilContext);
-      setFileState("Soil Context Saved");
+      setFileState('Soil Context Saved');
       console.log('context Saved ✅');
     } catch (err: any) {
-      console.error(
-        'Error fetching soil data:',
-        err,
-      );
+      console.error('Error fetching soil data:', err);
     }
   };
-const handleSendFileText = async () => {
-  if(file){
-    setFileState("File Sellected");
-    await uploadFile(file);
-    console.log("inputText",inputText);
-      if(inputText.trim().length>0){
-       pushMessage('user', "Thank you for uploading the File."+inputText.trim()); 
-       askAssistant(inputText.trim());
+  const handleSendFileText = async () => {
+    if (file) {
+      setFileState('File Sellected');
+      await uploadFile(file);
+      console.log('inputText', inputText);
+      if (inputText.trim().length > 0) {
+        pushMessage(
+          'user',
+          'Thank you for uploading the File.' + inputText.trim(),
+        );
+        askAssistant(inputText.trim());
+      }
+      if (inputText.trim().length == 0) {
+        pushMessage(
+          'user',
+          'Thank you for uploading Soil health card. let me give you all details', file
+        );
+      }
+      setDetailFile(true);
     }
-      if(inputText.trim().length==0){ pushMessage('user', "Thank you for uploading Soil health card. let me give you all details");
-        setTimeout(()=>{askAssistant("Give detail of my soil health card .");},2000);}
-  }
-
-}
+  };
   // ====== UI ======
   return (
     <SafeAreaView style={styles.safe}>
@@ -895,9 +950,15 @@ const handleSendFileText = async () => {
       {/* Bottom composer */}
       <View style={styles.composerWrap}>
         {file && (
-          <View style={{ marginBottom: 8}}>
+          <View style={{ marginBottom: 8 }}>
             {file.type?.startsWith('image/') ? (
-              <View style={{ position: 'relative',flexDirection:'row',  height: 90 }}>
+              <View
+                style={{
+                  position: 'relative',
+                  flexDirection: 'row',
+                  height: 90,
+                }}
+              >
                 <Image
                   source={{ uri: file.uri }}
                   style={{ width: 90, height: '100%', borderRadius: 8 }}
@@ -909,7 +970,7 @@ const handleSendFileText = async () => {
                   style={{
                     position: 'absolute',
                     top: -8,
-                    left:70,
+                    left: 70,
                     backgroundColor: 'rgba(0,0,0,0.6)',
                     borderRadius: 12,
                     paddingHorizontal: 8,
@@ -922,7 +983,7 @@ const handleSendFileText = async () => {
                     X
                   </Text>
                 </TouchableOpacity>
-                <Text style={{marginLeft:12}}>{fileState}</Text>
+                <Text style={{ marginLeft: 12 }}>{fileState}</Text>
               </View>
             ) : (
               <View
@@ -935,21 +996,27 @@ const handleSendFileText = async () => {
                   justifyContent: 'space-between',
                   paddingHorizontal: 12,
                 }}
-              ><View style={{gap:8,flexDirection:'row',alignItems:'center'}}>
-                <Text
-                  style={{ fontSize: 12, color: '#555', textAlign: 'center' }}
+              >
+                <View
+                  style={{ gap: 8, flexDirection: 'row', alignItems: 'center' }}
                 >
-                  {file.name || 'File selected'}
-                </Text>
-                <TouchableOpacity onPress={() => setFile(null) }                  
-                 style={{
-                    backgroundColor: '#d0d0d0',
-                    borderRadius: 12,
-                    paddingHorizontal: 8,
-                    padding: 4,
-                  }}>
-                  <Text style={{fontSize:12}}>X</Text>
-                </TouchableOpacity></View>
+                  <Text
+                    style={{ fontSize: 12, color: '#555', textAlign: 'center' }}
+                  >
+                    {file.name || 'File selected'}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => setFile(null)}
+                    style={{
+                      backgroundColor: '#d0d0d0',
+                      borderRadius: 12,
+                      paddingHorizontal: 8,
+                      padding: 4,
+                    }}
+                  >
+                    <Text style={{ fontSize: 12 }}>X</Text>
+                  </TouchableOpacity>
+                </View>
                 <Text>{fileState}</Text>
               </View>
             )}
@@ -975,7 +1042,10 @@ const handleSendFileText = async () => {
                 multiline
               />
               {file ? (
-                <TouchableOpacity onPress={handleSendFileText} activeOpacity={0.9}>
+                <TouchableOpacity
+                  onPress={handleSendFileText}
+                  activeOpacity={0.9}
+                >
                   <View style={[styles.sendBtnSolid, { marginRight: 8 }]}>
                     <SendIcon size={20} color="#fff" />
                   </View>
@@ -1071,7 +1141,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   user: { alignSelf: 'flex-end', backgroundColor: '#E9EDFF' },
-  assistant: { alignSelf: 'flex-start', backgroundColor: '#F6F6F7' },
+  assistant: { alignSelf: 'flex-start', paddingBottom:20,backgroundColor: '#F6F6F7' },
   textUser: { color: '#1F077A', fontSize: 16, lineHeight: 22 },
 
   metaRow: {

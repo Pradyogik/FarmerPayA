@@ -17,9 +17,9 @@ type Props = AdCardProps & {
   index: number;
   total: number;
 };
-const LoanCard: React.FC<Props> = ({ title, subtitle, image, onPress }) => {
+const LoanCard: React.FC<Props> = ({ title, subtitle, image, onPress ,naviagtion }) => {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity onPress={onPress} style={styles.container}>
       <View style={styles.card}>
         <View style={styles.textContainer}>
           <Text style={styles.title}>{title}</Text>
@@ -29,7 +29,7 @@ const LoanCard: React.FC<Props> = ({ title, subtitle, image, onPress }) => {
           <Image source={image} style={styles.image} resizeMode="contain" />
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

@@ -35,7 +35,7 @@ const HomeScreen = ({ navigation }: any) => {
         <ProfileStatusBar />
         {/* <Services /> */}
         <FarmerPayUPI />
-        <AdSlider />
+        <AdSlider navigation={navigation}/>
         
         <InView
           onChange={inView => {

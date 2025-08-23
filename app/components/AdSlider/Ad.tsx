@@ -3,4 +3,5 @@ export interface AdCardProps {
   subtitle: string;
   image: any;
   onPress?: () => void;
+  naviagtion?:any;
 }

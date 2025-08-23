@@ -10,6 +10,7 @@ const ads: AdCardProps[] = [
     title: 'Seed Loans up to ₹10,000 ➜',
     subtitle: 'Buy seeds now, pay later with easy EMI options',
     image: require('../../assets/images/loan.png'),
+    
   },
   {
     title: 'Fertilizer Credit Available',
@@ -23,13 +24,13 @@ const ads: AdCardProps[] = [
   },
 ];
 
-const AdSlider = () => {
+const AdSlider = ({navigation}:any) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const flatRef = useRef(null);
   const width = Dimensions.get('window').width;
   const isFirst = 0;
   const isLast = ads.length - 1;
-
+const onPress=()=>{navigation.navigate('loansScreen2')};
   const renderDots = () => (
     <View style={styles.dotsContainer}>
       {ads.map((_, i) => (
@@ -61,10 +62,11 @@ const AdSlider = () => {
             title={item.title}
             subtitle={item.subtitle}
             image={item.image}
-            onPress={() => {}}
             isActive={false} // you can remove isActive if not needed anymore
             index={0}         // and also index/total
             total={0}
+            onPress={onPress}
+            naviagtion={navigation}
           />
         )}
       />

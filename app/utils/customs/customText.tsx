@@ -18,6 +18,8 @@ interface CustomTextProps extends RNTextProps {
   letterSpacing?: number;
   lineHeight?: number;
   style?: TextStyle | TextStyle[];
+  numberOfLines?: number; 
+  ellipsizeMode?: 'head' | 'middle' | 'tail' | 'clip'; 
 }
 
 const CustomText: React.FC<CustomTextProps> = ({
@@ -29,6 +31,8 @@ const CustomText: React.FC<CustomTextProps> = ({
   letterSpacing = 0,
   lineHeight,
   style,
+  numberOfLines, 
+  ellipsizeMode, 
   ...rest
 }) => {
   // Pick the registered font name from Fonts.ts
@@ -39,10 +43,12 @@ const CustomText: React.FC<CustomTextProps> = ({
   return (
     <RNText
       {...rest}
+      numberOfLines={numberOfLines} 
+      ellipsizeMode={ellipsizeMode}
       style={[
         {
           fontFamily: resolvedFont,
-          fontSize:size, // 🔹 responsive font size
+          fontSize: size, // 🔹 responsive font size
           color,
           letterSpacing,
           lineHeight: lineHeight,
