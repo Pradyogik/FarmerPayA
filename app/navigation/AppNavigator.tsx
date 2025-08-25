@@ -63,7 +63,8 @@ const AppNavigator = ({ navigation }: any) => (
       },
       tabBarIcon: ({ focused }) => {
         const isScanner = route.name === 'Scanner';
-        const color = focused ? PRIMARY : INACTIVE;
+        const color = focused ? '#FFFFFF' : INACTIVE;
+        const fillColor= focused? PRIMARY:"none";
         const size = 26;
         const stroke = 2;
 
@@ -71,16 +72,16 @@ const AppNavigator = ({ navigation }: any) => (
 
         switch (route.name) {
           case 'Home':
-            iconNode = <HomeIcon size={size} color={color} strokeWidth={stroke} />;
+            iconNode = <HomeIcon size={focused?size+2:size} color={color} strokeWidth={stroke}  fill={fillColor}/>;
             break;
           case 'Chat':
-            iconNode = <AiIcon size={size} color={color} strokeWidth={stroke} />;
+            iconNode = <AiIcon size={size} color={color} strokeWidth={stroke} fill={fillColor}/>;
             break;
           case 'Weather': // (this is your UPI tab)
-            iconNode = <RupeeIcon size={size} color={color} strokeWidth={stroke} />;
+            iconNode = <RupeeIcon size={focused?size+2:size} color={color} strokeWidth={stroke} fill={fillColor}/>;
             break;
           case 'Profile':
-            iconNode = <ProfileIcon size={size} color={color} strokeWidth={1.8} />;
+            iconNode = <ProfileIcon size={size} color={focused?PRIMARY:INACTIVE} strokeWidth={focused?1.5:stroke} fill={fillColor}/>;
             break;
           case 'Scanner':
             iconNode = <ScanIcon width={32} height={32} />;

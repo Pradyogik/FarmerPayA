@@ -47,7 +47,7 @@ const loans: bankItemProps[] = [
     loanSchemeName: 'Kishan Credit Card',
     amount: '5000',
     tenure: '30',
-    SchemeIcon:Kcc,
+    SchemeIcon: Kcc,
   },
 ];
 const BankCreditCards: React.FC<bankItemProps> = ({
@@ -64,7 +64,7 @@ const BankCreditCards: React.FC<bankItemProps> = ({
         borderRadius: 12,
         borderWidth: 1,
         padding: 16,
-        gap: 8,
+        gap: 0,
       }}
     >
       <View>
@@ -103,8 +103,8 @@ const BankCreditCards: React.FC<bankItemProps> = ({
           justifyContent: 'space-between',
         }}
       >
-        <View>
-          <View style={{ flexDirection: 'row', gap: 6, alignItems: 'center' }}>
+        <View style={{gap:8}}>
+          <View style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
             <CustomText weight={500} size={11.35} letterSpacing={-0.48}>
               Up To
             </CustomText>
@@ -138,7 +138,14 @@ const BankCreditCards: React.FC<bankItemProps> = ({
 };
 const CropLoans = () => {
   return (
-    <View style={{ padding: 16, flex: 1, backgroundColor: '#ffffff',paddingTop:StatusBar.currentHeight || 40 }}>
+    <View
+      style={{
+        padding: 16,
+        flex: 1,
+        backgroundColor: '#ffffff',
+        paddingTop: StatusBar.currentHeight || 40,
+      }}
+    >
       <View style={{ flexDirection: 'row', gap: 12, alignItems: 'center' }}>
         <ArrowCircleBackIcon />
         <CustomText
@@ -147,7 +154,7 @@ const CropLoans = () => {
           letterSpacing={-1.04}
           color="#3F1976"
         >
-          Loans
+          Crop Loans
         </CustomText>
       </View>
       <FlatList
